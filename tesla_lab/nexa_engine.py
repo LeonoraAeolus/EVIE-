@@ -839,7 +839,7 @@ def build_procedural_assembly(archetype: str, prompt: str = "", profile_id: str 
                 "kinematics": {"type": "static"}
             }
         ]
-    elif any(k in p_lower for k in ["bracket", "mount", "extrusion", "gusset", "shelf"]):
+    elif matched_arch == "equipment_bracket":
         arch = "equipment_bracket"
         title = "Gusseted Structural Equipment Bracket"
         desc = "High-rigidity right-angle mounting interface with 45-degree perimeter reinforcement."
@@ -912,10 +912,7 @@ def build_procedural_assembly(archetype: str, prompt: str = "", profile_id: str 
                 "kinematics": {"type": "static"}
             }
         ]
-    elif any(k in p_lower for k in [
-        "organic", "sculpture", "biomorphic", "ribbon", "lattice", "torus",
-        "minimal surface", "art", "fluid", "curvilinear", "gyroid"
-    ]):
+    elif matched_arch == "organic_sculpture":
         arch = "organic_sculpture"
         title = "Biomorphic Curvilinear Lattice Sculpture"
         desc = "Continuous fluid 3D spline ribbons with an interlocking topological torus knot void and cantilevered aerodynamic wing."
