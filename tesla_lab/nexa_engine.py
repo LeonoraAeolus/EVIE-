@@ -212,187 +212,281 @@ def build_procedural_assembly(archetype: str, prompt: str = "", profile_id: str 
 
     if any(k in p_lower for k in ["gear", "planetary", "cycloid", "transmission", "reducer"]):
         arch = "planetary_gearbox"
-        title = "Compound Planetary Reduction Gearbox"
-        desc = "High-density planetary epicyclic gear train with central sun drive, triple planet cluster, and outer ring housing."
+        
+        # 1. Parse planet gear count dynamically from prompt
+        num_planets = None
+        m = re.search(r'(\d+)\s*(?:-|x|\s)?\s*(?:planet|pinion|satellite|gear)', p_lower)
+        if m:
+            num_planets = int(m.group(1))
+        else:
+            num_words = {'two': 2, 'three': 3, 'four': 4, 'five': 5, 'six': 6, 'seven': 7, 'eight': 8}
+            for w, val in num_words.items():
+                if f"{w} planet" in p_lower or f"{w}-planet" in p_lower:
+                    num_planets = val
+                    break
+        if num_planets is None:
+            # Scaled dynamically per candidate profile: 3 for lightweight, 4 for balanced, 5 for heavy-duty
+            num_planets = 3 if profile_id == "lightweight" else (4 if profile_id == "balanced" else 5)
+        num_planets = max(2, min(8, num_planets))
+
+        title = f"Compound {num_planets}-Planet Reduction Gearbox"
+        desc = f"High-density planetary epicyclic gear train with central sun drive, {num_planets}-planet orbital cluster, and outer ring housing."
         gov_eq = r"i = 1 + \frac{Z_{ring}}{Z_{sun}} = 1 + \frac{48}{16} = 4.0, \quad \sigma_{H} = Z_E \sqrt{\frac{F_t}{b \cdot d_1} \frac{u+1}{u}}"
         rows = [
             {"key": "Reduction Ratio", "val": "4.0 : 1 Epicyclic"},
-            {"key": "Torque Rating", "val": f"{8.4 * scale:.1f} N·m Rated"},
-            {"key": "Backlash Clearance", "val": f"{0.04 * scale:.2f} mm Tight"},
+            {"key": "Torque Rating", "val": f"{8.4 * scale * (num_planets / 3.0):.1f} N·m Rated"},
+            {"key": "Planet Cluster", "val": f"{num_planets}x Synced Pinions"},
             {"key": "Safety Factor", "val": f"{target_sf:.2f}x AGMA Yield"}
         ]
-        callouts = [
-            {"label": "1. Input Sun Pinion (16T)", "anchor": [0.0, 0.22, 0.08]},
-            {"label": "2. Planetary Cluster Pin (20T)", "anchor": [0.32 * scale, 0.12, 0.05]},
-            {"label": "3. Internal Ring Annulus (48T)", "anchor": [-0.42 * scale, -0.18, 0.0]}
-        ]
+        r_sun = round(0.16 * scale, 3)
+        r_planet = round(0.16 * scale, 3)
+        d_orbit = round(r_sun + r_planet, 3) # 0.32 * scale
+        r_ring_in = round(r_sun + 2.0 * r_planet, 3) # 0.48 * scale
+        r_ring_out = round(r_ring_in + 0.06 * scale, 3) # 0.54 * scale
+        gear_h = round(0.10 * scale, 3)
+
         parts = [
             {
                 "id": "sun_gear",
                 "name": "Input Sun Drive Gear (16T)",
                 "primitive": "gear",
-                "dimensions": {"radius": 0.16 * scale, "height": 0.14 * scale, "teeth": 16},
+                "dimensions": {"radius": r_sun, "height": gear_h, "teeth": 16},
                 "position": [0.0, 0.0, 0.0],
                 "rotation": [0.0, 0.0, 0.0],
                 "material": "hardened_steel",
                 "color": "#3B82F6",
-                "kinematics": {"type": "revolute", "axis": "z", "speed_ratio": 3.0}
-            },
-            {
-                "id": "planet_1",
-                "name": "Orbital Planet Gear 1 (20T)",
-                "primitive": "gear",
-                "dimensions": {"radius": 0.18 * scale, "height": 0.12 * scale, "teeth": 20},
-                "position": [0.32 * scale, 0.0, 0.0],
-                "rotation": [0.0, 0.0, 0.0],
-                "material": "machined_aluminum",
-                "color": "#60A5FA",
-                "kinematics": {"type": "revolute", "axis": "z", "speed_ratio": -2.0}
-            },
-            {
-                "id": "planet_2",
-                "name": "Orbital Planet Gear 2 (20T)",
-                "primitive": "gear",
-                "dimensions": {"radius": 0.18 * scale, "height": 0.12 * scale, "teeth": 20},
-                "position": [-0.16 * scale, 0.28 * scale, 0.0],
-                "rotation": [0.0, 0.0, 0.0],
-                "material": "machined_aluminum",
-                "color": "#60A5FA",
-                "kinematics": {"type": "revolute", "axis": "z", "speed_ratio": -2.0}
-            },
-            {
-                "id": "planet_3",
-                "name": "Orbital Planet Gear 3 (20T)",
-                "primitive": "gear",
-                "dimensions": {"radius": 0.18 * scale, "height": 0.12 * scale, "teeth": 20},
-                "position": [-0.16 * scale, -0.28 * scale, 0.0],
-                "rotation": [0.0, 0.0, 0.0],
-                "material": "machined_aluminum",
-                "color": "#60A5FA",
-                "kinematics": {"type": "revolute", "axis": "z", "speed_ratio": -2.0}
-            },
-            {
-                "id": "carrier_plate",
-                "name": "Tri-Lobe Carrier Arm",
-                "primitive": "cylinder",
-                "dimensions": {"radius": 0.44 * scale, "height": 0.05 * scale},
-                "position": [0.0, 0.0, -0.09 * scale],
-                "rotation": [0.0, 0.0, 0.0],
-                "material": "hardened_steel",
-                "color": "#475569",
-                "kinematics": {"type": "revolute", "axis": "z", "speed_ratio": 0.75}
-            },
-            {
-                "id": "ring_housing",
-                "name": "Outer Ring Annulus Shroud",
-                "primitive": "tube",
-                "dimensions": {"radius": 0.54 * scale, "radius_inner": 0.49 * scale, "height": 0.16 * scale},
-                "position": [0.0, 0.0, 0.0],
-                "rotation": [0.0, 0.0, 0.0],
-                "material": "tough_polymer",
-                "color": "#1E293B",
-                "kinematics": {"type": "static"}
+                "kinematics": {"type": "revolute", "axis": "y", "speed_ratio": 4.0}
             }
         ]
-    elif any(k in p_lower for k in ["grip", "clamp", "jaw", "robot", "hand", "finger"]):
+
+        # Dynamically generate all planet gears evenly distributed around the sun in XZ plane
+        for i in range(num_planets):
+            theta = i * (2.0 * math.pi / num_planets)
+            px = round(d_orbit * math.cos(theta), 3)
+            pz = round(d_orbit * math.sin(theta), 3)
+            parts.append({
+                "id": f"planet_{i+1}",
+                "name": f"Orbital Planet Gear {i+1} (16T)",
+                "primitive": "gear",
+                "dimensions": {"radius": r_planet, "height": round(gear_h * 0.95, 3), "teeth": 16},
+                "position": [px, 0.0, pz],
+                "rotation": [0.0, 0.0, 0.0],
+                "material": "machined_aluminum",
+                "color": "#60A5FA",
+                "kinematics": {"type": "revolute", "axis": "y", "speed_ratio": -2.0}
+            })
+
+        # Add carrier arm and ring shroud
+        parts.append({
+            "id": "carrier_plate",
+            "name": f"{num_planets}-Lobe Planet Carrier Arm",
+            "primitive": "cylinder",
+            "dimensions": {"radius": round(d_orbit + 0.05 * scale, 3), "height": round(0.025 * scale, 3)},
+            "position": [0.0, round(-gear_h * 0.62, 3), 0.0],
+            "rotation": [0.0, 0.0, 0.0],
+            "material": "hardened_steel",
+            "color": "#475569",
+            "kinematics": {"type": "revolute", "axis": "y", "speed_ratio": 0.8}
+        })
+        parts.append({
+            "id": "ring_housing",
+            "name": "Outer Ring Annulus Shroud (48T)",
+            "primitive": "tube",
+            "dimensions": {"radius": r_ring_out, "radius_inner": r_ring_in, "height": round(gear_h * 1.15, 3)},
+            "position": [0.0, 0.0, 0.0],
+            "rotation": [0.0, 0.0, 0.0],
+            "material": "tough_polymer",
+            "color": "#1E293B",
+            "kinematics": {"type": "static"}
+        })
+    elif any(k in p_lower for k in ["grip", "clamp", "jaw", "robot", "hand", "finger", "chuck"]):
         arch = "robotic_gripper"
-        title = "Parallel Kinematic Robotic Gripper"
-        desc = "Dual-jaw synchronous linear clamp with lead-screw actuator and replaceable high-friction contact pads."
-        gov_eq = r"F_{grip} = 2 \cdot \mu \cdot \left(\frac{2 \pi \cdot \eta \cdot T_{motor}}{p}\right), \quad \sigma_{max} = \frac{M_{bend} \cdot c}{I}"
-        rows = [
-            {"key": "Clamping Force", "val": f"{28.5 * scale:.1f} N Synchronous"},
-            {"key": "Stroke Aperture", "val": f"{42.0 * scale:.1f} mm Jaw Travel"},
-            {"key": "Lead Screw Pitch", "val": "2.0 mm / rev Lead"},
-            {"key": "Safety Factor", "val": f"{target_sf:.2f}x Structural"}
-        ]
-        callouts = [
-            {"label": "1. NEMA 17 Drive Interface", "anchor": [0.0, -0.42, 0.0]},
-            {"label": "2. High-Precision Lead Screw", "anchor": [0.0, 0.02, 0.12]},
-            {"label": "3. Articulated Clamp Jaw", "anchor": [0.32 * scale, 0.38, 0.0]}
-        ]
-        parts = [
-            {
-                "id": "base_chassis",
-                "name": "Machined Gripper Chassis Base",
-                "primitive": "box",
-                "dimensions": {"width": 0.75 * scale, "height": 0.22 * scale, "depth": 0.42 * scale},
-                "position": [0.0, -0.22, 0.0],
-                "rotation": [0.0, 0.0, 0.0],
-                "material": "machined_aluminum",
-                "color": "#334155",
-                "kinematics": {"type": "static"}
-            },
-            {
-                "id": "lead_screw",
-                "name": "Reversible Dual-Lead Drive Screw",
-                "primitive": "cylinder",
-                "dimensions": {"radius": 0.045, "height": 0.85 * scale},
-                "position": [0.0, 0.0, 0.0],
-                "rotation": [0.0, 0.0, 1.5708],
-                "material": "hardened_steel",
-                "color": "#94A3B8",
-                "kinematics": {"type": "revolute", "axis": "x", "speed_ratio": 4.0}
-            },
-            {
-                "id": "jaw_left",
-                "name": "Left Linear Clamping Jaw",
-                "primitive": "box",
-                "dimensions": {"width": 0.14 * scale, "height": 0.52 * scale, "depth": 0.28 * scale},
-                "position": [-0.22 * scale, 0.22 * scale, 0.0],
-                "rotation": [0.0, 0.0, 0.0],
-                "material": "machined_aluminum",
-                "color": "#3B82F6",
-                "kinematics": {"type": "prismatic", "axis": "x", "speed_ratio": -1.0, "stroke": 0.12 * scale}
-            },
-            {
-                "id": "jaw_right",
-                "name": "Right Linear Clamping Jaw",
-                "primitive": "box",
-                "dimensions": {"width": 0.14 * scale, "height": 0.52 * scale, "depth": 0.28 * scale},
-                "position": [0.22 * scale, 0.22 * scale, 0.0],
-                "rotation": [0.0, 0.0, 0.0],
-                "material": "machined_aluminum",
-                "color": "#3B82F6",
-                "kinematics": {"type": "prismatic", "axis": "x", "speed_ratio": 1.0, "stroke": 0.12 * scale}
-            },
-            {
-                "id": "pad_left",
-                "name": "Left High-Friction Grip Pad",
-                "primitive": "box",
-                "dimensions": {"width": 0.06 * scale, "height": 0.24 * scale, "depth": 0.24 * scale},
-                "position": [-0.14 * scale, 0.34 * scale, 0.0],
-                "rotation": [0.0, 0.0, 0.0],
-                "material": "tough_polymer",
-                "color": "#EF4444",
-                "kinematics": {"type": "prismatic", "axis": "x", "speed_ratio": -1.0, "stroke": 0.12 * scale}
-            },
-            {
-                "id": "pad_right",
-                "name": "Right High-Friction Grip Pad",
-                "primitive": "box",
-                "dimensions": {"width": 0.06 * scale, "height": 0.24 * scale, "depth": 0.24 * scale},
-                "position": [0.14 * scale, 0.34 * scale, 0.0],
-                "rotation": [0.0, 0.0, 0.0],
-                "material": "tough_polymer",
-                "color": "#EF4444",
-                "kinematics": {"type": "prismatic", "axis": "x", "speed_ratio": 1.0, "stroke": 0.12 * scale}
-            }
-        ]
+        # Parse jaw/finger count dynamically from prompt
+        num_jaws = None
+        m = re.search(r'(\d+)\s*(?:-|x|\s)?\s*(?:jaw|finger|clamp|chuck)', p_lower)
+        if m:
+            num_jaws = int(m.group(1))
+        else:
+            num_words = {'two': 2, 'three': 3, 'four': 4, 'five': 5, 'six': 6}
+            for w, val in num_words.items():
+                if f"{w} jaw" in p_lower or f"{w}-jaw" in p_lower or f"{w} finger" in p_lower:
+                    num_jaws = val
+                    break
+        if num_jaws is None:
+            if any(k in p_lower for k in ["chuck", "concentric", "radial"]):
+                num_jaws = 3
+            else:
+                num_jaws = 2 if profile_id != "heavy_duty" else 4
+        num_jaws = max(2, min(6, num_jaws))
+
+        if num_jaws == 2:
+            title = "Parallel Kinematic Dual-Jaw Gripper"
+            desc = "Dual-jaw synchronous linear clamp with lead-screw actuator and replaceable high-friction contact pads."
+            gov_eq = r"F_{grip} = 2 \cdot \mu \cdot \left(\frac{2 \pi \cdot \eta \cdot T_{motor}}{p}\right), \quad \sigma_{max} = \frac{M_{bend} \cdot c}{I}"
+            rows = [
+                {"key": "Clamping Force", "val": f"{28.5 * scale:.1f} N Synchronous"},
+                {"key": "Stroke Aperture", "val": f"{42.0 * scale:.1f} mm Jaw Travel"},
+                {"key": "Lead Screw Pitch", "val": "2.0 mm / rev Lead"},
+                {"key": "Safety Factor", "val": f"{target_sf:.2f}x Structural"}
+            ]
+            parts = [
+                {
+                    "id": "base_chassis",
+                    "name": "Machined Gripper Chassis Base",
+                    "primitive": "box",
+                    "dimensions": {"width": 0.75 * scale, "height": 0.22 * scale, "depth": 0.42 * scale},
+                    "position": [0.0, -0.22, 0.0],
+                    "rotation": [0.0, 0.0, 0.0],
+                    "material": "machined_aluminum",
+                    "color": "#334155",
+                    "kinematics": {"type": "static"}
+                },
+                {
+                    "id": "lead_screw",
+                    "name": "Reversible Dual-Lead Drive Screw",
+                    "primitive": "cylinder",
+                    "dimensions": {"radius": 0.045, "height": 0.85 * scale},
+                    "position": [0.0, 0.0, 0.0],
+                    "rotation": [0.0, 0.0, 1.5708],
+                    "material": "hardened_steel",
+                    "color": "#94A3B8",
+                    "kinematics": {"type": "revolute", "axis": "x", "speed_ratio": 4.0}
+                },
+                {
+                    "id": "jaw_left",
+                    "name": "Left Linear Clamping Jaw",
+                    "primitive": "box",
+                    "dimensions": {"width": 0.14 * scale, "height": 0.52 * scale, "depth": 0.28 * scale},
+                    "position": [-0.22 * scale, 0.22 * scale, 0.0],
+                    "rotation": [0.0, 0.0, 0.0],
+                    "material": "machined_aluminum",
+                    "color": "#3B82F6",
+                    "kinematics": {"type": "prismatic", "axis": "x", "speed_ratio": -1.0, "stroke": 0.12 * scale}
+                },
+                {
+                    "id": "jaw_right",
+                    "name": "Right Linear Clamping Jaw",
+                    "primitive": "box",
+                    "dimensions": {"width": 0.14 * scale, "height": 0.52 * scale, "depth": 0.28 * scale},
+                    "position": [0.22 * scale, 0.22 * scale, 0.0],
+                    "rotation": [0.0, 0.0, 0.0],
+                    "material": "machined_aluminum",
+                    "color": "#3B82F6",
+                    "kinematics": {"type": "prismatic", "axis": "x", "speed_ratio": 1.0, "stroke": 0.12 * scale}
+                },
+                {
+                    "id": "pad_left",
+                    "name": "Left High-Friction Grip Pad",
+                    "primitive": "box",
+                    "dimensions": {"width": 0.06 * scale, "height": 0.24 * scale, "depth": 0.24 * scale},
+                    "position": [-0.14 * scale, 0.34 * scale, 0.0],
+                    "rotation": [0.0, 0.0, 0.0],
+                    "material": "tough_polymer",
+                    "color": "#EF4444",
+                    "kinematics": {"type": "prismatic", "axis": "x", "speed_ratio": -1.0, "stroke": 0.12 * scale}
+                },
+                {
+                    "id": "pad_right",
+                    "name": "Right High-Friction Grip Pad",
+                    "primitive": "box",
+                    "dimensions": {"width": 0.06 * scale, "height": 0.24 * scale, "depth": 0.24 * scale},
+                    "position": [0.14 * scale, 0.34 * scale, 0.0],
+                    "rotation": [0.0, 0.0, 0.0],
+                    "material": "tough_polymer",
+                    "color": "#EF4444",
+                    "kinematics": {"type": "prismatic", "axis": "x", "speed_ratio": 1.0, "stroke": 0.12 * scale}
+                }
+            ]
+        else:
+            title = f"Concentric {num_jaws}-Jaw Synchronous Chuck"
+            desc = f"Radial {num_jaws}-jaw self-centering chuck mechanism with central spiral scroll drive and replaceable jaws."
+            gov_eq = r"F_{grip} = n \cdot \mu \cdot \left(\frac{2 \pi \cdot \eta \cdot T_{scroll}}{p}\right), \quad SF \ge 2.2"
+            rows = [
+                {"key": "Clamping Force", "val": f"{28.5 * scale * (num_jaws / 2.0):.1f} N Synchronous"},
+                {"key": "Aperture Range", "val": f"{44.0 * scale:.1f} mm Bore Span"},
+                {"key": "Jaw Array", "val": f"{num_jaws}-Jaw Self-Centering"},
+                {"key": "Safety Factor", "val": f"{target_sf:.2f}x Structural"}
+            ]
+            parts = [
+                {
+                    "id": "base_chassis",
+                    "name": "Concentric Chuck Body",
+                    "primitive": "cylinder",
+                    "dimensions": {"radius": 0.46 * scale, "height": 0.16 * scale},
+                    "position": [0.0, -0.15 * scale, 0.0],
+                    "rotation": [0.0, 0.0, 0.0],
+                    "material": "machined_aluminum",
+                    "color": "#334155",
+                    "kinematics": {"type": "static"}
+                },
+                {
+                    "id": "drive_scroll",
+                    "name": "Central Spiral Scroll Drive",
+                    "primitive": "cylinder",
+                    "dimensions": {"radius": 0.20 * scale, "height": 0.18 * scale},
+                    "position": [0.0, -0.05 * scale, 0.0],
+                    "rotation": [0.0, 0.0, 0.0],
+                    "material": "hardened_steel",
+                    "color": "#94A3B8",
+                    "kinematics": {"type": "revolute", "axis": "y", "speed_ratio": 3.0}
+                }
+            ]
+            for i in range(num_jaws):
+                theta = i * (2.0 * math.pi / num_jaws)
+                dist = 0.28 * scale
+                jx = round(dist * math.cos(theta), 3)
+                jz = round(dist * math.sin(theta), 3)
+                dir_vec = [round(math.cos(theta), 3), 0.0, round(math.sin(theta), 3)]
+                parts.append({
+                    "id": f"jaw_{i+1}",
+                    "name": f"Articulated Radial Jaw {i+1}",
+                    "primitive": "box",
+                    "dimensions": {"width": 0.12 * scale, "height": 0.44 * scale, "depth": 0.14 * scale},
+                    "position": [jx, 0.16 * scale, jz],
+                    "rotation": [0.0, -round(theta, 3), 0.0],
+                    "material": "machined_aluminum",
+                    "color": "#3B82F6",
+                    "kinematics": {"type": "prismatic", "stroke": round(0.08 * scale, 3), "dir": dir_vec}
+                })
+                # Grip contact pad for each jaw
+                p_dist = 0.20 * scale
+                px = round(p_dist * math.cos(theta), 3)
+                pz = round(p_dist * math.sin(theta), 3)
+                parts.append({
+                    "id": f"pad_{i+1}",
+                    "name": f"High-Friction Pad {i+1}",
+                    "primitive": "box",
+                    "dimensions": {"width": 0.06 * scale, "height": 0.20 * scale, "depth": 0.12 * scale},
+                    "position": [px, 0.26 * scale, pz],
+                    "rotation": [0.0, -round(theta, 3), 0.0],
+                    "material": "tough_polymer",
+                    "color": "#EF4444",
+                    "kinematics": {"type": "prismatic", "stroke": round(0.08 * scale, 3), "dir": dir_vec}
+                })
     elif any(k in p_lower for k in ["turbine", "impeller", "pump", "fan", "blower", "compressor"]):
         arch = "turbine_impeller"
-        title = "Centrifugal Turbomachinery Impeller"
-        desc = "Aerodynamic radial outflow rotor with backward-curved 3D blade vanes and balanced high-RPM hub."
+        num_blades = None
+        m = re.search(r'(\d+)\s*(?:-|x|\s)?\s*(?:blade|vane|fin)', p_lower)
+        if m:
+            num_blades = int(m.group(1))
+        else:
+            num_words = {'four': 4, 'six': 6, 'eight': 8, 'ten': 10, 'twelve': 12, 'sixteen': 16}
+            for w, val in num_words.items():
+                if f"{w} blade" in p_lower or f"{w}-blade" in p_lower:
+                    num_blades = val
+                    break
+        if num_blades is None:
+            num_blades = 6 if profile_id == "lightweight" else (8 if profile_id == "balanced" else 12)
+        num_blades = max(4, min(24, num_blades))
+
+        title = f"Centrifugal {num_blades}-Blade Turbomachinery Impeller"
+        desc = f"Aerodynamic radial outflow rotor with backward-curved 3D blade vanes ({num_blades} blades) and balanced high-RPM hub."
         gov_eq = r"H_{Euler} = \frac{u_2 c_{u2} - u_1 c_{u1}}{g}, \quad \sigma_{centrifugal} = \rho \cdot \omega^2 \cdot r^2 \cdot \left(\frac{3 + \nu}{8}\right)"
         rows = [
-            {"key": "Flow Discharge", "val": f"{145.0 * scale:.0f} L/min CFM"},
+            {"key": "Flow Discharge", "val": f"{145.0 * scale * (num_blades / 8.0):.0f} L/min CFM"},
             {"key": "Max Pressure Rise", "val": f"{3.8 * scale:.2f} bar Static"},
-            {"key": "Tip Velocity", "val": "48.2 m/s Mach 0.14"},
+            {"key": "Blade Count", "val": f"{num_blades}x Aerodynamic Vanes"},
             {"key": "Safety Factor", "val": f"{target_sf:.2f}x Burst Margin"}
-        ]
-        callouts = [
-            {"label": "1. Aerodynamic Blade Array (8 Blades)", "anchor": [0.28 * scale, 0.15, 0.18]},
-            {"label": "2. Balanced CNC Rotor Hub", "anchor": [0.0, 0.26, 0.0]},
-            {"label": "3. Volute Shroud Collector", "anchor": [-0.46 * scale, -0.12, 0.0]}
         ]
         parts = [
             {
@@ -408,9 +502,9 @@ def build_procedural_assembly(archetype: str, prompt: str = "", profile_id: str 
             },
             {
                 "id": "impeller_core",
-                "name": "Centrifugal 8-Blade Impeller",
+                "name": f"Centrifugal {num_blades}-Blade Impeller Core",
                 "primitive": "impeller",
-                "dimensions": {"radius": 0.48 * scale, "height": 0.22 * scale, "blades": 8},
+                "dimensions": {"radius": 0.48 * scale, "height": 0.22 * scale, "blades": num_blades},
                 "position": [0.0, 0.0, 0.0],
                 "rotation": [0.0, 0.0, 0.0],
                 "material": "machined_aluminum",
@@ -497,6 +591,28 @@ def build_procedural_assembly(archetype: str, prompt: str = "", profile_id: str 
                 "material": "machined_aluminum",
                 "color": "#2563EB",
                 "kinematics": {"type": "static"}
+            },
+            {
+                "id": "landing_skid",
+                "name": "Landing Leg Spar Cleat",
+                "primitive": "box",
+                "dimensions": {"width": 0.08 * scale, "height": 0.28 * scale, "depth": 0.08 * scale},
+                "position": [0.55 * scale, -0.10 * scale, 0.0],
+                "rotation": [0.0, 0.0, 0.0],
+                "material": "carbon_fiber",
+                "color": "#374151",
+                "kinematics": {"type": "static"}
+            },
+            {
+                "id": "clamp_collar",
+                "name": "M3 Dual Clamp Bolt Collar",
+                "primitive": "cylinder",
+                "dimensions": {"radius": 0.05 * scale, "height": 0.26 * scale},
+                "position": [-0.45 * scale, 0.22 * scale, 0.0],
+                "rotation": [0.0, 0.0, 0.0],
+                "material": "brass",
+                "color": "#F59E0B",
+                "kinematics": {"type": "static"}
             }
         ]
     elif any(k in p_lower for k in ["bracket", "mount", "extrusion", "gusset", "shelf"]):
@@ -547,6 +663,28 @@ def build_procedural_assembly(archetype: str, prompt: str = "", profile_id: str 
                 "rotation": [0.0, 0.0, 0.0],
                 "material": "machined_aluminum",
                 "color": "#2563EB",
+                "kinematics": {"type": "static"}
+            },
+            {
+                "id": "slot_anchor_top",
+                "name": "M4 2020 Slot T-Nut Anchor (Upper)",
+                "primitive": "cylinder",
+                "dimensions": {"radius": 0.055 * scale, "height": 0.16 * scale},
+                "position": [-0.25 * scale, 0.58 * scale, 0.0],
+                "rotation": [0.0, 0.0, 1.5708],
+                "material": "brass",
+                "color": "#F59E0B",
+                "kinematics": {"type": "static"}
+            },
+            {
+                "id": "slot_anchor_bot",
+                "name": "M4 2020 Slot T-Nut Anchor (Lower)",
+                "primitive": "cylinder",
+                "dimensions": {"radius": 0.055 * scale, "height": 0.16 * scale},
+                "position": [-0.25 * scale, 0.20 * scale, 0.0],
+                "rotation": [0.0, 0.0, 1.5708],
+                "material": "brass",
+                "color": "#F59E0B",
                 "kinematics": {"type": "static"}
             }
         ]
@@ -610,32 +748,47 @@ def build_procedural_assembly(archetype: str, prompt: str = "", profile_id: str 
                 "material": "brass",
                 "color": "#F59E0B",
                 "kinematics": {"type": "flexure", "axis": "z", "amplitude": 1.0}
+            },
+            {
+                "id": "pivot_dowel",
+                "name": "Hardened Alignment Dowel",
+                "primitive": "cylinder",
+                "dimensions": {"radius": 0.045 * scale, "height": 0.32 * scale},
+                "position": [-0.42 * scale, 0.18 * scale, 0.0],
+                "rotation": [0.0, 0.0, 0.0],
+                "material": "hardened_steel",
+                "color": "#94A3B8",
+                "kinematics": {"type": "static"}
             }
         ]
     else:
         # Universal modular mechanism for ANY arbitrary input
         arch = "modular_mechanism"
-        title = f"Parametric Mechanism: {prompt.title() or 'Kinematic Assembly'}"
-        desc = "Dynamic multi-body mechanical assembly with coupled rotary-linear degrees of freedom."
+        num_elements = None
+        m = re.search(r'(\d+)\s*(?:-|x|\s)?\s*(?:bar|link|gear|stage|roller|node)', p_lower)
+        if m:
+            num_elements = int(m.group(1))
+        if num_elements is None:
+            num_elements = 3 if profile_id == "lightweight" else (4 if profile_id == "balanced" else 5)
+        num_elements = max(3, min(8, num_elements))
+
+        clean_name = prompt.strip().title() if prompt.strip() else 'Kinematic Assembly'
+        title = f"Parametric Mechanism: {clean_name}"
+        desc = f"Dynamic multi-body mechanical assembly with {num_elements} coupled degrees of freedom."
         gov_eq = r"\mathbf{\tau} = \mathbf{M}(\mathbf{q})\mathbf{\ddot{q}} + \mathbf{C}(\mathbf{q},\mathbf{\dot{q}})\mathbf{\dot{q}} + \mathbf{g}(\mathbf{q}), \quad SF = \frac{\sigma_{yield}}{\sigma_{eff}} \ge 2.0"
         rows = [
-            {"key": "Dynamic Freedom", "val": "2-DOF Kinematic"},
+            {"key": "Dynamic Freedom", "val": f"{num_elements}-Element Kinematic"},
             {"key": "Driving Speed", "val": "300 - 1200 RPM"},
             {"key": "Envelope Size", "val": f"{base_span * scale:.0f} mm Bed Fit"},
             {"key": "Safety Factor", "val": f"{target_sf:.2f}x Yield Margin"}
-        ]
-        callouts = [
-            {"label": "1. Ground Pivot Interface", "anchor": [-0.38 * scale, -0.15, 0.0]},
-            {"label": "2. High-Torque Pinion Drive", "anchor": [0.0, 0.18, 0.08]},
-            {"label": "3. Kinematic Output Link", "anchor": [0.42 * scale, 0.22, 0.0]}
         ]
         parts = [
             {
                 "id": "base_pedestal",
                 "name": "Ground Pivot Chassis",
                 "primitive": "box",
-                "dimensions": {"width": 0.65 * scale, "height": 0.18 * scale, "depth": 0.45 * scale},
-                "position": [0.0, -0.25 * scale, 0.0],
+                "dimensions": {"width": 0.75 * scale, "height": 0.16 * scale, "depth": 0.50 * scale},
+                "position": [0.0, -0.22 * scale, 0.0],
                 "rotation": [0.0, 0.0, 0.0],
                 "material": "machined_aluminum",
                 "color": "#334155",
@@ -643,38 +796,61 @@ def build_procedural_assembly(archetype: str, prompt: str = "", profile_id: str 
             },
             {
                 "id": "drive_pinion",
-                "name": "Kinematic Drive Pinion (18T)",
+                "name": "Primary Drive Pinion (18T)",
                 "primitive": "gear",
                 "dimensions": {"radius": 0.18 * scale, "height": 0.14 * scale, "teeth": 18},
-                "position": [0.0, 0.0, 0.0],
+                "position": [-0.18 * scale, 0.0, 0.0],
                 "rotation": [0.0, 0.0, 0.0],
                 "material": "hardened_steel",
                 "color": "#3B82F6",
-                "kinematics": {"type": "revolute", "axis": "z", "speed_ratio": 2.5}
+                "kinematics": {"type": "revolute", "axis": "y", "speed_ratio": 2.5}
             },
             {
-                "id": "output_link",
-                "name": "Articulated Rocker Link",
-                "primitive": "box",
-                "dimensions": {"width": 0.62 * scale, "height": 0.12 * scale, "depth": 0.18 * scale},
-                "position": [0.28 * scale, 0.18 * scale, 0.0],
-                "rotation": [0.0, 0.0, 0.2],
+                "id": "intermediate_gear",
+                "name": "Compound Intermediate Gear (24T)",
+                "primitive": "gear",
+                "dimensions": {"radius": 0.22 * scale, "height": 0.12 * scale, "teeth": 24},
+                "position": [0.18 * scale, 0.0, 0.0],
+                "rotation": [0.0, 0.0, 0.0],
                 "material": "machined_aluminum",
                 "color": "#60A5FA",
-                "kinematics": {"type": "revolute", "axis": "z", "speed_ratio": -1.25}
+                "kinematics": {"type": "revolute", "axis": "y", "speed_ratio": -1.875}
+            },
+            {
+                "id": "articulated_coupler",
+                "name": "Articulated Rocker Coupler",
+                "primitive": "box",
+                "dimensions": {"width": 0.52 * scale, "height": 0.10 * scale, "depth": 0.16 * scale},
+                "position": [0.0, 0.14 * scale, 0.0],
+                "rotation": [0.0, 0.0, 0.0],
+                "material": "machined_aluminum",
+                "color": "#93C5FD",
+                "kinematics": {"type": "prismatic", "axis": "x", "stroke": 0.08 * scale}
             },
             {
                 "id": "tool_boss",
                 "name": "Output Tooling Interface Boss",
                 "primitive": "cylinder",
                 "dimensions": {"radius": 0.09 * scale, "height": 0.18 * scale},
-                "position": [0.55 * scale, 0.24 * scale, 0.0],
+                "position": [0.38 * scale, 0.14 * scale, 0.0],
                 "rotation": [0.0, 0.0, 0.0],
                 "material": "brass",
                 "color": "#F59E0B",
-                "kinematics": {"type": "revolute", "axis": "z", "speed_ratio": -1.25}
+                "kinematics": {"type": "prismatic", "axis": "x", "stroke": 0.08 * scale}
             }
         ]
+        if num_elements >= 6:
+            parts.append({
+                "id": "guide_rail",
+                "name": "Secondary Precision Guide Bushing",
+                "primitive": "tube",
+                "dimensions": {"radius": 0.12 * scale, "radius_inner": 0.08 * scale, "height": 0.24 * scale},
+                "position": [-0.38 * scale, 0.14 * scale, 0.0],
+                "rotation": [0.0, 0.0, 0.0],
+                "material": "tough_polymer",
+                "color": "#1E293B",
+                "kinematics": {"type": "static"}
+            })
 
     if parts:
         dynamic_callouts = []

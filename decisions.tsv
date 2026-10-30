@@ -5,6 +5,14 @@ ts	phase	decision	why	evidence	result
 2026-10-30T12:20:00Z	phase3	Universal Generative 3D CAD Synthesis and direct intake	Eliminated intermediate grill-me card and added dynamic multi-part kinematics and STL generation	tests 6 archetypes green	verified
 2026-10-30T12:34:00Z	ui_speed	Removed top safety badge and restored universal speed controls	Declutter top header and provide responsive 0.5x 1x 2x speed presets with event propagation fix	node check green	verified
 2026-10-30T12:48:00Z	dynamic_callouts	Dynamic part-specific callout generation across all assemblies	Eliminated legacy 3-tag DOM restriction and dynamically anchor callout tags to all actual 3D parts	tests across 4 mechanisms green	verified
+2026-10-30T12:54:00Z	planetary_kinematics	Corrected planar orientation and hollow annulus geometry	Replaced misaligned Z-axis rotations and solid cylinder tube with co-planar XZ layout and true hollow tube extrusion	tests green	verified
+2026-10-30T13:18:00Z	arbitrary_parts	Prompt-driven arbitrary part counts and visual template removal	Removed fixed 3-part limit across planetary gearboxes, chucks, impellers, and mechanisms, and eliminated visual template chips	urllib HTTP test 8 parts STL export verified	verified
+2026-10-30T13:24:00Z	callout_pins	Compact hover-expand badge pins and dock label toggle	Prevent overlapping labels on dense assemblies via 24px numbered pins and Pins/Full/Off controls	node syntax check green	verified
+2026-10-30T13:40:00Z	instant_transition	Instant optimistic transition and background intelligence streaming	Eliminate 3-8s intake waiting lag by loading 3D canvas in 200ms and streaming Tavily/Nemotron asynchronously	measured 64ms size_candidates response	verified
+
+
+
+
 
 
 
