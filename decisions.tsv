@@ -9,6 +9,9 @@ ts	phase	decision	why	evidence	result
 2026-10-30T13:18:00Z	arbitrary_parts	Prompt-driven arbitrary part counts and visual template removal	Removed fixed 3-part limit across planetary gearboxes, chucks, impellers, and mechanisms, and eliminated visual template chips	urllib HTTP test 8 parts STL export verified	verified
 2026-10-30T13:24:00Z	callout_pins	Compact hover-expand badge pins and dock label toggle	Prevent overlapping labels on dense assemblies via 24px numbered pins and Pins/Full/Off controls	node syntax check green	verified
 2026-10-30T13:40:00Z	instant_transition	Instant optimistic transition and background intelligence streaming	Eliminate 3-8s intake waiting lag by loading 3D canvas in 200ms and streaming Tavily/Nemotron asynchronously	measured 64ms size_candidates response	verified
+2026-10-30T13:50:00Z	ui_copy_update	Updated primary button to Generate Design and streaming text to Generating	Streamline user copy and eliminate jargon across primary CTA and status pills	HTTP verification green	verified
+2026-10-30T13:52:00Z	clean_canvas	Removed floating left telemetry card to provide unobstructed 3D viewport	Telemetry is already consolidated in bottom dock and inspection drawer	HTTP verification green	verified
+2026-10-30T13:54:00Z	clean_header	Removed header streaming pill to provide clean header layout	COTS research and Nemotron synthesis run silently in background	HTTP verification green	verified
 
 
 
@@ -18,3 +21,8 @@ ts	phase	decision	why	evidence	result
 
 
 
+
+
+
+2026-10-30T13:58:00Z	sleek_heading	Centered intake title with minimal sleek typography	Removed header tag and centered title with 22px 500-weight antialiased styling	HTTP verification green	verified
+2026-10-30T14:03:00Z	assembled_exploded_verbs	Simplified action controls to Assembled and Exploded	Removed Rest and Under Load and standardized on two clear CAD assembly states	HTTP verification green	verified
