@@ -1,0 +1,43 @@
+# Environment & Secrets (NEVER COMMIT CREDENTIALS)
+.env
+.env.local
+.env.*
+*.key
+*.token
+
+# Python & Virtual Environments
+.venv/
+venv/
+env/
+ENV/
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Testing & Caches
+.pytest_cache/
+.coverage
+htmlcov/
+cache/
+.cache/
+
+# Outputs, Logs & Temp
+outputs/
+*.log
+*.tmp
+*.bak
+evals/results/*
+!evals/results/.gitkeep
+
+# OS generated files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE & Editor folders
+.vscode/
+.idea/
+*.swp
+*.swo

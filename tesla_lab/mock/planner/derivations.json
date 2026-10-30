@@ -1,0 +1,23 @@
+{
+ "_note": "CANNED derivations for the Wildcard sizing in mock mode. Hand-written in OpenMath-Nemotron's answer format (steps + \\boxed{}); NOT produced by the model. Each is used only when the Python value matches `for_value`; the comparison with Python runs for real.",
+ "quarter_wave_tube": {
+  "for_value": 1.277,
+  "response": "**Step 1: Wavelength.** The pulse travels at \\(c\\) and repeats \\(f\\) times per second, so\n\\[ \\lambda = \\frac{c}{f} = \\frac{510.7}{100} = 5.107\\ \\text{m} \\]\n\n**Step 2: Quarter-wave condition.** A closed side branch reflects the pulse back inverted after a round trip of \\(2L\\); cancellation needs \\(2L = \\lambda/2\\):\n\\[ L = \\frac{\\lambda}{4} = \\frac{c}{4f} \\]\n\n**Step 3: Evaluate.**\n\\[ L = \\frac{510.7}{4 \\cdot 100} \\approx 1.277\\ \\text{m} \\]\n\n\\[ \\boxed{L = \\frac{c}{4f} \\approx 1.277} \\]"
+ },
+ "helmholtz_resonator": {
+  "for_value": 8.83,
+  "response": "**Step 1: Neck area and effective length.**\n\\[ A = \\pi r^2 = \\pi (0.02)^2 = 1.2566\\times10^{-3}\\ \\text{m}^2, \\qquad L_{\\text{eff}} = 0.06 + 1.7\\cdot 0.02 = 0.094\\ \\text{m} \\]\n\n**Step 2: Solve the resonance formula for V.**\n\\[ f = \\frac{c}{2\\pi}\\sqrt{\\frac{A}{V L_{\\text{eff}}}} \\;\\Rightarrow\\; V = \\frac{A c^2}{(2\\pi f)^2 L_{\\text{eff}}} \\]\n\n**Step 3: Evaluate.**\n\\[ V = \\frac{1.2566\\times10^{-3}\\cdot 510.7^2}{(2\\pi\\cdot 100)^2 \\cdot 0.094} = \\frac{327.75}{37{,}110} \\approx 8.83\\times10^{-3}\\ \\text{m}^3 \\]\n\n**Step 4: Convert.** \\(8.83\\times10^{-3}\\ \\text{m}^3 = 8.83\\ \\text{L}\\).\n\n\\[ \\boxed{8.83} \\]"
+ },
+ "serration_frequency": {
+  "for_value": 63843.0,
+  "response": "**Step 1: Quarter-wavelength condition.** The tooth pitch equals a quarter wavelength: \\(s = \\lambda/4\\), so \\(\\lambda = 4s\\).\n\n**Step 2: Frequency.**\n\\[ f = \\frac{c}{\\lambda} = \\frac{c}{4s} \\]\n\n**Step 3: Evaluate.**\n\\[ f = \\frac{510.7}{4\\cdot 0.002} = \\frac{510.7}{0.008} \\approx 63{,}840\\ \\text{Hz} \\]\n\n\\[ \\boxed{f = \\frac{c}{4s} \\approx 63840} \\]"
+ },
+ "windkessel_chamber": {
+  "for_value": 7.31,
+  "response": "**Step 1: Resistance.**\n\\[ R = 89{,}290\\ \\text{Pa s/m}^3 \\]\n\n**Step 2: Required \\(\\omega R C\\).** For 10 dB, \\(|H|^2 = 10^{-1}\\), so\n\\[ 1 + (\\omega R C)^2 = 10 \\;\\Rightarrow\\; \\omega R C = 3 \\]\n\n**Step 3: Compliance.**\n\\[ C = \\frac{3}{2\\pi \\cdot 100 \\cdot 89{,}290} \\approx 5.348\\times10^{-8}\\ \\text{m}^3/\\text{Pa} \\]\n\n**Step 4: Volume.** \\(C = V/(\\gamma p)\\), so\n\\[ V = C\\,\\gamma p = 5.348\\times10^{-8}\\cdot 1.35 \\cdot 101{,}325 \\approx 7.315\\times10^{-3}\\ \\text{m}^3 = 7.31\\ \\text{L} \\]\n\n\\[ \\boxed{7.31} \\]"
+ },
+ "tunable_quarter_wave": {
+  "for_value": 2.554,
+  "response": "**Step 1: Firing frequency at 1500 rpm.**\n\\[ f = \\frac{1500}{60}\\cdot\\frac{4}{2} = 50\\ \\text{Hz} \\]\n\n**Step 2: Quarter-wave length.**\n\\[ L = \\frac{c}{4f} = \\frac{510.7}{4\\cdot 50} \\approx 2.554\\ \\text{m} \\]\n\n\\[ \\boxed{2.554} \\]"
+ }
+}

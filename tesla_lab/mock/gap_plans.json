@@ -1,0 +1,85 @@
+{
+ "wardenclyffe": {
+  "C2": {
+   "missing_piece": "No known low-loss path carries usable power around the planet: the Earth-ionosphere cavity is a leaky resonator (Q about 5), so the transmitter would have to resupply its losses continuously.",
+   "requirements": [
+    {
+     "statement": "A guided surface wave (Zenneck/Norton type) must carry kilowatts over 10+ km with most of the power arriving",
+     "target": "> 50% end-to-end at 10 km, kW scale",
+     "feasibility": 0.12,
+     "feasibility_basis": "Surface-wave launching is demonstrated at lab scale only; field strength still falls with distance and ground losses dominate.",
+     "web_query": "Zenneck surface wave wireless power transmission experiment",
+     "arxiv_query": "\"Zenneck wave\" power transfer"
+    },
+    {
+     "statement": "Beamed power (microwave or laser) must deliver useful power over kilometres at high efficiency",
+     "target": "> 30% DC-to-DC over 1 km",
+     "feasibility": 0.45,
+     "feasibility_basis": "Real kilometre-scale demos exist (DARPA POWER, NTT/MHI 2025) but end-to-end efficiency is still low.",
+     "web_query": "power beaming record distance efficiency 2025 laser microwave",
+     "arxiv_query": "\"power beaming\" efficiency"
+    },
+    {
+     "statement": "The Earth-ionosphere cavity would need a quality factor in the thousands instead of about 5",
+     "target": "Q > 1000 at 7.8 Hz",
+     "feasibility": 0.02,
+     "feasibility_basis": "Measured Schumann-resonance Q is 4-6, set by the conductivity of the lower ionosphere; no engineering lever changes it.",
+     "web_query": "Schumann resonance quality factor measurement ionosphere losses",
+     "arxiv_query": "Schumann resonance \"quality factor\""
+    }
+   ]
+  }
+ },
+ "tesla_turbine": {
+  "C2": {
+   "missing_piece": "The 97% figure has never been reproduced; measured disc turbines reach roughly 40%, mostly because of nozzle, exhaust and end-wall losses.",
+   "requirements": [
+    {
+     "statement": "Nozzle-to-rotor losses must fall below a few percent (flow entering the gaps at near rotor speed)",
+     "target": "nozzle + inlet loss < 5%",
+     "feasibility": 0.3,
+     "feasibility_basis": "CFD studies keep finding the nozzle and inlet as the main loss; better designs gain points, not tens of points.",
+     "web_query": "Tesla turbine nozzle design loss CFD efficiency improvement",
+     "arxiv_query": "Tesla turbine nozzle"
+    },
+    {
+     "statement": "Disc gaps must stay at about twice the boundary-layer thickness at high speed, with flat, rigid discs",
+     "target": "gap / boundary layer ≈ 2 at > 20,000 rpm",
+     "feasibility": 0.35,
+     "feasibility_basis": "Micro-fabricated and additive-manufactured rotors make tight gaps possible at small sizes.",
+     "web_query": "Tesla turbine disc spacing boundary layer additive manufacturing study",
+     "arxiv_query": "\"Tesla turbine\" disc spacing"
+    },
+    {
+     "statement": "Exhaust kinetic energy must be recovered instead of dumped",
+     "target": "exit swirl loss < 5%",
+     "feasibility": 0.25,
+     "feasibility_basis": "Diffusers help in bladed machines; little published work for disc turbines.",
+     "web_query": "Tesla turbine exhaust diffuser energy recovery",
+     "arxiv_query": "bladeless turbine exhaust diffuser"
+    }
+   ]
+  },
+  "C3": {
+   "missing_piece": "At today's measured efficiency a disc turbine would burn far more fuel than a bladed one at power-plant scale; its plausible niche is small, dirty or two-phase flows.",
+   "requirements": [
+    {
+     "statement": "Disc turbines must win a niche where blades fail: small organic-Rankine or waste-heat units",
+     "target": "cost per kW below bladed micro-turbines under 50 kW",
+     "feasibility": 0.5,
+     "feasibility_basis": "Several groups test Tesla expanders for ORC and waste heat; low cost and tolerance of wet vapour are real advantages.",
+     "web_query": "Tesla turbine organic Rankine cycle waste heat expander 2025",
+     "arxiv_query": "Tesla turbine \"organic Rankine\""
+    },
+    {
+     "statement": "Efficiency at multi-MW scale must approach 85-90% to compete with bladed steam turbines",
+     "target": "> 85% isentropic at 10 MW",
+     "feasibility": 0.05,
+     "feasibility_basis": "Depends on the 97% claim above being solved; no evidence of a path today.",
+     "web_query": "large scale Tesla turbine megawatt efficiency",
+     "arxiv_query": "Tesla turbine efficiency"
+    }
+   ]
+  }
+ }
+}

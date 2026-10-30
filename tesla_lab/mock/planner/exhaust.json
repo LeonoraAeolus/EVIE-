@@ -1,0 +1,620 @@
+{
+ "id": "exhaust",
+ "title": "Exhaust team: backpressure vs noise",
+ "canned_note": "CANNED (mock mode): the model outputs below (abstraction, terms, CPC proposals, claim-fit scores and quotes, Wildcard ideas) were hand-written in the format Nemotron 3 Super returns; NOT model output. The seed patents were found by a web search for site:patents.google.com on 2026-10-13 (not Tavily). The patent pages are real captured copies; quote checks, CPC validation, citation chains, ranking, legal-status flags and all sizing math run for real.",
+ "keywords": [
+  "exhaust",
+  "muffler",
+  "backpressure",
+  "back pressure",
+  "silencer",
+  "tailpipe"
+ ],
+ "input": {
+  "goal": "Our new muffler cut noise but backpressure went up 15%. We need the noise down without the backpressure.",
+  "failed": [
+   "Tried a bigger pipe: too loud"
+  ],
+  "idea": "A straight-through perforated muffler with a Helmholtz resonator coupled through the perforations to kill the low-frequency boom without adding backpressure",
+  "before": "2026-10-01",
+  "constraints": [
+   "max volume 8 L",
+   "max tube length 2.0 m",
+   "max material temperature 250 °C"
+  ]
+ },
+ "abstraction": {
+  "find": {
+   "function": "attenuate pressure pulses in exhaust gas",
+   "conflict": {
+    "improve": "lower backpressure",
+    "without": "more noise"
+   },
+   "principle": "smooth 100 Hz pressure pulses in hot flowing gas",
+   "exclude": [
+    "plain pipe-diameter increase"
+   ],
+   "quantities": {
+    "frequency_hz": 100,
+    "gas_temp_c": 400,
+    "rpm": 3000,
+    "cylinders": 4
+   }
+  },
+  "check": {
+   "function": "attenuate low-frequency exhaust noise with a resonator beside a straight-through flow path",
+   "conflict": {
+    "improve": "cancel the low-frequency boom",
+    "without": "adding backpressure"
+   },
+   "principle": "smooth 100 Hz pressure pulses in hot flowing gas",
+   "exclude": [],
+   "quantities": {
+    "frequency_hz": 100,
+    "gas_temp_c": 400,
+    "rpm": 3000,
+    "cylinders": 4
+   }
+  },
+  "improve": {
+   "function": "attenuate pressure pulses in exhaust gas",
+   "conflict": {
+    "improve": "cancel the 100 Hz boom",
+    "without": "raising backpressure or using more than 1.0 m of side-branch tube"
+   },
+   "principle": "smooth 100 Hz pressure pulses in hot flowing gas",
+   "exclude": [
+    "plain pipe-diameter increase",
+    "side branch longer than 1.0 m"
+   ],
+   "quantities": {
+    "frequency_hz": 100,
+    "gas_temp_c": 400,
+    "rpm": 3000,
+    "cylinders": 4
+   }
+  }
+ },
+ "terms": [
+  {
+   "term": "pipe",
+   "synonyms": [
+    "tube",
+    "duct"
+   ],
+   "patent_speak": [
+    "fluid conduit",
+    "gas flow passage",
+    "flow tube member"
+   ]
+  },
+  {
+   "term": "noise",
+   "synonyms": [
+    "sound",
+    "boom",
+    "drone"
+   ],
+   "patent_speak": [
+    "acoustic energy",
+    "sound attenuation",
+    "silencing"
+   ]
+  },
+  {
+   "term": "backpressure",
+   "synonyms": [
+    "flow restriction",
+    "pressure drop"
+   ],
+   "patent_speak": [
+    "flow resistance",
+    "low backpressure",
+    "straight-through"
+   ]
+  },
+  {
+   "term": "pressure pulses",
+   "synonyms": [
+    "pulsation",
+    "pressure waves"
+   ],
+   "patent_speak": [
+    "pressure pulsations",
+    "pulsation damping",
+    "pressure waves"
+   ]
+  },
+  {
+   "term": "resonator",
+   "synonyms": [
+    "tuned chamber",
+    "side branch"
+   ],
+   "patent_speak": [
+    "Helmholtz resonator",
+    "side branch resonator",
+    "quarter-wave resonator",
+    "resonance chamber"
+   ]
+  }
+ ],
+ "cpc": {
+  "find": [
+   {
+    "code": "F01N1/02",
+    "role": "home",
+    "why": "silencing exhaust by resonance"
+   },
+   {
+    "code": "F01N1/023",
+    "role": "home",
+    "why": "Helmholtz resonators in exhaust silencers"
+   },
+   {
+    "code": "F01N1/06",
+    "role": "home",
+    "why": "silencing by interference (quarter-wave cancellation)"
+   },
+   {
+    "code": "F16L55/04",
+    "role": "cross",
+    "why": "pipelines: damping pulsations in fluids"
+   },
+   {
+    "code": "G10K11/172",
+    "role": "cross",
+    "why": "general acoustics: noise damping using resonance"
+   },
+   {
+    "code": "F02M35/12",
+    "role": "cross",
+    "why": "engine intake silencers: same pulses, the air side"
+   },
+   {
+    "code": "F02C7/24",
+    "role": "cross",
+    "why": "gas turbines: flow-duct noise without blocking the flow"
+   },
+   {
+    "code": "F01Q1/02",
+    "role": "cross",
+    "why": "(a code the model made up: there is no subclass F01Q, so the validator drops it)"
+   }
+  ],
+  "check": [
+   {
+    "code": "F01N1/02",
+    "role": "home",
+    "why": "silencing by resonance"
+   },
+   {
+    "code": "F01N1/023",
+    "role": "home",
+    "why": "Helmholtz resonators"
+   },
+   {
+    "code": "F01N1/04",
+    "role": "home",
+    "why": "silencing with sound-absorbing material plus resonance"
+   }
+  ],
+  "improve": [
+   {
+    "code": "F01N1/02",
+    "role": "home",
+    "why": "silencing by resonance"
+   },
+   {
+    "code": "F01N1/06",
+    "role": "home",
+    "why": "interference / quarter-wave"
+   },
+   {
+    "code": "F02M35/12",
+    "role": "cross",
+    "why": "intake side-branch and quarter-wave tuners"
+   },
+   {
+    "code": "F16L55/04",
+    "role": "cross",
+    "why": "pulsation dampers"
+   }
+  ]
+ },
+ "seeds": {
+  "find": [
+   [
+    "US5365025A",
+    "straight-through low backpressure muffler perforate tube"
+   ],
+   [
+    "US6792907B1",
+    "Helmholtz resonator exhaust tuned"
+   ],
+   [
+    "US7243757B2",
+    "exhaust muffler resonator chamber"
+   ],
+   [
+    "US4111279A",
+    "muffler attenuating preselected low frequency"
+   ],
+   [
+    "US7798286B2",
+    "exhaust muffler pressure waves objectionable frequency"
+   ],
+   [
+    "US8439159B1",
+    "exhaust muffler low backpressure"
+   ],
+   [
+    "US4150732A",
+    "resonant cavity duct gaseous flow noise (gas turbine)"
+   ],
+   [
+    "US3983955A",
+    "damping sound with resonators"
+   ],
+   [
+    "US4222414A",
+    "pulse damper flow line pulsations"
+   ],
+   [
+    "US5996733A",
+    "side branch resonator two frequencies"
+   ],
+   [
+    "US9394864B2",
+    "quarter-wave resonator tube effective length"
+   ]
+  ],
+  "check": [
+   [
+    "US7281605B2",
+    "Helmholtz resonator coupled perforated exhaust duct dissipative silencer"
+   ],
+   [
+    "US5365025A",
+    "straight-through reactive and dissipative muffler"
+   ],
+   [
+    "US4111279A",
+    "muffler resonator chamber low frequency"
+   ],
+   [
+    "US6792907B1",
+    "Helmholtz resonator exhaust"
+   ],
+   [
+    "US7243757B2",
+    "exhaust muffler resonator chamber"
+   ]
+  ],
+  "improve": [
+   [
+    "US5996733A",
+    "side branch resonator two frequencies"
+   ],
+   [
+    "US9394864B2",
+    "quarter-wave resonator tube effective length"
+   ],
+   [
+    "US6814041B1",
+    "multi-frequency resonator molded channels different lengths"
+   ],
+   [
+    "US5365025A",
+    "straight-through low backpressure muffler"
+   ],
+   [
+    "US6792907B1",
+    "variable tuned resonator engine speed"
+   ],
+   [
+    "US4222414A",
+    "pulse damper flow line pulsations"
+   ]
+  ]
+ },
+ "claim_scores": {
+  "find": {
+   "US5365025A": {
+    "fit": 0.85,
+    "quote": "a tubular member having imperforate inlet and outlet end portions and a perforate central portion arranged along a central longitudinal axis",
+    "why": "Straight-through perforated core keeps backpressure low while reactive + dissipative chambers take the noise: exactly the conflict."
+   },
+   "US3754619A": {
+    "fit": 0.75,
+    "quote": "perforated tube means in said central apertures defining a gas flow path through the bodies",
+    "why": "1971 root of the straight-through idea: the gas never leaves a straight perforated path."
+   },
+   "US7281605B2": {
+    "fit": 0.8,
+    "quote": "a Helmholtz resonator comprising a chamber and a throat positioned within said body, wherein said exhaust duct is a perforated exhaust duct and at least one perforation is acoustically coupled to said resonator throat",
+    "why": "Adds a low-frequency Helmholtz resonator to a straight-through dissipative silencer without blocking the flow."
+   },
+   "US4111279A": {
+    "fit": 0.6,
+    "quote": "attenuating a preselected low frequency sound",
+    "why": "Tuned resonator chamber for one low frequency; the flow passes outside the resonator."
+   },
+   "US6792907B1": {
+    "fit": 0.55,
+    "quote": "controlling at least one of a volume of the chamber, a length of the neck portion, and a diameter of the neck portion responsive to the speed sensed by said engine speed sensor",
+    "why": "Tracks the firing frequency as rpm changes; adds actuators and cost."
+   },
+   "US7798286B2": {
+    "fit": 0.4,
+    "quote": "the pressure waves having at least one objectionable wave having an objectionable amplitude and an objectionable frequency",
+    "why": "Targets the objectionable frequency but says little about backpressure."
+   },
+   "US7243757B2": {
+    "fit": 0.35,
+    "quote": "a plurality of curved sound reflective baffles",
+    "why": "Baffles quiet the gas but add restriction: the opposite of the conflict."
+   },
+   "US8439159B1": {
+    "fit": 0.7,
+    "quote": "perforations reduce backpressure by 30 percent",
+    "why": "(canned model output with a quote that is NOT on the page: kept to show the quote check)"
+   },
+   "US4150732A": {
+    "fit": 0.65,
+    "quote": "said cavities thus forming annular acoustic resonators which attenuate, in a given frequency range, the acoustical energy propagating in the channel",
+    "why": "Gas-turbine ducts: resonators sit flush in the wall, so the flow channel stays open (no added backpressure)."
+   },
+   "US3983955A": {
+    "fit": 0.45,
+    "quote": "the air in said chambers comprising spring means and the air in said openings comprising mass means",
+    "why": "Classic mass-spring resonator panel; general acoustics, not hot gas."
+   },
+   "US4222414A": {
+    "fit": 0.55,
+    "quote": "said elongate member being radially expandable at said wall portion when pulses occur in said flow line",
+    "why": "Lab-instrument pulse damper: a compliant wall swallows each pulse with no restriction in the flow path."
+   },
+   "US5996733A": {
+    "fit": 0.6,
+    "quote": "A side branch resonator for attenuating sound waves at first and second frequencies",
+    "why": "Side branch off the main duct: cancels two frequencies with zero restriction in the flow."
+   },
+   "US9394864B2": {
+    "fit": 0.55,
+    "quote": "defining a tube effective length that is less than the overall length",
+    "why": "Quarter-wave tube whose effective length can be switched: tunes the cancellation without touching the main flow."
+   },
+   "US5849251A": {
+    "fit": 0.25,
+    "quote": "a tailpipe catalytic converter for installing in said exhaust tailpipe",
+    "why": "Cited the 1992 root for relieving back pressure, but it is a catalyst, not noise control."
+   }
+  },
+  "check": {
+   "US7281605B2": {
+    "fit": 0.9,
+    "quote": "wherein said exhaust duct is a perforated exhaust duct and at least one perforation is acoustically coupled to said resonator throat",
+    "why": "Claims almost exactly the idea: a Helmholtz resonator coupled through the perforated straight-through duct. Strong prior art."
+   },
+   "US5365025A": {
+    "fit": 0.6,
+    "quote": "a tubular member having imperforate inlet and outlet end portions and a perforate central portion arranged along a central longitudinal axis",
+    "why": "Straight-through perforated core with reactive chambers; no Helmholtz neck claimed."
+   },
+   "US4111279A": {
+    "fit": 0.55,
+    "quote": "substantially imperforate partition means forming a resonator chamber in the housing",
+    "why": "Resonator chamber for a preselected low frequency, 1976."
+   },
+   "US6792907B1": {
+    "fit": 0.5,
+    "quote": "a neck portion adapted to provide fluid communication between the chamber and a duct",
+    "why": "Helmholtz on a duct, tuned with rpm; not through the perforations."
+   },
+   "US7243757B2": {
+    "fit": 0.35,
+    "quote": "a resonator inlet tube for said resonator chamber",
+    "why": "Resonator chamber, but the flow goes through baffles."
+   },
+   "US3754619A": {
+    "fit": 0.5,
+    "quote": "perforated tube means in said central apertures defining a gas flow path through the bodies",
+    "why": "Straight-through perforated path, 1971; no resonator neck."
+   },
+   "US5849251A": {
+    "fit": 0.1,
+    "quote": "a tailpipe catalytic converter for installing in said exhaust tailpipe",
+    "why": "Not about noise."
+   },
+   "US7798286B2": {
+    "fit": 0.3,
+    "quote": "the pressure waves having at least one objectionable wave having an objectionable amplitude and an objectionable frequency",
+    "why": "Targets one objectionable frequency, but no resonator coupled through perforations."
+   }
+  },
+  "improve": {
+   "US5996733A": {
+    "fit": 0.75,
+    "quote": "A side branch resonator for attenuating sound waves at first and second frequencies",
+    "why": "Two frequencies from one branch: hit 100 Hz and 200 Hz with a short tube."
+   },
+   "US9394864B2": {
+    "fit": 0.75,
+    "quote": "defining a tube effective length that is less than the overall length",
+    "why": "Switchable effective length: a short tube tuned to the 2nd harmonic fits the 1.0 m limit."
+   },
+   "US6814041B1": {
+    "fit": 0.7,
+    "quote": "a first of said channels having a first length between an entrance and a terminating end",
+    "why": "Several molded channels of different lengths: folds the length into a flat part."
+   },
+   "US5365025A": {
+    "fit": 0.6,
+    "quote": "a tubular member having imperforate inlet and outlet end portions and a perforate central portion arranged along a central longitudinal axis",
+    "why": "Still the backpressure baseline, but it does not solve the 1.0 m packaging limit."
+   },
+   "US6792907B1": {
+    "fit": 0.5,
+    "quote": "controlling at least one of a volume of the chamber, a length of the neck portion, and a diameter of the neck portion responsive to the speed sensed by said engine speed sensor",
+    "why": "Tunable, but a Helmholtz cavity this low is bulky."
+   },
+   "US4222414A": {
+    "fit": 0.45,
+    "quote": "said elongate member being radially expandable at said wall portion when pulses occur in said flow line",
+    "why": "Compliant wall idea; hot gas limits materials."
+   },
+   "US3754619A": {
+    "fit": 0.35,
+    "quote": "perforated tube means in said central apertures defining a gas flow path through the bodies",
+    "why": "Backpressure root; says nothing about short side branches."
+   }
+  }
+ },
+ "check_npl_note": "Non-patent literature (arXiv) is searched in live Check runs.",
+ "wildcard": {
+  "principle": "smooth 100 Hz pressure pulses in a hot flowing gas (~400 °C, c ≈ 510 m/s)",
+  "quantities": {
+   "frequency_hz": 100,
+   "gas_temp_c": 400,
+   "rpm": 3000,
+   "cylinders": 4,
+   "gamma": 1.35
+  },
+  "niches_searched": [
+   "Music (wind instruments, G10D)",
+   "Toys and confectionery (A63H, A23G)",
+   "Biology (heart and arteries)",
+   "General acoustics (G10K)",
+   "Nature (owl flight)",
+   "Kitchen (A47J)"
+  ],
+  "ideas": [
+   {
+    "niche": "Music (wind instruments)",
+    "cpc": "G10D7/10",
+    "mechanism": "quarter-wave tube coiled like a French horn",
+    "transfer": "A closed side tube a quarter-wavelength long cancels the 100 Hz pulse. Coil it like a French horn so 1.28 m fits under the car.",
+    "evidence": [
+     {
+      "title": "US2484408A French horn (1945): “the usual coil intermediate said ends”",
+      "url": "https://patents.google.com/patent/US2484408A/en",
+      "kind": "patent"
+     }
+    ],
+    "calculator": "quarter_wave_tube",
+    "params": {
+     "tube_diameter_m": 0.04
+    },
+    "mechanism_keywords": [
+     "quarter-wave",
+     "quarter wave",
+     "coiled tube"
+    ]
+   },
+   {
+    "niche": "Toys and candy (slide whistle)",
+    "cpc": "A23G3/563",
+    "mechanism": "slide-whistle piston that changes the tube length",
+    "transfer": "A slide whistle retunes by moving a piston. Do the same in the side branch so the cancellation follows rpm.",
+    "evidence": [
+     {
+      "title": "US2617324A Combined confection and whistle (1950): a lollipop slide whistle",
+      "url": "https://patents.google.com/patent/US2617324A/en",
+      "kind": "patent"
+     }
+    ],
+    "calculator": "tunable_quarter_wave",
+    "params": {
+     "rpm_min": 1500,
+     "rpm_max": 6000
+    },
+    "mechanism_keywords": [
+     "slide whistle",
+     "sliding piston",
+     "variable-length tube",
+     "variable length tube"
+    ]
+   },
+   {
+    "niche": "Biology (heart and arteries)",
+    "cpc": null,
+    "mechanism": "Windkessel: a compliant chamber that stores each pulse and releases it smoothly",
+    "transfer": "The aorta stretches on each heartbeat and smooths the pulse. Put a compliant chamber on the exhaust so pulses are absorbed instead of choked.",
+    "evidence": [
+     {
+      "title": "Westerhof et al. (2009), The arterial Windkessel, Med Biol Eng Comput",
+      "url": "https://link.springer.com/article/10.1007/s11517-008-0359-2",
+      "kind": "paper"
+     }
+    ],
+    "calculator": "windkessel_chamber",
+    "params": {
+     "backpressure_pa": 10000,
+     "flow_m3_s": 0.112,
+     "attenuation_db": 10
+    },
+    "mechanism_keywords": [
+     "windkessel",
+     "compliant chamber",
+     "compliance chamber"
+    ]
+   },
+   {
+    "niche": "General acoustics",
+    "cpc": "G10K11/172",
+    "mechanism": "Helmholtz resonator",
+    "transfer": "A Helmholtz bottle tuned to 100 Hz on a short neck.",
+    "evidence": [
+     {
+      "title": "US3983955A Arrangement for damping sound with resonators (1973)",
+      "url": "https://patents.google.com/patent/US3983955A/en",
+      "kind": "patent"
+     }
+    ],
+    "calculator": "helmholtz_resonator",
+    "params": {
+     "neck_diameter_m": 0.04,
+     "neck_length_m": 0.06
+    },
+    "mechanism_keywords": [
+     "helmholtz"
+    ]
+   },
+   {
+    "niche": "Nature (owl feathers)",
+    "cpc": null,
+    "mechanism": "serrated feather edges that quiet airflow",
+    "transfer": "Owls fly silently thanks to serrated feather edges. Serrate the tailpipe outlet?",
+    "evidence": [
+     {
+      "title": "Owl-inspired leading-edge serrations for aerodynamic noise reduction (Physics of Fluids, 2025)",
+      "url": "https://pubs.aip.org/aip/pof/article/37/5/051914/3347642/Owl-inspired-leading-edge-serrations-for",
+      "kind": "paper"
+     },
+     {
+      "title": "Bio-inspired trailing-edge serrations: noise down in the 1600–5000 Hz band (Applied Acoustics, 2022)",
+      "url": "https://www.sciencedirect.com/science/article/abs/pii/S0003682X2200041X",
+      "kind": "paper"
+     }
+    ],
+    "calculator": "serration_frequency",
+    "params": {
+     "feature_m": 0.002
+    },
+    "mechanism_keywords": [
+     "serrat"
+    ]
+   }
+  ]
+ },
+ "improve": {
+  "test_results": [
+   "Prototype 2: straight-through perforated core + a 1.3 m coiled quarter-wave side branch: backpressure back to baseline, 100 Hz boom down 9 dB",
+   "Packaging review: only 1.0 m of side-branch tube fits next to the fuel tank"
+  ],
+  "constraints": [
+   "max tube length 1.0 m"
+  ]
+ }
+}

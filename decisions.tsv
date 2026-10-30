@@ -1,0 +1,12 @@
+ts	phase	decision	why	evidence	result
+2026-10-30T11:13:00Z	init	Initialized decision trail for Tavily and LLM integration	Keep auditable record while user steps away	tesla-lab/decisions.tsv	open
+2026-10-30T11:18:20Z	backend	Proved live Tavily search and Nemotron intent synthesis	Ground hardware generation with live web intelligence	scratch/test_tavily_nemotron.py	verified
+2026-10-30T11:26:10Z	integration	Integrated live Tavily research and unified spatial UI	Deliver clean single-dock layout with live COTS sourcing	http://localhost:8080	tests green
+2026-10-30T12:20:00Z	phase3	Universal Generative 3D CAD Synthesis and direct intake	Eliminated intermediate grill-me card and added dynamic multi-part kinematics and STL generation	tests 6 archetypes green	verified
+2026-10-30T12:34:00Z	ui_speed	Removed top safety badge and restored universal speed controls	Declutter top header and provide responsive 0.5x 1x 2x speed presets with event propagation fix	node check green	verified
+2026-10-30T12:48:00Z	dynamic_callouts	Dynamic part-specific callout generation across all assemblies	Eliminated legacy 3-tag DOM restriction and dynamically anchor callout tags to all actual 3D parts	tests across 4 mechanisms green	verified
+
+
+
+
+

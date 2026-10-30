@@ -1,0 +1,699 @@
+{
+ "captured": "Research results captured live from the Tavily Search API on 2026-10-12. Claim extractions, verdict wording and concepts were written by hand to show the shape of Nemotron's output; the math is computed live every run.",
+ "demos": [
+  {
+   "id": "wardenclyffe",
+   "title": "Tesla's Wardenclyffe Tower",
+   "keywords": [
+    "wardenclyffe",
+    "tower",
+    "wireless",
+    "tesla coil",
+    "power without wires",
+    "broadcast power"
+   ],
+   "input": "Nikola Tesla's Wardenclyffe Tower could send free electric power wirelessly to anyone, anywhere on Earth.",
+   "research": [
+    {
+     "query": "Tesla Wardenclyffe tower wireless power transmission patent 1914 efficiency",
+     "results": [
+      {
+       "url": "https://en.wikipedia.org/wiki/Wardenclyffe_Tower",
+       "title": "Wardenclyffe Tower - Wikipedia",
+       "content": "Wardenclyffe Tower (1901–1917), also known as the Tesla Tower, was an early experimental Wireless transmission station designed and built by scientist Nikola Tesla on Long Island in 1901–1902, located in the village of Shoreham, New York. Tesla intended to transmit messages, telephony, and even facsimile images across the Atlantic Ocean to England and to ships at sea based on his theories of using the Earth to conduct the signals. His decision to increase the scale of the facility and implement his ideas of wireless power transfer to better compete with Guglielmo Marconi's radio-based telegraph system was met with refusal to fund the changes by the project's primary backer, financier J. P. Morgan. Additional investment could not be found, and the project was abandoned in 1906, never to [...] Tesla's design used a concept of a charged conductive upper layer in the atmosphere, a theory dating back to an 1872 idea for a proposed wireless power system by Mahlon Loomis. Tesla not only believed that he could use this layer as the return path in his electrical conduction system, but that the power flowing through it would make it glow, providing night time lighting for cities and shipping lanes.\n\nIn February 1901, in a Collier's Weekly article titled \"Talking With Planets\", Tesla described his \"system of energy transmission and of telegraphy without the use of wires\" as: [...] | Career and inventions |  Patents  Plasma lamp   + plasma globe  Polyphase system  Alternating-current com",
+       "score": 0.661,
+       "id": "S1"
+      },
+      {
+       "url": "https://teslasciencecenter.org/teslas-wireless-power",
+       "title": "Tesla’s Wireless Power – Tesla Science Center at Wardenclyffe",
+       "content": "Tesla's wireless power  \nTesla had begun experimenting with high-frequency alternating currents as early as 1891, and on September 2, 1897, he filed a patent for a system of transmitting electrical energy through the natural medium, using the Earth’s surface and ionosphere as a conductor (patent no. 645,576). This patent was granted on March 3, 1900.\n\nTesla's wireless power [...] ## Tesla’s Wireless Power and The Wardenclyffe Tower\n\nNikola Tesla had a bold and revolutionary vision for the world: the wireless transmission of electricity, a global system that could transmit electricity and information without the need for physical power lines. This idea culminated in the construction of the Wardenclyffe Tower on Long Island, New York, an ambitious project designed to demonstrate this theory and bring it into use. He envisioned this “World Wireless System” as being capable of using the Earth itself as a giant electrical circuit, providing power and communication signals, including telegraph and radio signals, around the globe. [...] By 1902, a good part of the Wardenclyffe laboratory and tower was complete, the result of great effort and expense. But Tesla faced increasing financial pressures and work on the Wardenclyffe Tower slowed. J.P. Morgan grew skeptical of the commercial viability of wireless power and the seemingly slow and complicated process of development. To Tesla’s great disappointment, the tremendous tower never became operational, and by 1906, the Wardenclyffe pr",
+       "score": 0.633,
+       "id": "S2"
+      },
+      {
+       "url": "https://www.kroneckerwallis.com/teslas-wireless-power-dream-from-wardenclyffe-tower-to-modern-tech",
+       "title": "Tesla's Wardenclyffe Tower: The Full Story - Kronecker Wallis",
+       "content": "### Resonant Inductive Coupling\n\nResearchers have extended wireless power transmission to greater distances using resonant inductive coupling at specific frequencies. In 2007, a team at MIT successfully transmitted 60 watts across a 2-meter gap with approximately 40% efficiency, lighting a bulb wirelessly in a demonstration that explicitly credited Tesla’s pioneering work. This technology shows promise for charging electric vehicles and powering medical implants.\n\n### Microwave Power Transmission [...] Third, the technical challenges were immense. Tesla’s system required enormous amounts of power to establish the necessary electrical resonance in the Earth. The efficiency of power transmission decreased with distance, and the environmental effects of such powerful electromagnetic fields were unknown and potentially dangerous.\n\nBy 1906, construction had halted due to lack of funds. The tower stood incomplete and unused until 1917, when it was demolished for scrap during World War I. Tesla’s dream had literally been brought down to earth.\n\n## The Science Behind Tesla’s Vision\n\nModern physics helps us understand both why Tesla’s approach showed promise and why it faced fundamental limitations. Tesla wireless transmission relied on several electromagnetic principles: [...] ## Exploring Tesla’s Original Work\n\nFor those fascinated by Tesla’s wireless power experiments and his broader electrical innovations, examining his original patents and writings provides remarkable insights in",
+       "score": 0.625,
+       "id": "S3"
+      },
+      {
+       "url": "https://www.allaboutcircuits.com/technical-articles/teslas-towers-pikes-peak-wardenclyffe-and-wireless-power-transmission",
+       "title": "Tesla’s Towers: Pikes Peak, Wardenclyffe, and Wireless Power Transmission",
+       "content": "When Tesla relocated to Colorado, he was already a celebrity. He had successfully collaborated with George Westinghouse to show the promise of alternating current (AC) by providing power and lighting for the 1893 World's Columbian Exposition in Chicago. They teamed up again in 1896 to provide a hydroelectric power plant at Niagara Falls.\n\nTesla’s AC poly-phase power is the de facto power distribution for the wired power systems that we take for granted today. Tesla beat out Thomas Edison and his direct current (DC) system for large scale power distribution because the technology was more efficient.\n\nRelying on Tesla's patents, Westinghouse was able to supply abundant electric power for equipment, trains, and cities, laying the foundation for much of our power infrastructure today. [...] Image 25col_panek December 17, 2016  Just two little problems. One, the efficiency sucks. It’s OK to transmit information; that’s how the Navy communicates with subs, using megawatt VLF transmitters. They are barely receivable because the radiation resistance of a mountaintop antenna is poor. If you put a receiver right next to a transmitter (near field) not too bad. Near field chargers work like that.\n\nSecond problem: receiving free electricity is good, but somebody has to pay to transmit it. A LOT of it. Any volunteers? Like.Reply)  \n\n  \n\n Load More Comments \n\n  \n\n### You May Also Like [...] Doing his own experiments, Tesla invented an electrical resonating transformer in 1891, known as the ",
+       "score": 0.589,
+       "id": "S4"
+      }
+     ]
+    },
+    {
+     "query": "MIT 2007 wireless power transfer strongly coupled magnetic resonances 60 W 2 meters efficiency",
+     "results": [
+      {
+       "url": "https://www.mdpi.com/1996-1073/7/7/4316",
+       "title": "A Critical Review of Wireless Power Transfer via  Strongly Coupled Magnetic Resonances",
+       "content": "energy transfer technology. In 2007, wireless power transfer shocked the world again, the research team headed by Professor Marin Soljacic of MIT proposed strongly coupled magnetic resonance (SCMR), and they were able to transfer 60 watts wirelessly with ~40% efficiency over distances in excess of 2 meters . Subsequently, Intel and Qualcomm also demosntrated their wireless power transfer systems, which indicated that this novel technology would soon appear in our daily life. [...] Version Notes\n\nOrder Reprints\n\n## Abstract\n\nStrongly coupled magnetic resonance (SCMR), proposed by researchers at MIT in 2007, attracted the world’s attention by virtue of its mid-range, non-radiative and high-efficiency power transfer. In this paper, current developments and research progress in the SCMR area are presented. Advantages of SCMR are analyzed by comparing it with the other wireless power transfer (WPT) technologies, and different analytic principles of SCMR are elaborated in depth and further compared. The hot research spots, including system architectures, frequency splitting phenomena, impedance matching and optimization designs are classified and elaborated. Finally, current research directions and development trends of SCMR are discussed.\n\nKeywords: [...] The derivative of Equation (6) with respect to the coupling coefficient K cannot equal zero, because the intrinsic decay rate is not zero. This means that there is not an optimized K which can maximize the transfer efficiency. So",
+       "score": 0.946,
+       "id": "S5"
+      },
+      {
+       "url": "https://www.researchgate.net/publication/6279454_Wireless_Power_Transfer_via_Strongly_Coupled_Magnetic_Resonances",
+       "title": "Wireless Power Transfer via Strongly Coupled Magnetic ...",
+       "content": "In 2007, Marin Soljacic's team at MIT demonstrated wireless power transfer via magnetic resonance coupling, achieving 60 W at a distance of 2 m",
+       "score": 0.936,
+       "id": "S6"
+      },
+      {
+       "url": "https://pubmed.ncbi.nlm.nih.gov/17556549",
+       "title": "Wireless power transfer via strongly coupled magnetic ...",
+       "content": "by A Kurs · 2007 · Cited by 8173 — We were able to transfer 60 watts with approximately 40% efficiency over distances in excess of 2 meters. We present a quantitative model",
+       "score": 0.911,
+       "id": "S7"
+      },
+      {
+       "url": "https://en.wikipedia.org/wiki/Wireless_power_transfer",
+       "title": "Wireless power transfer - Wikipedia",
+       "content": "Nikola Tesla first discovered resonant coupling during his pioneering experiments in wireless power transfer around the turn of the 20th century, but the possibilities of using resonant coupling to increase transmission range has only recently been explored. In 2007 a team led by Marin Soljačić at MIT used two coupled tuned circuits each made of a 25 cm self-resonant coil of wire at 10 MHz to achieve the transmission of 60 W of power over a distance of 2 meters (6.6 ft) (8 times the coil diameter) at around 40% efficiency. [...] example) and power is transferred from a flat coil in the charger to a similar one in the device. In 2007, a team led by Marin Soljačić at MIT used a dual resonance transmitter with a 25 cm diameter secondary tuned to 10 MHz to transfer 60 W of power to a similar dual resonance receiver over a distance of 2 meters (6.6 ft) (eight times the transmitter coil diameter) at around 40% efficiency. [...] Further information: Tesla coil § Resonant transformer\n\nResonant inductive coupling (electrodynamic coupling, strongly coupled magnetic resonance) is a form of inductive coupling in which power is transferred by magnetic fields (B, green) between two resonant circuits (tuned circuits), one in the transmitter and one in the receiver. Each resonant circuit consists of a coil of wire connected to a capacitor, or a self-resonant coil or other resonator with internal capacitance. The two are tuned to resonate at the same resonant frequency. The resonance between ",
+       "score": 0.91,
+       "id": "S8"
+      },
+      {
+       "url": "https://www.academia.edu/520081/Wireless_power_transfer_via_strongly_coupled_magnetic_resonances",
+       "title": "(PDF) Wireless power transfer via strongly coupled magnetic resonances | Academia",
+       "content": "## Key takeaways sparkles AI\n\n1. Achieved efficient wireless power transfer of 60 watts over distances exceeding 2 meters with ~40% efficiency.\n2. Demonstrated power transfer up to 8 times the coil radius using strongly coupled magnetic resonances.\n3. Developed a quantitative model matching experimental results within 5% accuracy, optimizing power transfer efficiency.\n4. Resonance is critical for efficiency; deviations result in sharp declines in power transmission.\n5. External objects minimally affect power transfer unless within a few centimeters of coils, preserving efficiency.\n\nFigures (4) [...] ## FAQs\n\nsparkles\n\nAI\n\nWhat efficiency is achievable for wireless power transfer at 2 meters?add\n\nThe experiment demonstrates up to 40% efficiency in transmitting 60 watts over 2 meters.\n\nHow does coupling affect the efficiency in wireless power systems?add\n\nThe coupling coefficient k significantly increases efficiency, with values leading to ~10^6 improvement in the strongly coupled regime.\n\nWhat experimental setup validates power transfer through magnetic resonances?add\n\nThe setup consists of two self-resonant coils, with one coil delivering power to a resistive load.\n\nWhen does resonance significantly impact power transfer dynamics?add\n\nThe power transmitted decreases sharply when either coil detunes from resonance, indicating tight coupling requirements. [...] checkTrack your impact\n\n## Abstract sparkles AI\n\nUsing self-resonant coils in a strongly coupled regime, efficient non",
+       "score": 0.904,
+       "id": "S9"
+      }
+     ]
+    },
+    {
+     "query": "Earth-ionosphere cavity Schumann resonance Q factor losses wireless power",
+     "results": [
+      {
+       "url": "https://ntrs.nasa.gov/api/citations/20120000051/downloads/20120000051.pdf",
+       "title": "[PDF] Observation of Schumann Resonances in the Earth's Ionosphere",
+       "content": "Frequency (ELF) range. The Q-factor is commonly defined as the ratio of the accumulated field power to the power lost in the oscillation period. The Q-factors for Schumann resonances are ~5 and provide estimates of wave propagation conditions in the cavity. Schumann resonances have been used to investigate multiple phenomena related to the surface-ionosphere cavity, namely electromagnetic sources, properties of the medium, and boundary conditions. Since lightning is the major source of electromagnetic radiation in the ELF range, Schumann resonances are used to study the daily and seasonal variability of lightning in the cavity2,3,4 as well as other phenomena such as tropospheric water vapor, aerosol distributions, and solar flares and geomagnetic storms5,6,7,8. 4 C/NOFS Satellite and [...] electromagnetic modes. Lightning, most frequent over continents, particularly at low latitudes, induces the development of standing waves, whose wavelength is related to the radius of the cavity. For a thin, lossless cavity, the eigenfrequencies are approximately given by ωn = (c/R)(n(n+1))1/2, where c is the velocity of light, R is the Earth radius, and n=1,2,3,… is the corresponding eigenmode1. When more realistic conditions are considered, namely losses in the cavity, variability of the upper boundary, and finite ionospheric conductivity, the eigenfrequencies are somewhat lower3. The average measured frequencies of the five lowest eigenmodes are, approximately, 7.8, 14.3, 20.8, 27.3, and",
+       "score": 0.798,
+       "id": "S10"
+      },
+      {
+       "url": "https://en.wikipedia.org/wiki/Schumann_resonances",
+       "title": "Schumann resonances - Wikipedia",
+       "content": "The real Earth–ionosphere waveguide is not a perfect electromagnetic resonant cavity. Losses due to finite ionosphere electrical conductivity lower the propagation speed of electromagnetic signals in the cavity, resulting in a resonance frequency that is lower than would be expected in an ideal case, and the observed peaks are wide. In addition, there are a number of horizontal asymmetries—day-night difference in the height of the ionosphere, latitudinal changes in the Earth's magnetic field, sudden ionospheric disturbances, polar cap absorption, variation in the Earth radius of ± 11 km from equator to geographic poles, etc. that produce other effects in the Schumann resonance power spectra.[citation needed]\n\n## Measurements [...] In the normal mode descriptions of Schumann resonances, the fundamental mode is a standing wave in the Earth–ionosphere cavity with a wavelength equal to the circumference of the Earth. The lowest-frequency mode has the highest intensity, and the frequency of all modes can vary slightly owing to solar-induced perturbations to the ionosphere (which compress the upper wall of the closed cavity)[citation needed] amongst other factors. The higher resonance modes are spaced at approximately 6.5 Hz intervals (as may be seen by feeding numbers into the formula), a characteristic attributed to the atmosphere's spherical geometry. The peaks exhibit a spectral width of approximately 20% due to the damping of the respective modes in the dissipative cavity.[cit",
+       "score": 0.735,
+       "id": "S11"
+      }
+     ]
+    }
+   ],
+   "topic": "Wireless power transmission (Wardenclyffe Tower, 1901-1917)",
+   "summary": "Tesla built Wardenclyffe to send messages and, later, power through the Earth and atmosphere (S1, S2). Short-range resonant power transfer was later demonstrated (MIT 2007: 60 W, ~40%, over 2 m; S7). Global, free power is a different claim.",
+   "claims": [
+    {
+     "id": "C1",
+     "text": "Electric power can be sent through the air between two tuned (resonant) coils.",
+     "source_ids": [
+      "S2",
+      "S7",
+      "S8"
+     ],
+     "quantities": [
+      {
+       "name": "power transferred",
+       "value": 60,
+       "unit": "W",
+       "source_id": "S7",
+       "note": ""
+      },
+      {
+       "name": "measured efficiency",
+       "value": 40,
+       "unit": "%",
+       "source_id": "S7",
+       "note": ""
+      },
+      {
+       "name": "distance",
+       "value": 2,
+       "unit": "m",
+       "source_id": "S7",
+       "note": ""
+      },
+      {
+       "name": "coil radius",
+       "value": 0.3,
+       "unit": "m",
+       "source_id": null,
+       "note": "assumption, close to the 2007 MIT coils"
+      },
+      {
+       "name": "coil quality factor Q",
+       "value": 950,
+       "unit": "",
+       "source_id": null,
+       "note": "assumption, order of the MIT coils"
+      }
+     ],
+     "equation": "eta_max = k^2 Q1 Q2 / (1 + sqrt(1 + k^2 Q1 Q2))^2,  k = M / sqrt(L1 L2)",
+     "calc": {
+      "template": "resonant_coupling",
+      "params": {
+       "r_tx_m": 0.3,
+       "r_rx_m": 0.3,
+       "wire_radius_m": 0.003,
+       "q_tx": 950,
+       "q_rx": 950,
+       "claimed_distance_m": 2.0,
+       "d_max_m": 8.0,
+       "observed_efficiency_pct": 40
+      }
+     },
+     "archive_query": "tuned circuits transmitter receiver synchronism resonance coils"
+    },
+    {
+     "id": "C2",
+     "text": "The Earth itself can act as a resonant conductor that carries usable power to any point on the globe.",
+     "source_ids": [
+      "S1",
+      "S4",
+      "S11"
+     ],
+     "quantities": [
+      {
+       "name": "Schumann fundamental",
+       "value": 7.83,
+       "unit": "Hz",
+       "source_id": null,
+       "note": "standard value for the Schumann fundamental; not in the captured snippet"
+      },
+      {
+       "name": "spectral width of peaks",
+       "value": 20,
+       "unit": "%",
+       "source_id": "S11",
+       "note": ""
+      }
+     ],
+     "equation": "Q = f0 / bandwidth;  energy ring-down tau = Q / (2*pi*f0)",
+     "calc": {
+      "template": "earth_resonator",
+      "params": {
+       "f0_hz": 7.83,
+       "fractional_bandwidth": 0.2
+      }
+     },
+     "archive_query": "earth stationary waves terrestrial globe resonance nodal regions"
+    },
+    {
+     "id": "C3",
+     "text": "Receivers could draw as much power as they want with no matching input at the tower ('free energy').",
+     "source_ids": [
+      "S1",
+      "S3"
+     ],
+     "quantities": [
+      {
+       "name": "homes served",
+       "value": 1000000,
+       "unit": "",
+       "source_id": null,
+       "note": "assumption, for scale"
+      },
+      {
+       "name": "draw per home",
+       "value": 1000,
+       "unit": "W",
+       "source_id": null,
+       "note": "assumption"
+      },
+      {
+       "name": "link efficiency",
+       "value": 50,
+       "unit": "%",
+       "source_id": null,
+       "note": "generous assumption"
+      }
+     ],
+     "equation": "eta * P_in = N * p_home  ->  P_in = N * p_home / eta",
+     "calc": {
+      "custom_code": "import sympy as sp\n\n# Can receivers draw power \"for free\"? Write the energy balance and solve it.\nP_in, eta, N, p_home = sp.symbols(\"P_in eta N p_home\", positive=True)\nbalance = sp.Eq(eta * P_in, N * p_home)          # what arrives = what is used\nP_needed = sp.solve(balance, P_in)[0]             # -> N*p_home/eta\n\nhomes = 1_000_000        # one million homes (assumption, for scale)\nper_home_w = 1_000       # 1 kW average draw per home (assumption)\neff = 0.5                # a generous 50% end-to-end link efficiency (assumption)\nneed = P_needed.subs({N: homes, p_home: per_home_w, eta: eff})\n\nclaimed_input_w = 0      # the \"free energy\" version: nothing extra at the tower\nresult = {\n    \"metrics\": {\n        \"formula\": str(P_needed),\n        \"tower_power_needed_w\": float(need),\n        \"tower_power_needed_gw\": float(need) / 1e9,\n        \"claimed_extra_input_w\": claimed_input_w,\n    },\n    \"summary\": f\"Serving {homes:,} homes at {per_home_w} W needs {float(need)/1e9:.1f} GW at the tower, \"\n               \"even at a generous 50% link. 'Free' means 0 W in, which the balance forbids.\",\n    \"violates_energy_conservation\": claimed_input_w < float(need),\n    \"suggested_verdict\": \"BREAKS PHYSICS\",\n}\n"
+     },
+     "archive_query": "energy delivered to receiving circuits is supplied by the generator at the transmitting station"
+    }
+   ],
+   "explanations": {
+    "C1": "This part is real. Even a deliberately simple two-coil model gives about {efficiency_at_claimed_distance_pct:.0f}% at {claimed_distance_m:g} m, and MIT measured about 40% at 2 m in 2007 (S7). But the curve collapses fast: below 1% by about {distance_where_efficiency_drops_below_1pct_m} m.",
+    "C2": "Not forbidden, but the medium leaks. The Earth-ionosphere cavity rings with peaks about 20% wide (S11), which means Q of about {q_factor:.0f}: stored energy drains in about {energy_ring_down_s:.2f} s, about {ring_down_in_cycles:.1f} oscillation cycles. Nobody has shown a low-loss global path, so most of the station's power would be lost in the cavity rather than delivered.",
+    "C3": "This is the myth part. Serving a million homes at 1 kW needs about {tower_power_needed_gw:.1f} GW going in at the tower even with a generous 50% link. Power out can never exceed power in, so 'free' wireless electricity breaks conservation of energy."
+   },
+   "concept": {
+    "based_on_claim": "C1",
+    "name": "Tesla Shelf",
+    "pitch": "A bookshelf that powers everything sitting on or near it, no cables, no pads.",
+    "who_its_for": "Small offices, cafes and classrooms with a tangle of phones, lamps and sensors.",
+    "how_it_works": "A tuned coil hidden in the shelf drives matching resonant receivers in phone cases, lamps and IoT sensors within about a metre, the same physics MIT demonstrated in 2007 (S7).",
+    "honest_limits": "About 10 W per device at half a metre, and efficiency halves by about 0.75 m (see the spec sheet). At full power the exposure screen says keep people roughly 0.85 m from the coil's axis, or run below about 0.6 W. It will never power a house across town.",
+    "image_prompt": "Photoreal product render of a minimalist oak bookshelf with a thin brushed-copper resonant coil inlaid along its back panel, a desk lamp, a phone and a small plant sensor glowing softly as they receive power, faint visualised magnetic field lines in pale blue, warm studio lighting, shallow depth of field, 3/4 view, clean white background, no text",
+    "design": "wireless_power",
+    "requirements": {
+     "target_power_w": 10,
+     "distance_m": 0.5,
+     "tx_diameter_m": 0.5,
+     "rx_diameter_m": 0.15,
+     "frequency_hz": 6780000.0
+    }
+   }
+  },
+  {
+   "id": "water_car",
+   "title": "Stanley Meyer's water-fuelled car",
+   "keywords": [
+    "water",
+    "meyer",
+    "hydrogen",
+    "hho",
+    "water fuel",
+    "run on water"
+   ],
+   "input": "Stanley Meyer's water fuel cell let a car run on water instead of gasoline.",
+   "research": [
+    {
+     "query": "Stanley Meyer water fuel cell car claim court fraud 1996",
+     "results": [
+      {
+       "url": "https://en.wikipedia.org/wiki/Water_fuel_cell",
+       "title": "Water fuel cell - Wikipedia",
+       "content": "Perpetual motion machine\n\nThis article is about a non-functional fuel cell using water as fuel. For other purported water fueled devices, see water-fuelled car. For actual electrochemical cells running on other fuels, see fuel cell.\n\nThe water fuel cell is a non-functional design for a \"perpetual motion machine\" created by Stanley Allen Meyer (August 24, 1940 – March 20, 1998). Meyer claimed that a car retrofitted with the device could use water as fuel instead of gasoline. Meyer's claims about his \"Water Fuel Cell\" and the car that it powered were found to be fraudulent by an Ohio court in 1996.\n\n## Purported design\n\n[edit] [...] Stanley Meyer's invention was later termed fraudulent after two investors to whom he had sold dealerships offering the right to do business in Water Fuel Cell technology sued him in 1996. His car was due to be examined by the expert witness Michael Laughton, Professor of Electrical Engineering at Queen Mary University of London and Fellow of the Royal Academy of Engineering. However, Meyer made what Professor Laughton considered a \"lame excuse\" on the days of examination and did not allow the test to proceed. His \"water fuel cell\" was later examined by three expert witnesses[who?] in court who found that there \"was nothing revolutionary about the cell at all and that it was simply using conventional electrolysis.\" The court found Meyer had committed \"gross and egregious fraud\" and ordered [...] Meyer had committed \"gross and egregious fraud\" and ord",
+       "score": 0.909,
+       "id": "S1"
+      }
+     ]
+    },
+    {
+     "query": "electrolysis of water energy required 237 kJ/mol Gibbs free energy hydrogen combustion 286 kJ/mol",
+     "results": [
+      {
+       "url": "https://physics.stackexchange.com/questions/24624/water-electrolysis-calculations",
+       "title": "thermodynamics - Water Electrolysis Calculations - Physics Stack Exchange",
+       "content": "Title: thermodynamics - Water Electrolysis Calculations - Physics Stack Exchange\n# Water Electrolysis Calculations. From Wikipedia (http://en.wikipedia.org/wiki/Water\\_electrolysis#Efficiency):. The electrolysis of water requires a minimum of 237.13 kJ of electrical energy input to dissociate each mole. Energy for electrolysis: 237.13 kJ \\* 55.55 = 13.173 MJ. These calculations are not taking in account efficiency and energy loses, they are purely theoretical. Electrolysis-based designs have repeatedly failed efficiency tests and **contradict widely accepted laws of thermodynamics (i.e. conservation of energy)**. **First Question:** In theory (in practice we always have less efficiency and must take those in account), is there anything wrong with my calculation? **Second Question:** Can someone clarify to me the claims about laws of thermodynamics and conservation of energy - I do not see ANY CONNECTION between energy needed to electrolyze water and energy released by hydrogen combustion? The 237kJ/mol is the Gibbs free energy required for electrolysis, while the 286kJ/mol normally quoted for combustion is the enthalpy. I went through most of this for a project last year and at that time I recall articles that the Gibbs free energy of 237 kJ/mol varies with the pressure of the water. If the water is under very high pressure, such as High Pressure Electrolysis, where the volume of the gas is greatly reduced due to V = n R T / P, does this change things such as bubble formation",
+       "score": 0.93,
+       "id": "S2"
+      },
+      {
+       "url": "https://en.wikipedia.org/wiki/Electrolysis_of_water",
+       "title": "Electrolysis of water - Wikipedia",
+       "content": "The simpler two-electron reaction to produce hydrogen at the cathode can be electrocatalyzed with almost no overpotential by platinum, or in theory a hydrogenase enzyme. If other, less effective, materials are used for the cathode (e.g. graphite), large overpotentials will appear.\n\n### Thermodynamics\n\n[edit]\n\nThe electrolysis of water in standard conditions requires a theoretical minimum of 237 kJ of electrical energy input to dissociate each mole of water, which is the standard Gibbs free energy of formation of water. It also requires thermal energy to balance the change in entropy of the reaction. Therefore, the process cannot proceed at constant temperature at electrical energy inputs below 286 kJ per mol if no external thermal energy is added. [...] Thus, the standard potential of the water electrolysis cell (Eocell = Eocathode − Eoanode) is −1.229 V at 25 °C at pH 0 ([H+] = 1.0 M). At 25 °C with pH 7 ([H+] = 1.0×10−7 M), the potential is unchanged based on the Nernst equation. The thermodynamic standard cell potential can be obtained from standard-state free energy calculations to find ΔG° and then using the equation: ΔG°= −n F E° (where E° is the cell potential and F the Faraday constant, 96,485 C/mol). For two water molecules electrolysed and hence two hydrogen molecules formed, n = 4, and\n\n ΔG° = 474.48 kJ/2 mol(water) = 237.24 kJ/mol(water)\n ΔS° = 163 J/K mol(water)\n ΔH° = 571.66 kJ/2 mol(water) = 285.83 kJ/mol(water)\n ΔH° = 141.86 kJ/g(H2). [...] However, observing ",
+       "score": 0.868,
+       "id": "S3"
+      }
+     ]
+    }
+   ],
+   "topic": "Water as a car fuel (Stanley Meyer's 'water fuel cell')",
+   "summary": "Meyer claimed a retrofitted car could run on water; an Ohio court found the claims fraudulent in 1996 (S1). Splitting water costs at least 237 kJ/mol and burning hydrogen gives back at most 286 kJ/mol of heat (S2, S3).",
+   "claims": [
+    {
+     "id": "C1",
+     "text": "A car can split water on board and burn the hydrogen, with water as its only fuel.",
+     "source_ids": [
+      "S1",
+      "S3"
+     ],
+     "quantities": [
+      {
+       "name": "Gibbs energy to split water",
+       "value": 237,
+       "unit": "kJ/mol",
+       "source_id": "S3",
+       "note": ""
+      },
+      {
+       "name": "enthalpy of water formation",
+       "value": 286,
+       "unit": "kJ/mol",
+       "source_id": "S3",
+       "note": ""
+      },
+      {
+       "name": "electrolyser efficiency",
+       "value": 70,
+       "unit": "%",
+       "source_id": null,
+       "note": "assumption, typical"
+      },
+      {
+       "name": "engine efficiency",
+       "value": 25,
+       "unit": "%",
+       "source_id": null,
+       "note": "assumption, typical petrol engine"
+      },
+      {
+       "name": "alternator efficiency",
+       "value": 90,
+       "unit": "%",
+       "source_id": null,
+       "note": "assumption"
+      }
+     ],
+     "equation": "loop gain = (LHV * eta_engine * eta_gen) / (HHV / eta_electrolyser)  must be >= 1",
+     "calc": {
+      "template": "electrolysis_loop",
+      "params": {
+       "electrolyser_eff": 0.7,
+       "engine_eff": 0.25,
+       "generator_eff": 0.9,
+       "claimed_loop_gain": 1.0
+      }
+     },
+     "archive_query": "water fuel gas hydrogen oxygen production vehicle"
+    },
+    {
+     "id": "C2",
+     "text": "Meyer's cell split water with less energy than ordinary electrolysis needs.",
+     "source_ids": [
+      "S1",
+      "S2",
+      "S3"
+     ],
+     "quantities": [
+      {
+       "name": "Gibbs energy",
+       "value": 237.13,
+       "unit": "kJ/mol",
+       "source_id": "S2",
+       "note": ""
+      },
+      {
+       "name": "Faraday constant",
+       "value": 96485,
+       "unit": "C/mol",
+       "source_id": "S3",
+       "note": ""
+      },
+      {
+       "name": "standard cell potential",
+       "value": 1.229,
+       "unit": "V",
+       "source_id": "S3",
+       "note": ""
+      }
+     ],
+     "equation": "E_min = dG / (n F)",
+     "calc": {
+      "custom_code": "import sympy as sp\n\n# Thermodynamic floor for splitting water, from Gibbs energy and Faraday's law.\ndG = sp.Rational(237130)          # J/mol, Gibbs energy of formation of liquid water (S2, S3)\nF = sp.Rational(96485)            # C/mol, Faraday constant (S3)\nn = 2                             # electrons per H2O molecule split\nE_min = dG / (n * F)              # minimum cell voltage\nmol_per_litre = sp.Rational(1000, 18)\nenergy_per_litre_mj = dG * mol_per_litre / 10**6\n\nclaim = \"splits water below the 237 kJ/mol thermodynamic minimum\"\nresult = {\n    \"metrics\": {\n        \"minimum_cell_voltage_v\": round(float(E_min), 3),\n        \"minimum_energy_kj_per_mol\": float(dG) / 1000,\n        \"minimum_energy_mj_per_litre\": round(float(energy_per_litre_mj), 2),\n        \"court_expert_finding\": \"conventional electrolysis (S1)\",\n    },\n    \"summary\": f\"No cell can split water below {float(E_min):.3f} V, i.e. \"\n               f\"{float(energy_per_litre_mj):.1f} MJ per litre. Court experts found Meyer's cell \"\n               \"was ordinary electrolysis.\",\n    \"violates_energy_conservation\": True,\n    \"suggested_verdict\": \"BREAKS PHYSICS\",\n}\n"
+     },
+     "archive_query": "water molecule fuel gas voltage electrolysis pulsing"
+    },
+    {
+     "id": "C3",
+     "text": "Hydrogen made from water by electrolysis can store energy and power a vehicle, if the electricity comes from outside.",
+     "source_ids": [
+      "S3"
+     ],
+     "quantities": [
+      {
+       "name": "electrolyser efficiency",
+       "value": 70,
+       "unit": "%",
+       "source_id": null,
+       "note": "assumption"
+      },
+      {
+       "name": "fuel cell efficiency",
+       "value": 55,
+       "unit": "%",
+       "source_id": null,
+       "note": "assumption, typical PEM"
+      }
+     ],
+     "equation": "energy out (fuel cell) <= energy in (electricity)",
+     "calc": {
+      "template": "energy_balance",
+      "params": {
+       "unit": "kJ per mol H2O",
+       "inputs": {
+        "electricity into electrolyser": 408.3
+       },
+       "outputs": {
+        "electricity from fuel cell": 133.0
+       }
+      }
+     },
+     "archive_query": "hydrogen oxygen gas released from water electrical energy"
+    }
+   ],
+   "explanations": {
+    "C1": "Every mole of water costs {energy_in_kj_per_mol:.0f} kJ to split and gives back only {energy_back_kj_per_mol:.0f} kJ through engine and alternator, a loop gain of {loop_gain_realistic:.2f}. Even perfect machines top out at {loop_gain_with_perfect_machines:.2f}. Water is already burnt hydrogen, so a car that runs on it is a perpetual-motion machine.",
+    "C2": "Thermodynamics sets a floor of {minimum_cell_voltage_v} V, or {minimum_energy_mj_per_litre:.1f} MJ per litre of water, for any electrolysis. Court experts found Meyer's cell was simply conventional electrolysis (S1). Beating the floor would break conservation of energy.",
+    "C3": "This part is real: electricity in, hydrogen stored, electricity back out. You get about {out_over_in:.0%} back, so hydrogen is a battery you charge from the grid or solar, not a fuel you find in water."
+   },
+   "concept": {
+    "based_on_claim": "C3",
+    "name": "SunCell Backup",
+    "pitch": "Solar panels make hydrogen by day; a fuel cell keeps a rural clinic's fridge running through long outages.",
+    "who_its_for": "Off-grid clinics and telecom huts where diesel deliveries are unreliable.",
+    "how_it_works": "Surplus solar runs an electrolyser; hydrogen is stored in a small tank; a PEM fuel cell turns it back into electricity when the sun and grid are gone.",
+    "honest_limits": "Only about a third of the solar energy comes back (the math above). Batteries are better for daily cycling; hydrogen wins only for long, rare outages. It never makes energy from water.",
+    "image_prompt": "Photoreal product render of a compact white and teal outdoor cabinet beside a small rural clinic, a solar panel array on the roof, a slim hydrogen storage cylinder visible through a side window of the cabinet, a status panel glowing green, tropical late-afternoon light, palm trees softly blurred, 3/4 view, no text",
+    "design": "h2_backup",
+    "requirements": {
+     "load_w": 150,
+     "peak_load_w": 400,
+     "backup_hours": 48,
+     "recharge_days": 7,
+     "storage_bar": 30
+    }
+   }
+  },
+  {
+   "id": "tesla_turbine",
+   "title": "Tesla's bladeless turbine",
+   "keywords": [
+    "turbine",
+    "bladeless",
+    "disc",
+    "disk",
+    "boundary layer",
+    "tesla pump"
+   ],
+   "input": "Tesla's bladeless turbine is 97% efficient and should have replaced every bladed turbine.",
+   "research": [
+    {
+     "query": "Tesla bladeless turbine patent 1913 efficiency measured",
+     "results": [
+      {
+       "url": "https://teslauniverse.com/nikola-tesla/inventions/tesla-turbine",
+       "title": "Tesla Turbine",
+       "content": "The Tesla turbine, patented in 1913 under U.S. Patent 1,061,206, is a bladeless centripetal-flow turbine designed by Nikola Tesla to convert fluid energy",
+       "score": 0.775,
+       "id": "S1"
+      },
+      {
+       "url": "http://large.stanford.edu/courses/2012/ph240/nam1",
+       "title": "The Tesla Turbine",
+       "content": "# The Tesla Turbine\n\n## Spencer Nam December 14, 2012\n\n### Submitted as coursework for PH240, Stanford University, Fall 2012\n\n## Introduction\n\n|  |\n| Fig. 1: The Tesla Turbine. (Image in the public domain.) |\n\nNikolai Tesla (b. 1899) was one of the world's most innovative and eccentric inventors who is best known for bringing electricity to the world using his alternating current system.  Among his lesser-known inventions is a bladeless turbine-otherwise known as the Tesla turbine- which he patented in 1913. He believed that the turbine would not only have higher efficiencies, but also lower production costs than other turbines. [...] © Spencer Nam. The author grants permission to copy, distribute and display this work in unaltered form, with attribution to the author, for noncommercial purposes only. All other rights, including commercial rights, are reserved to the author.\n\n## References\n\n W. B. Carlson, \"Inventor of Dreams,\" Scientific American, 21 Feb 05.\n\n N. Tesla, \"Fluid Propulsion,\" U.S. Patent 1061142, 6 May 1913.\n\n J. A. K. Ackroyd, B. P. Axcell and A. I. Ruban, eds., Early Developments of Modern Aerodynamics (Elsevier, 2001), p.77.\n\n W. Rice, \"Tesla Turbomachinery,\" in Handbook of Turbomachinery, ed. by E. Logan, Jr. and R. Roy (Marcel Dekker, 2003), p. 861. [...] Though Tesla projected efficiencies of up to 97%, the reported efficiencies tend to be around 40%. Warren Rice, an Emeritus professor at Arizona State University, has done extensive work on the Tesla turb",
+       "score": 0.707,
+       "id": "S2"
+      },
+      {
+       "url": "https://en.wikipedia.org/wiki/Tesla_turbine",
+       "title": "Tesla turbine - Wikipedia",
+       "content": "In the 1950s, Warren Rice attempted to recreate Tesla's experiments, but he did not perform these early tests on a pump built strictly in line with Tesla's patented design (it, among other things, was not a Tesla multiple staged turbine nor did it possess Tesla's nozzle). Rice's experimental single-stage system's working fluid was air. Rice's test turbines, as published in early reports, produced an overall measured efficiency of 36–41% for a single stage. Higher efficiency would be expected if designed as originally proposed by Tesla. [...] The device functions as a pump if a similar set of disks and a housing with an involute shape (versus circular for the turbine) are used. In this configuration, a motor is attached to the shaft. The fluid enters near the center, is energized by the disks, and exits at the periphery. The Tesla turbine does not use friction in the conventional sense, rather using adhesion (the Coandă effect) and viscosity instead. It uses the boundary-layer effect on the disc blades.\n\n## History\n\n[edit]\n\nThe turbine was patented by Nikola Tesla on October 21, 1913, which was his 100th patent.\n\n## See also\n\n[edit]\n\n List of Nikola Tesla patents\n Radial turbine\n Tesla coil\n\n## References\n\n[edit] [...] ## Efficiency and calculations\n\n[edit]\n\n of the gas Tesla turbine is estimated to be above 60%.[citation needed] The turbine efficiency is different from the cycle efficiency of the engine using the turbine. Axial turbines that operate today in steam plants or j",
+       "score": 0.69,
+       "id": "S3"
+      }
+     ]
+    },
+    {
+     "query": "Tesla turbine boundary layer efficiency modern research small scale pumps",
+     "results": [
+      {
+       "url": "https://www.infinityturbine.com/tesla-pump-review-article-by-infinity-turbine.html",
+       "title": "Tesla Disc Pump Review: Operating Principles, Performance, and Real-World Applications",
+       "content": "changes. Momentum transfer occurs entirely through boundary-layer shear, producing a smooth, pulsation-free flow. Because the fluid does not impact solid surfaces directly, mechanical wear and cavitation tendencies are inherently reduced.Performance CharacteristicsModern experimental testing and CFD analysis confirm several consistent performance traits:• Overall hydraulic efficiency typically ranges from 20 to 30 percent• Internal rotor efficiency can exceed 60 percent under optimal conditions• Best performance occurs at high rotational speeds and very small disc gaps• Head and flow are adjusted by changing disc count, spacing, and speedThe largest performance losses do not occur in the disc pack itself, but at the interface between the rotating rotor and the stationary volute. Poor [...] mixtures.High-Speed, Compact DesignsThe simple rotor geometry supports high rotational speeds and compact form factors, especially in sealed or specialty systems.Engineering ChallengesThe same features that make Tesla pumps unique also limit their adoption:Lower Peak EfficiencyEven well-designed systems struggle to match centrifugal pump efficiency for clean water applications.Extreme Sensitivity to TolerancesDisc spacing on the order of tenths of a millimeter requires precise manufacturing and careful assembly. Small deviations can significantly degrade performance.Volute Design ComplexityConventional centrifugal volutes are poorly suited to boundary-layer flow. Custom, shallow-angle volut",
+       "score": 0.676,
+       "id": "S4"
+      },
+      {
+       "url": "https://pure.iiasa.ac.at/id/eprint/18201/1/Influence%20of%20Operational%20Parameters%20on%20the%20Performance%20of%20Tesla%20Turbines.pdf",
+       "title": "experimental investigation of a small-scale turbine - IIASA PURE",
+       "content": "Tesla Turbine output power and efficiency time-based evolution Figure A.7 presents a timeline for reporting efficiency in research articles. It makes a distinction between experimental and not experimental approaches (hatched areas). and the y-axis presents the number of published works considering the ranges of output power and efficiency. From the timeline presented in Figure A.7. it is possible to see that for most of the recent works (2002 to 2020) the number of experimental approaches is 44%. Finally. taking into account the whole timeframe (1965 to 2020) is possible to conclude that no clear evolution in efficiency values is observed.\nFigure A.7 – Timeline of reported efficiency. [...] Critical review The SLR results pointed out Tesla turbine characteristics such as key parameters classification (independent variables). performance map (reported efficiency and power output). and its most common applications. The analysis of independent variables shows that more than 16 different types of modifiable parameters in the TT field. For these variables. no quantitative or qualitative ranking considering the effects of changes in independent variables. like those obtained during the DoE analysis. was found. Also. different trends were observed on the effects in output power and efficiency for some independent variables. Reported efficiency values in nonexperimental studies ranged from 40% to 60%. on average. The average efficiency reported by experimental studies was just above",
+       "score": 0.642,
+       "id": "S5"
+      },
+      {
+       "url": "https://web.stanford.edu/~hydrobay/lookat/tt.html",
+       "title": "Boundary Layer (Tesla) Turbine Page",
+       "content": "The efficiency of the new style housing and nozzle turbine setup is clearly higher than that of the old pump style volute turbine. For the new turbine it is possible to bring the 1.063 kg flywheel up to about 40 rpm with 15 good breaths through the inlet hose, then sustain rotation by easier breaths, and, for a while, not pass out. (Be advised I'm a certified research SCUBA diver with a measured vital lung capacity about twice that of the average person.) With the pump style volute it was possible to get the flywheel to move, but not to sustain rotations by breath alone. If that still doesn't sound impressive, lay a can of soup on the floor, (about 0.5 kg), and try and roll it across your kitchen by breath power alone...;^)",
+       "score": 0.638,
+       "id": "S6"
+      },
+      {
+       "url": "https://digital.library.unt.edu/ark%3A/67531/metadc67979/m2/1/high_res_d/thesis.pdf",
+       "title": "tesla turbine torque modeling - UNT Digital Library",
+       "content": "Tesla’s statement that his turbine had the capabilities to achieve high efficiencies. I seek to design a turbine that will increase current Tesla turbine efficiencies to reach those predicted by Tesla himself. Even raising efficiencies to be higher than current efficiencies will be a considerable achievement. I also seek to miniaturize the turbine for use in geothermal power plants as well as for use in mobile power packs and as blood pumps. [1, 2, 23] While conventional turbines have been extensively researched and tested, Tesla and boundary layer type turbines have not. In order to construct a dynamometer, and the subsequent turbine, we modeled the Tesla turbine using theoretical calculations and preliminary experiments. A thermodynamic flow experiment was also required to analyze the [...] results. His research also gave an insight as to how to conduct an experiment with a Tesla turbine, and what average data to expect when experimenting with a Tesla turbine. Dr. Rice’s research paved the way for more extensive research on disk surface roughness, nozzle size, disk size and disk thickness, and how they relate to performance. [11, 12] 8 In 1962, Breiter and Pohlhausen researched Tesla‐type turbines and pumps at the Aeronautical Research Laboratory at the Office for Sponsored Research, which is a division of the United States Air Force. Their research investigated viscous flow between parallel rotating plates. It was found that flow has similarities to centrifugal pumps. A mo",
+       "score": 0.553,
+       "id": "S7"
+      }
+     ]
+    }
+   ],
+   "topic": "The Tesla (boundary-layer) turbine, patented 1913",
+   "summary": "Tesla patented a bladeless turbine of stacked smooth discs in 1913 and projected efficiencies up to 97%; reported efficiencies tend to be around 40% (S2, S3). Modern work studies it mainly as a pump and for small-scale uses (S4, S5).",
+   "claims": [
+    {
+     "id": "C1",
+     "text": "Smooth spinning discs can exchange energy with a fluid by boundary-layer drag, without blades.",
+     "source_ids": [
+      "S2",
+      "S3",
+      "S4"
+     ],
+     "quantities": [
+      {
+       "name": "measured efficiency (single stage)",
+       "value": null,
+       "unit": "",
+       "source_id": "S3",
+       "note": "0.36-0.41; Warren Rice, 1950s"
+      },
+      {
+       "name": "rotor speed",
+       "value": 10000,
+       "unit": "rpm",
+       "source_id": null,
+       "note": "assumption"
+      },
+      {
+       "name": "disc gap",
+       "value": 0.4,
+       "unit": "mm",
+       "source_id": null,
+       "note": "assumption"
+      }
+     ],
+     "equation": "boundary layer delta ~ 5 * sqrt(nu / omega)",
+     "calc": {
+      "template": "disc_turbine",
+      "params": {
+       "rpm": 10000,
+       "kinematic_viscosity_m2_s": 1.5e-05,
+       "disc_gap_m": 0.0004,
+       "claimed_efficiency": 0.4,
+       "measured_efficiency_range": [
+        0.36,
+        0.41
+       ]
+      }
+     },
+     "archive_query": "fluid adhesion viscosity spaced discs turbine"
+    },
+    {
+     "id": "C2",
+     "text": "The turbine reaches 97% efficiency.",
+     "source_ids": [
+      "S2",
+      "S3",
+      "S4"
+     ],
+     "quantities": [
+      {
+       "name": "projected efficiency",
+       "value": 97,
+       "unit": "%",
+       "source_id": "S2",
+       "note": ""
+      },
+      {
+       "name": "measured efficiency",
+       "value": 40,
+       "unit": "%",
+       "source_id": "S2",
+       "note": ""
+      },
+      {
+       "name": "hydraulic efficiency of modern Tesla pumps",
+       "value": null,
+       "unit": "%",
+       "source_id": "S4",
+       "note": "20-30 %"
+      }
+     ],
+     "equation": "efficiency = shaft power out / fluid power in  (<= 100%)",
+     "calc": {
+      "template": "disc_turbine",
+      "params": {
+       "rpm": 10000,
+       "kinematic_viscosity_m2_s": 1.5e-05,
+       "disc_gap_m": 0.0004,
+       "claimed_efficiency": 0.97,
+       "measured_efficiency_range": [
+        0.36,
+        0.41
+       ]
+      }
+     },
+     "archive_query": "efficiency turbine fluid energy losses shocks vibrations"
+    },
+    {
+     "id": "C3",
+     "text": "It should have replaced bladed turbines in power plants.",
+     "source_ids": [
+      "S3"
+     ],
+     "quantities": [
+      {
+       "name": "large steam turbine efficiency",
+       "value": 90,
+       "unit": "%",
+       "source_id": "S3",
+       "note": ""
+      },
+      {
+       "name": "Tesla turbine efficiency",
+       "value": 41,
+       "unit": "%",
+       "source_id": "S3",
+       "note": ""
+      },
+      {
+       "name": "plant size",
+       "value": 500,
+       "unit": "MW",
+       "source_id": null,
+       "note": "assumption"
+      }
+     ],
+     "equation": "fuel ratio = eta_steam / eta_tesla",
+     "calc": {
+      "custom_code": "# Same electricity, different turbines: how much more fuel would a Tesla turbine burn?\nsteam_turbine_eff = 0.90      # large steam turbines: \"over 90% in practice\" (S3)\ntesla_turbine_eff = 0.41      # best single-stage measurement, Rice (S3)\nplant_output_mw = 500         # a mid-size power plant (assumption, for scale)\n\nshaft_energy_in_steam = plant_output_mw / steam_turbine_eff\nshaft_energy_in_tesla = plant_output_mw / tesla_turbine_eff\nextra_fuel = shaft_energy_in_tesla / shaft_energy_in_steam - 1\n\nresult = {\n    \"metrics\": {\n        \"steam_turbine_eff_pct\": steam_turbine_eff * 100,\n        \"tesla_turbine_eff_pct\": tesla_turbine_eff * 100,\n        \"steam_energy_needed_mw\": round(shaft_energy_in_steam, 1),\n        \"tesla_energy_needed_mw\": round(shaft_energy_in_tesla, 1),\n        \"extra_fuel_pct\": round(extra_fuel * 100, 1),\n    },\n    \"summary\": f\"A Tesla turbine at today's measured efficiency would need about \"\n               f\"{extra_fuel*100:.0f}% more steam (fuel) for the same 500 MW.\",\n    \"violates_energy_conservation\": False,\n    \"suggested_verdict\": \"MISSING PIECE\",\n}\n"
+     },
+     "archive_query": "turbine power plant steam economy large output"
+    }
+   ],
+   "explanations": {
+    "C1": "The principle is sound and has been built many times. At {disc_gap_mm:g} mm gaps and 10,000 rpm the boundary layer is about {boundary_layer_mm:.2f} mm thick, so the discs really do drag the fluid. Measured single-stage efficiency is {measured_efficiency_pct}% (S3).",
+    "C2": "Nothing forbids high efficiency, but nobody has measured it: Tesla projected up to 97%, tests report around 40% (S2, S3). That leaves {unexplained_gap_pct_points:.0f} percentage points that no published test has reproduced.",
+    "C3": "At today's measured efficiency a Tesla turbine would burn about {extra_fuel_pct:.0f}% more fuel than a large steam turbine for the same power. That's why it lost the market, not a conspiracy."
+   },
+   "concept": {
+    "based_on_claim": "C1",
+    "name": "DiscFlow Pump",
+    "pitch": "A bladeless pump that doesn't clog and is gentle on whatever it moves.",
+    "who_its_for": "Small fish and shrimp farms, and workshops pumping dirty or abrasive water.",
+    "how_it_works": "Stacked smooth discs drag the water by boundary-layer friction, so there are no blades to snag debris or bruise fish; the same physics as Tesla's 1913 turbine run in reverse (S3, S4).",
+    "honest_limits": "Hydraulic efficiency is around 20-30% (S4), well below a good centrifugal pump. It's worth it only where clogging, shear or noise matter more than electricity cost.",
+    "image_prompt": "Photoreal product render of a compact bladeless disc pump with a transparent polycarbonate housing showing a stack of thin polished stainless-steel discs, inlet and outlet hoses, mounted beside a small aquaculture pond, water droplets, soft daylight, shallow depth of field, 3/4 view, no text",
+    "design": "disc_pump",
+    "requirements": {
+     "flow_lpm": 60,
+     "head_m": 3,
+     "rpm": 2850,
+     "solids_mm": 0.8
+    }
+   }
+  }
+ ]
+}

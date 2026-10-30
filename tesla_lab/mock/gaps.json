@@ -1,0 +1,555 @@
+{
+ "wardenclyffe": {
+  "captured": "2026-10-13",
+  "claims": {
+   "C2": {
+    "missing_piece": "No known low-loss path carries usable power around the planet: the Earth-ionosphere cavity is a leaky resonator (Q about 5), so the transmitter would have to resupply its losses continuously.",
+    "requirements": [
+     {
+      "statement": "A guided surface wave (Zenneck/Norton type) must carry kilowatts over 10+ km with most of the power arriving",
+      "target": "> 50% end-to-end at 10 km, kW scale",
+      "feasibility": 0.12,
+      "feasibility_basis": "Surface-wave launching is demonstrated at lab scale only; field strength still falls with distance and ground losses dominate.",
+      "web_query": "Zenneck surface wave wireless power transmission experiment",
+      "arxiv_query": "\"Zenneck wave\" power transfer",
+      "leads": [
+       {
+        "title": "(A) Measured S11 Phase angle at resonance, having ...",
+        "url": "https://www.researchgate.net/figure/A-Measured-S11-Phase-angle-at-resonance-having-a-value-of-298-B-The-HFSS_fig4_338743849",
+        "kind": "web",
+        "published": null,
+        "authors": [],
+        "snippet": "Experimental Realization of Zenneck Type Wave-based Non-Radiative, Non-Coupled Wireless Power Transmission. Article. Full-text available. Jan 2020.",
+        "relevance": 0.733
+       },
+       {
+        "title": "New physics discovery enables efficient wireless power ...",
+        "url": "https://www.facebook.com/groups/1129380310592013/posts/3224772331052790",
+        "kind": "web",
+        "published": null,
+        "authors": [],
+        "snippet": "Zenneck waves are excited at interfaces, like surface plasmons and have the potential to deliver electrical power to devices placed on a conducting surface.",
+        "relevance": 0.722
+       },
+       {
+        "title": "Viziv Technologies — venture-backed company profile",
+        "url": "https://dealroom.co/companies/viziv-technologies",
+        "kind": "web",
+        "published": null,
+        "authors": [],
+        "snippet": "Zenneck surface wave, an electromagnetic phenomenon that uses the interface between the earth and the air as a waveguide to transmit power.",
+        "relevance": 0.604
+       },
+       {
+        "title": "Invention of radio - Wikipedia",
+        "url": "https://en.wikipedia.org/wiki/Invention_of_radio",
+        "kind": "web",
+        "published": null,
+        "authors": [],
+        "snippet": "In spring 1899 Braun, accompanied by his colleagues Cantor and Zenneck, went to Cuxhaven to continue their experiments at the North Sea. On 6 February 1899, he would apply for the United States Patent, Wireless Electric Transmission of Signals Over Surfaces. Not before long he bridged a distance of 42 km to the city of Mutzing. On 24 September 1900 radio telegraphy signals were exchanged regularly",
+        "relevance": 0.454
+       },
+       {
+        "title": "Experimental and Theoretical Realization of Zenneck Wave-based Non-Radiative, Non-Coupled Wireless Power Transmission",
+        "url": "https://arxiv.org/abs/1903.10294v1",
+        "kind": "arxiv",
+        "published": "2019-01-22",
+        "authors": [
+         "Sai Kiran Oruganti",
+         "Jagannath Malik",
+         "Jongwon Lee",
+         "Dipra Paul"
+        ],
+        "snippet": "A decade ago, non-radiative wireless power transmission re-emerged as a promising alternative to deliver electrical power to devices where a physical wiring proved to be unfeasible. However, existing approaches are neither scalable nor efficient when multiple devices are involved, as they are restricted by factors like coupling and external environments. Zenneck waves are excited at interfaces, li",
+        "relevance": 1.0
+       }
+      ]
+     },
+     {
+      "statement": "Beamed power (microwave or laser) must deliver useful power over kilometres at high efficiency",
+      "target": "> 30% DC-to-DC over 1 km",
+      "feasibility": 0.45,
+      "feasibility_basis": "Real kilometre-scale demos exist (DARPA POWER, NTT/MHI 2025) but end-to-end efficiency is still low.",
+      "web_query": "power beaming record distance efficiency 2025 laser microwave",
+      "arxiv_query": "\"power beaming\" efficiency",
+      "leads": [
+       {
+        "title": "Wireless Power Transmission 2026: Can It Really Work? (DARPA Tests)",
+        "url": "https://energy-solutions.co/articles/sub/wireless-power-transmission-long-distance-2026",
+        "kind": "web",
+        "published": null,
+        "authors": [],
+        "snippet": "800W @ 8.6km\n\nLaser beaming record, new distance milestone\n\nUS Navy/NRL SCOPE-M\n\n1.6kW @ 60%\n\nMicrowave, 1km, military application\n\nNTT + MHI (Japan)\n\n15% @ 1km\n\nWorld record laser efficiency stabilized\n\nOsaka Expo 2025\n\n32W @ 2m\n\nSpace Power Technologies demo\n\n### Key Players in Long-Distance WPT (2026) [...] Yes, but with limits. In 2025, DARPA transmitted 800W over 8.6km via laser with the POWE",
+        "relevance": 0.827
+       },
+       {
+        "title": "Laser Power Beaming Just Got Real—Could Space-Beamed Energy Be Next?",
+        "url": "https://www.intelligentliving.co/laser-power-space-beamed-energy",
+        "kind": "web",
+        "published": null,
+        "authors": [],
+        "snippet": "Efficiency Record (Japan): NTT/Mitsubishi achieved 15% power conversion over 1 km in outdoor conditions [...] Japan’s NTT and Mitsubishi Heavy Industries have already demonstrated how such systems could work. Their recent outdoor kilowatt-class transmission trials successfully transmitted over a kilowatt of power via laser across one kilometer, delivering about 15% efficiency despite severe atmosp",
+        "relevance": 0.561
+       },
+       {
+        "title": "Laser Power Beaming for Applications on the Moon",
+        "url": "https://ntrs.nasa.gov/api/citations/20250009800/downloads/Laser%20Power%20beaming-FISO-2026.pdf",
+        "kind": "web",
+        "published": null,
+        "authors": [],
+        "snippet": "beam divergence for higher efficiency and lower cost laser Landis 8 Laser Power Beaming: Case 1: near term demonstration short distance beamed power to small rover ➢Power level: 50 W ➢Distance: up to 100 m ➢Laser: semiconductor diode laser at 860 nm ➢ Energy conversion efficiency (DC to optical power): 70% ➢PV receiver: GaAs solar cell ➢ Energy conversion efficiency (optical to DC power): >50% ➢ W",
+        "relevance": 0.544
+       },
+       {
+        "title": "Space Power just shattered the world record for wireless power transmission, beaming 1.2 kilowatts over 1.6 miles with 82% efficiency! Here's why this changes everything. This breakthrough proves we… | Ricky Roy | 24 comments",
+        "url": "https://www.linkedin.com/posts/rickyproy_space-power-just-shattered-the-world-record-activity-7399073174891589632-J2d0",
+        "kind": "web",
+        "published": null,
+        "authors": [],
+        "snippet": "How focused, exactly, is that microwave “beam”? What happens to all the objects hit by the diffused beam outside the receiver?\n\nLike Reply  1 Reaction   2 Reactions\n\n See more comments \n\nTo view or add a comment, sign in\n\n2,371 followers\n\n 782 Posts\n\nView Profile   Follow\n\n## Explore content categories\n\n Career\n Productivity\n Finance\n Soft Skills & Emotional Intelligence\n Project Management\n Educa",
+        "relevance": 0.503
+       },
+       {
+        "title": "Optical Power Beaming in the Lunar Environment",
+        "url": "https://arxiv.org/abs/2412.14083v1",
+        "kind": "arxiv",
+        "published": "2024-12-18",
+        "authors": [
+         "Mohamed Naqbi",
+         "Sebastien Loranger",
+         "Gunes Karabulut Kurt"
+        ],
+        "snippet": "The increasing focus on lunar exploration requires innovative power solutions to support scientific research, mining, and habitation in the Moon's extreme environment. Optical power beaming (OPB) has emerged as a promising alternative to conventional systems. However, the impact of lofted lunar dust (LLD) on optical transmissions remains poorly understood. This research addresses that gap by evalu",
+        "relevance": 0.667
+       },
+       {
+        "title": "Diffraction and Scattering Modeling for Laser Power Beaming in Lunar Environment",
+        "url": "https://arxiv.org/abs/2507.13982v1",
+        "kind": "arxiv",
+        "published": "2025-07-18",
+        "authors": [
+         "Yanni Jiwan-Mercier",
+         "Barış Dönmez",
+         "Güneş Karabulut-Kurt",
+         "Sébastien Loranger"
+        ],
+        "snippet": "Reliable energy delivery is a critical requirement for long-term lunar missions, particularly in regions with limited solar access, such as polar craters and during extended lunar nights. Optical Power Beaming (OPB) using high-power lasers offers a promising alternative to conventional solar power, but the effects of suspended lunar dust on beam propagation remain poorly understood. This study int",
+        "relevance": 1.0
+       },
+       {
+        "title": "Laser power transmission in space: Plasma-based power cell",
+        "url": "https://arxiv.org/abs/2607.25843v1",
+        "kind": "arxiv",
+        "published": "2026-07-28",
+        "authors": [
+         "Li Lin",
+         "Michael Keidar"
+        ],
+        "snippet": "Laser power beaming offers a route to space energy delivery, but semiconductor laser photovoltaic receivers face thermalization, joule heat, and radiative recombination waste, etc. Here we propose a gas-phase plasma power cell that converts vacuum-ultraviolet photons into electrical output through xenon photoionization and magnetically biased charge separation. Particle-in-cell Monte Carlo simulat",
+        "relevance": 1.0
+       },
+       {
+        "title": "Comparison and characterization of efficient frequency doubling at 397.5 nm with PPKTP, LBO and BiBO crystals",
+        "url": "https://arxiv.org/abs/1601.07971v1",
+        "kind": "arxiv",
+        "published": "2016-01-29",
+        "authors": [
+         "Xin Wen",
+         "Yashuai Han",
+         "Junmin Wang"
+        ],
+        "snippet": "A continuous-wave Ti:sapphire laser at 795 nm is frequency doubled in a bow-tie type enhancement four-mirror ring cavity with LiB3O5 (LBO), BiB3O6 (BiBO), and periodically polled KTiOPO4 (PPKTP) crystals, respectively. The properties of 397.5 nm ultra-violet (UV) output power, beam quality, stability for these different nonlinear crystals are investigated and compared. For PPKTP crystal, the highe",
+        "relevance": 0.667
+       }
+      ]
+     },
+     {
+      "statement": "The Earth-ionosphere cavity would need a quality factor in the thousands instead of about 5",
+      "target": "Q > 1000 at 7.8 Hz",
+      "feasibility": 0.02,
+      "feasibility_basis": "Measured Schumann-resonance Q is 4-6, set by the conductivity of the lower ionosphere; no engineering lever changes it.",
+      "web_query": "Schumann resonance quality factor measurement ionosphere losses",
+      "arxiv_query": "Schumann resonance \"quality factor\"",
+      "leads": [
+       {
+        "title": "Schumann Resonance - Truth Revolution Of 2025 By Praveen Dalal",
+        "url": "https://odrindia.in/wiki/Schumann_Resonance",
+        "kind": "web",
+        "published": null,
+        "authors": [],
+        "snippet": "Excitation of these modes primarily stems from the vertical electric field pulses of cloud-to-ground lightning strokes, with global thunderstorm activity producing around 50 flashes per second. The source current spectrum peaks in the ELF range, efficiently coupling energy into the cavity. The quality factor (Q-factor) of the resonances, typically 4–6, reflects the balance between energy input and",
+        "relevance": 0.761
+       },
+       {
+        "title": "How to Measure Schumann Resonance Accurately?",
+        "url": "https://eureka.patsnap.com/report-how-to-measure-schumann-resonance-accurately",
+        "kind": "web",
+        "published": null,
+        "authors": [],
+        "snippet": "Schumann resonance measurement has found diverse applications across various market sectors, driven by its potential to provide insights into global electromagnetic phenomena and their interactions with human health and technology. In the field of geophysics and atmospheric science, accurate Schumann resonance measurements are utilized to monitor global lightning activity and study the Earth's ion",
+        "relevance": 0.677
+       },
+       {
+        "title": "Schumann Resonance and its Influence on Human Health",
+        "url": "https://eureka.patsnap.com/report-research-on-schumann-resonance-and-its-influence-on-human-health",
+        "kind": "web",
+        "published": null,
+        "authors": [],
+        "snippet": "Schumann resonance, discovered by physicist Winfried Otto Schumann in 1952, refers to the natural electromagnetic frequencies occurring in the Earth's ionosphere cavity. These resonances, primarily at 7.83 Hz and its harmonics, have been a subject of increasing scientific interest due to their potential influence on human health and well-being. [...] The Earth's ionosphere and surface form a natur",
+        "relevance": 0.475
+       },
+       {
+        "title": "Schumann Resonance FAQ: Your Questions Answered — SunGeo.net",
+        "url": "https://sungeo.net/blog/schumann-resonance-faq",
+        "kind": "web",
+        "published": null,
+        "authors": [],
+        "snippet": "| Property | Value |\n --- |\n| Fundamental frequency | 7.83 Hz |\n| Harmonics | 14.3, 20.8, 27.3, 33.8 Hz |\n| Cavity height | ~60 km (Earth surface to ionosphere) |\n| Earth circumference | ~40,000 km |\n| Signal strength | Picotesla range |\n| Primary driver | Global lightning (~100 strikes/sec) |\n| Predicted | 1952 by W.O. Schumann |\n| First measured | 1954 by Herbert L. König |\n\nFor a full explanati",
+        "relevance": 0.365
+       }
+      ]
+     }
+    ]
+   }
+  }
+ },
+ "tesla_turbine": {
+  "captured": "2026-10-13",
+  "claims": {
+   "C2": {
+    "missing_piece": "The 97% figure has never been reproduced; measured disc turbines reach roughly 40%, mostly because of nozzle, exhaust and end-wall losses.",
+    "requirements": [
+     {
+      "statement": "Nozzle-to-rotor losses must fall below a few percent (flow entering the gaps at near rotor speed)",
+      "target": "nozzle + inlet loss < 5%",
+      "feasibility": 0.3,
+      "feasibility_basis": "CFD studies keep finding the nozzle and inlet as the main loss; better designs gain points, not tens of points.",
+      "web_query": "Tesla turbine nozzle design loss CFD efficiency improvement",
+      "arxiv_query": "Tesla turbine nozzle",
+      "leads": [
+       {
+        "title": "The Tesla Turbine&mdash;Design, Simulations, Testing and Proposed Applications: A Technological Review",
+        "url": "https://www.mdpi.com/2673-4117/7/1/30",
+        "kind": "web",
+        "published": null,
+        "authors": [],
+        "snippet": "efficiency. Rice, through his studies, confirms that if it could obtain a high-performance nozzle, it would be possible to achieve the efficiencies of conventional rotors. All the studies demonstrated this assumption, as the efficiencies obtained in the tests are always very modest. This improvement was introduced again by Hoya and Guha, who, after analyzing the causes of these losses, developed a",
+        "relevance": 0.779
+       },
+       {
+        "title": "CFD simulation of Tesla Turbine.",
+        "url": "https://www.researchgate.net/figure/CFD-simulation-of-Tesla-Turbine_fig2_254014607",
+        "kind": "web",
+        "published": null,
+        "authors": [],
+        "snippet": "Performance is highly sensitive to disc geometry, spacing, and nozzle design, with isentropic efficiencies exceeding 0.75 under idealized conditions.",
+        "relevance": 0.768
+       },
+       {
+        "title": "Experimental investigation of Tesla turbine under different ...",
+        "url": "https://www.sciencedirect.com/science/article/abs/pii/S0360544225046390",
+        "kind": "web",
+        "published": null,
+        "authors": [],
+        "snippet": "by X Li · 2025 · Cited by 3 — Experimental results revealed a maximum isentropic efficiency of 32.4% in compressor mode, with projected efficiency improvements of at least 10 percentage",
+        "relevance": 0.571
+       },
+       {
+        "title": "Experimental evaluation of a cost-effective tesla turbine for ...",
+        "url": "https://www.nature.com/articles/s41598-026-48846-z",
+        "kind": "web",
+        "published": null,
+        "authors": [],
+        "snippet": "by MB Farghaly · 2026 — A novel application of a Tesla turbine (TT) to improve the energy efficiency of the refrigeration cycles was proposed. Thus, TT is defined as a regenerative",
+        "relevance": 0.271
+       },
+       {
+        "title": "Performance enhancement of a 100 watts class Tesla turbine",
+        "url": "https://arxiv.org/abs/2301.01483v1",
+        "kind": "arxiv",
+        "published": "2023-01-04",
+        "authors": [
+         "Arindam Mandal",
+         "Rajosik Adak",
+         "Sandeep Saha"
+        ],
+        "snippet": "Tesla turbines are an attractive but less explored area in low-power applications. This article presents an experimental investigation of a centimeter scale Tesla turbine in bi and unidirectional outlet configuration with compressed air at 6 bar. The turbine's performance is enhanced by approximately 38% for a unidirectional outlet configuration. Furthermore, we also investigate the electrical pow",
+        "relevance": 1.0
+       },
+       {
+        "title": "Can a Tesla Turbine be Utilised as a Non-Magnetic Actuator for MRI-Guided Robotic Interventions?",
+        "url": "https://arxiv.org/abs/2108.08495v1",
+        "kind": "arxiv",
+        "published": "2021-08-19",
+        "authors": [
+         "David Navarro-Alarcon",
+         "Luiza Labazanova",
+         "Man Kiu Chow",
+         "Kwun Wang Ng"
+        ],
+        "snippet": "This paper introduces a new type of nonmagnetic actuator for MRI interventions. Ultrasonic and piezoelectric motors are one the most commonly used actuators in MRI applications. However, most of these actuators are only MRI-safe, which means they cannot be operated while imaging as they cause significant visual artifacts. To cope with this issue, we developed a new pneumatic rotary servo-motor (ba",
+        "relevance": 0.667
+       }
+      ]
+     },
+     {
+      "statement": "Disc gaps must stay at about twice the boundary-layer thickness at high speed, with flat, rigid discs",
+      "target": "gap / boundary layer ≈ 2 at > 20,000 rpm",
+      "feasibility": 0.35,
+      "feasibility_basis": "Micro-fabricated and additive-manufactured rotors make tight gaps possible at small sizes.",
+      "web_query": "Tesla turbine disc spacing boundary layer additive manufacturing study",
+      "arxiv_query": "\"Tesla turbine\" disc spacing",
+      "leads": [
+       {
+        "title": "Experimental evaluation of a cost-effective tesla turbine for waste air energy recovery in transportation systems | Scientific Reports",
+        "url": "https://www.nature.com/articles/s41598-026-48846-z",
+        "kind": "web",
+        "published": null,
+        "authors": [],
+        "snippet": "The rotor consists of ten parallel circular discs (150 mm diameter, 1 mm thickness) with an inter-disc spacing of 0.9 mm, constitute the primary energy-capturing element of the Tesla turbine. Aluminum and steel discs were tested to evaluate the effect of material properties on turbine performance. The discs convert the kinetic energy of the compressed air into rotational motion through boundary la",
+        "relevance": 0.703
+       },
+       {
+        "title": "Tesla Disc Pump Review: Operating Principles, Performance, and Real-World Applications",
+        "url": "https://www.infinityturbine.com/tesla-pump-review-article-by-infinity-turbine.html",
+        "kind": "web",
+        "published": null,
+        "authors": [],
+        "snippet": "spacing on the order of tenths of a millimeter requires precise manufacturing and careful assembly. Small deviations can significantly degrade performance.Volute Design ComplexityConventional centrifugal volutes are poorly suited to boundary-layer flow. Custom, shallow-angle volutes with generous cross-sectional area are required for acceptable efficiency.What Modern CFD Has RevealedRecent CFD stu",
+        "relevance": 0.678
+       },
+       {
+        "title": "The Tesla Turbine&mdash;Design, Simulations, Testing and Proposed Applications: A Technological Review",
+        "url": "https://www.mdpi.com/2673-4117/7/1/30",
+        "kind": "web",
+        "published": null,
+        "authors": [],
+        "snippet": "Batchelor’s studies  involved two discs (each with infinite radius) placed apart from each other. While one disc was stationary, the other rotated. The rotating disc generates fluid motion from a state of initial rest. Batchelor simulations  have shown the presence of boundary layers on both the rotor and stator, and how a fluid core rotates between these two layers at a slower speed than the rota",
+        "relevance": 0.554
+       },
+       {
+        "title": "Experimentally calibrated turbulence correction of tesla-turbine laminar model and its effect on ORC design selection - ScienceDirect",
+        "url": "https://www.sciencedirect.com/science/article/abs/pii/S0196890426011131",
+        "kind": "web",
+        "published": null,
+        "authors": [],
+        "snippet": "### Energy\n\n### Effect of disc spacing and pressure flow on a modifiable Tesla turbine: Experimental and numerical analysis\n\n### Appl Therm Eng\n\n### Evaluation of nozzle configuration impact on flow structures and performance in Tesla turbine\n\n### Int J Heat Mass Transf\n\n### Integrating machine learning and mathematical programming for efficient optimization of operating conditions in organic Rank",
+        "relevance": 0.26
+       }
+      ]
+     },
+     {
+      "statement": "Exhaust kinetic energy must be recovered instead of dumped",
+      "target": "exit swirl loss < 5%",
+      "feasibility": 0.25,
+      "feasibility_basis": "Diffusers help in bladed machines; little published work for disc turbines.",
+      "web_query": "Tesla turbine exhaust diffuser energy recovery",
+      "arxiv_query": "bladeless turbine exhaust diffuser",
+      "leads": [
+       {
+        "title": "CFD simulation of Tesla Turbine.",
+        "url": "https://www.researchgate.net/figure/CFD-simulation-of-Tesla-Turbine_fig2_254014607",
+        "kind": "web",
+        "published": null,
+        "authors": [],
+        "snippet": "A Tesla turbine is developed in order to utilize the potential energy within household water supply and convert to electricity energy without significant head",
+        "relevance": 0.335
+       },
+       {
+        "title": "GE mobile Gas Turbine. #GE #mobile #gasturbine ...",
+        "url": "https://www.facebook.com/groups/GasTurbines/posts/27426232807037525",
+        "kind": "web",
+        "published": null,
+        "authors": [],
+        "snippet": "1913: Nikola Tesla patents the Tesla turbine based on the boundary layer effect. ... Gases then pass from the diffuser to a combustion chamber, or similar device,",
+        "relevance": 0.305
+       },
+       {
+        "title": "This detailed engineering diagram illustrates the ...",
+        "url": "https://www.facebook.com/61553111605055/posts/this-detailed-engineering-diagram-illustrates-the-cross-section-of-a-small-gas-t/122246397146103720",
+        "kind": "web",
+        "published": null,
+        "authors": [],
+        "snippet": "Exhaust: The spent gases exit through the top structure (likely a recuperator/heat exchanger to recover heat) before venting to the atmosphere.",
+        "relevance": 0.12
+       },
+       {
+        "title": "F1's exhaust-blown diffuser was one of the most controversial ...",
+        "url": "https://www.instagram.com/corsatheory/reel/DR4xd4cEVQX?hl=es-la",
+        "kind": "web",
+        "published": null,
+        "authors": [],
+        "snippet": "By channeling exhaust gases into the diffuser, teams created powerful extra downforce that helped the car stick to the track even when the driver lifted off the",
+        "relevance": 0.068
+       },
+       {
+        "title": "Development of a New Type of Vortex Bladeless Wind Turbine for Urban Energy Systems",
+        "url": "https://arxiv.org/abs/2410.13506v1",
+        "kind": "arxiv",
+        "published": "2024-10-17",
+        "authors": [
+         "Dongkun Han",
+         "Shihan Huang",
+         "Pak Kei Abia Hui",
+         "Yue Chen"
+        ],
+        "snippet": "Innovation and development of renewable energy devices are crucial for reaching a sustainable and environmentally conscious future. This work focuses on the development of a new type of renewable energy devices in the context of Smart Garden at the Chinese University of Hong Kong, which aims to design a bladeless wind turbine for urban areas, addressing the pressing need for clean energy locally a",
+        "relevance": 0.5
+       },
+       {
+        "title": "Assessment of Numerical Lift Coefficient Data for a Circular Cylinder with Application to Bladeless Turbines",
+        "url": "https://arxiv.org/abs/2609.00850v1",
+        "kind": "arxiv",
+        "published": "2026-09-01",
+        "authors": [
+         "L. Ridgway Scott",
+         "Henry von Wahl"
+        ],
+        "snippet": "We assess computed lift coefficient data for flow past a circular cylinder to evaluate their suitability for practical applications. Specifically, we consider lift coefficient data for a circular cylinder over Reynolds numbers from 120 to 8000. The results are obtained from two-dimensional finite element simulations of the incompressible Navier-Stokes equations using pressure robust discretization",
+        "relevance": 0.25
+       },
+       {
+        "title": "Optimization of Mechanical Design Bladeless Wind Turbine for Electricity Fulfilment in Nusa Tenggara Timur, Indonesia",
+        "url": "https://arxiv.org/abs/2205.02786v1",
+        "kind": "arxiv",
+        "published": "2022-04-23",
+        "authors": [
+         "Muhammad Farhan Ramadhany",
+         "Theo Aden Kusuma",
+         "Yessika Natalia Chelsie",
+         "Gandha Satria Adi"
+        ],
+        "snippet": "The current government's goal is the realization of an even distribution of the electrification ratio in Indonesia. However, in 2018 the electrification ratio in Nusa Tenggara Timur (NTT) only reached 62.07%. One of the solutions offered is the implementation of a Bladeless Wind Turbine (BWT). BWT is a type of wind power plant that can work optimally in areas with low wind speeds, 3 to 8 m/s, whic",
+        "relevance": 0.5
+       }
+      ]
+     }
+    ]
+   },
+   "C3": {
+    "missing_piece": "At today's measured efficiency a disc turbine would burn far more fuel than a bladed one at power-plant scale; its plausible niche is small, dirty or two-phase flows.",
+    "requirements": [
+     {
+      "statement": "Disc turbines must win a niche where blades fail: small organic-Rankine or waste-heat units",
+      "target": "cost per kW below bladed micro-turbines under 50 kW",
+      "feasibility": 0.5,
+      "feasibility_basis": "Several groups test Tesla expanders for ORC and waste heat; low cost and tolerance of wet vapour are real advantages.",
+      "web_query": "Tesla turbine organic Rankine cycle waste heat expander 2025",
+      "arxiv_query": "Tesla turbine \"organic Rankine\"",
+      "leads": [
+       {
+        "title": "Multi-parameter optimization of Tesla turbine for small- ...",
+        "url": "https://www.sciencedirect.com/science/article/abs/pii/S0196890426003390",
+        "kind": "web",
+        "published": null,
+        "authors": [],
+        "snippet": "by S Teng · 2026 · Cited by 2 — Comprehensive study on waste heat recovery from gas turbine exhaust using combined steam Rankine and organic Rankine cycles. Energy Convers Manage: X. (2025).",
+        "relevance": 0.768
+       },
+       {
+        "title": "The Tesla Turbine&mdash;Design, Simulations, Testing and Proposed Applications: A Technological Review",
+        "url": "https://www.mdpi.com/2673-4117/7/1/30",
+        "kind": "web",
+        "published": null,
+        "authors": [],
+        "snippet": "98.   Talluri, L.; Fiaschi, D.; Neri, G.; Ciappi, L. Design and optimization of a Tesla turbine for ORC applications. Appl. Energy2018, 226, 300–319. [Google Scholar] [CrossRef] [Scilit]\n99.   Teng, S.; Li, L.; Yan, C.; An, D.; Zhao, Y.; Xi, H. Multi-parameter experimental study of a tesla turbine applied to an organic Rankine cycle system for low-grade heat utilisation. Energy Convers. Manag.2025",
+        "relevance": 0.75
+       },
+       {
+        "title": "Orcan Energy - 2025",
+        "url": "https://events-serbio.rs/wp-content/uploads/2025/10/Orcan_Energy_Presentation_slides_RF.pdf",
+        "kind": "web",
+        "published": null,
+        "authors": [],
+        "snippet": "46% increase in the last 5 years 4.5GW worldwide power capacity generated Source: „History of Organic Rankine Cycle systems“ 2017 L.Y. Bronicki (founder of Ormat) doi:10.1016/b978-0-08-100510-1.00002-8 ORC ORGANIC RANKINE CYCLE Orcan Energy - 2025 Second Generation ORC Technology Organic Rankine Cycle: The Technology in the Efficiency PACK Solutions eP 200 Water Cooled eP 200 eP 100 5 The evaporat",
+        "relevance": 0.526
+       },
+       {
+        "title": "Experimentally calibrated turbulence correction of tesla-turbine laminar model and its effect on ORC design selection - ScienceDirect",
+        "url": "https://www.sciencedirect.com/science/article/abs/pii/S0196890426011131",
+        "kind": "web",
+        "published": null,
+        "authors": [],
+        "snippet": "### Energ Conver Manage\n\n### Performance investigation of a two-stage partial admission axial impulse turbine used for low temperature organic rankine cycle\n\n### Renew Energy\n\n### Experimental and theoretical assessment of the effects of electrical load variation on the operability of a small-scale Organic Rankine Cycle (ORC)-based unit equipped with a hermetic scroll expander\n\n### Energy\n\n### Des",
+        "relevance": 0.364
+       }
+      ]
+     },
+     {
+      "statement": "Efficiency at multi-MW scale must approach 85-90% to compete with bladed steam turbines",
+      "target": "> 85% isentropic at 10 MW",
+      "feasibility": 0.05,
+      "feasibility_basis": "Depends on the 97% claim above being solved; no evidence of a path today.",
+      "web_query": "large scale Tesla turbine megawatt efficiency",
+      "arxiv_query": "Tesla turbine efficiency",
+      "leads": [
+       {
+        "title": "Experimental evaluation of a cost-effective tesla turbine for waste air energy recovery in transportation systems | Scientific Reports",
+        "url": "https://www.nature.com/articles/s41598-026-48846-z",
+        "kind": "web",
+        "published": null,
+        "authors": [],
+        "snippet": "40% and achieved an unloaded peak power output of 45 mW at a flow rate of 12 cc/s with an efficiency of 17%16. [...] Low-pressure head Tesla microturbine design, construction, and testing. To scavenge energy from the fluid flows created in plant-like evaporative systems. Tesla turbines are very easy to construct, scale down very favorably, and exhibit great efficiency when operated with low-pressu",
+        "relevance": 0.565
+       },
+       {
+        "title": "Altris: Reinventing Tesla’s Forgotten Turbine",
+        "url": "https://www.techbuzznews.com/altris-turbine",
+        "kind": "web",
+        "published": null,
+        "authors": [],
+        "snippet": "The Altris X3 turbine changes that equation. It runs at manageable speeds and uses advanced composite materials five times stronger than steel, capable of handling extreme pressure without the catastrophic failures that doomed earlier attempts. The unit’s compact form — roughly three by three by four feet — generates a full megawatt of power, _enough, Polson says, to serve up to 10,000 homes_.\n\n“T",
+        "relevance": 0.493
+       },
+       {
+        "title": "The Combined Cycle Gas Turbine – The World’s Most Efficient Power Machine",
+        "url": "https://www.youtube.com/watch?v=P-sMnC8CxI8&vl=en",
+        "kind": "web",
+        "published": null,
+        "authors": [],
+        "snippet": "[2:05] [music]\n[2:06] natural gas stands out for its high energy density. Aside from hydrogen, it [music] contains more energy per unit of mass than almost any other commonly\n[2:15] available fuel. That's one reason [music] gas turbines are so powerful and efficient. In large-scale single cycle operation, meaning without heat\n[2:23] recovery, modern turbines can generate around 400 megawatts of po",
+        "relevance": 0.42
+       },
+       {
+        "title": "Renewable Energy Is Undergoing Major Technology Upgrades",
+        "url": "https://internationalbanker.com/technology/renewable-energy-is-undergoing-major-technology-upgrades",
+        "kind": "web",
+        "published": null,
+        "authors": [],
+        "snippet": "In recent months, Chinese firms have introduced new battery chemistries designed to reduce reliance on more expensive or scarce materials, while maintaining performance. And large-scale systems such as California’s Tesla Megapack—a rechargeable lithium-ion battery-based stationary energy-storage product—can store excess energy for backup power during energy shortages or blackouts. [...] Through no",
+        "relevance": 0.246
+       },
+       {
+        "title": "Performance enhancement of a 100 watts class Tesla turbine",
+        "url": "https://arxiv.org/abs/2301.01483v1",
+        "kind": "arxiv",
+        "published": "2023-01-04",
+        "authors": [
+         "Arindam Mandal",
+         "Rajosik Adak",
+         "Sandeep Saha"
+        ],
+        "snippet": "Tesla turbines are an attractive but less explored area in low-power applications. This article presents an experimental investigation of a centimeter scale Tesla turbine in bi and unidirectional outlet configuration with compressed air at 6 bar. The turbine's performance is enhanced by approximately 38% for a unidirectional outlet configuration. Furthermore, we also investigate the electrical pow",
+        "relevance": 0.667
+       },
+       {
+        "title": "Can a Tesla Turbine be Utilised as a Non-Magnetic Actuator for MRI-Guided Robotic Interventions?",
+        "url": "https://arxiv.org/abs/2108.08495v1",
+        "kind": "arxiv",
+        "published": "2021-08-19",
+        "authors": [
+         "David Navarro-Alarcon",
+         "Luiza Labazanova",
+         "Man Kiu Chow",
+         "Kwun Wang Ng"
+        ],
+        "snippet": "This paper introduces a new type of nonmagnetic actuator for MRI interventions. Ultrasonic and piezoelectric motors are one the most commonly used actuators in MRI applications. However, most of these actuators are only MRI-safe, which means they cannot be operated while imaging as they cause significant visual artifacts. To cope with this issue, we developed a new pneumatic rotary servo-motor (ba",
+        "relevance": 0.667
+       }
+      ]
+     }
+    ]
+   }
+  }
+ }
+}

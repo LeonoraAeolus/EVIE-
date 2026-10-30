@@ -1,0 +1,7 @@
+# Semantic archive search (python scripts/ingest_archive.py --embedder st)
+sentence-transformers>=2.7
+# OCR for scanned PDFs (also install the tesseract + poppler binaries)
+pytesseract>=0.3
+pdf2image>=1.17
+# v4: optional BigQuery path for the patent planner (PATENTS_BIGQUERY=1)
+google-cloud-bigquery>=3.11

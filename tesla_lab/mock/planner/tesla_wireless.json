@@ -1,0 +1,442 @@
+{
+ "id": "tesla_wireless",
+ "title": "Tesla: power across a room",
+ "canned_note": "CANNED (mock mode): the model outputs below (abstraction, terms, CPC proposals, claim-fit scores and quotes, Wildcard ideas) were hand-written in the format Nemotron 3 Super returns; NOT model output. The seed patents were found by a web search for site:patents.google.com on 2026-10-13 (not Tavily). The patent pages are real captured copies; quote checks, CPC validation, citation chains, ranking, legal-status flags and all sizing math run for real.",
+ "keywords": [
+  "wireless",
+  "tesla",
+  "room",
+  "power across",
+  "coil",
+  "resonat",
+  "wardenclyffe",
+  "field"
+ ],
+ "input": {
+  "goal": "Deliver useful power (10 W) across a living room, about 2 m, to a lamp.",
+  "failed": [
+   "Bigger coils: the magnetic field near the transmitter exceeded the public exposure limit (v2 spec sheet: inside ~0.85 m)"
+  ],
+  "idea": "Two tuned coils (resonant inductive coupling) that power a lamp 2 m away",
+  "before": "2026-10-01",
+  "constraints": [
+   "min efficiency 50 %",
+   "max relays 4"
+  ]
+ },
+ "abstraction": {
+  "find": {
+   "function": "transfer electrical power wirelessly between tuned resonators",
+   "conflict": {
+    "improve": "deliver power across a room",
+    "without": "exceeding field-exposure limits"
+   },
+   "principle": "two tuned resonators exchange energy through a near field; efficiency collapses once the gap is much larger than the coils",
+   "exclude": [
+    "bigger transmitter coil / more current"
+   ],
+   "quantities": {
+    "distance_m": 2.0
+   }
+  },
+  "check": {
+   "function": "transfer electrical power wirelessly between tuned resonators",
+   "conflict": {
+    "improve": "deliver power across a room",
+    "without": "exceeding field-exposure limits"
+   },
+   "principle": "two tuned resonators exchange energy through a near field; efficiency collapses once the gap is much larger than the coils",
+   "exclude": [
+    "bigger transmitter coil / more current"
+   ],
+   "quantities": {
+    "distance_m": 2.0
+   }
+  },
+  "improve": {
+   "function": "transfer electrical power wirelessly between tuned resonators",
+   "conflict": {
+    "improve": "deliver power across a room",
+    "without": "exceeding field-exposure limits"
+   },
+   "principle": "two tuned resonators exchange energy through a near field; efficiency collapses once the gap is much larger than the coils",
+   "exclude": [
+    "bigger transmitter coil / more current"
+   ],
+   "quantities": {
+    "distance_m": 2.0
+   }
+  }
+ },
+ "terms": [
+  {
+   "term": "wireless power",
+   "synonyms": [
+    "contactless charging",
+    "inductive power"
+   ],
+   "patent_speak": [
+    "wireless energy transfer",
+    "non-radiative energy transfer",
+    "inductive coupling"
+   ]
+  },
+  {
+   "term": "coil",
+   "synonyms": [
+    "loop",
+    "antenna"
+   ],
+   "patent_speak": [
+    "resonator structure",
+    "magnetic resonator",
+    "primary coil",
+    "secondary coil"
+   ]
+  },
+  {
+   "term": "field limit",
+   "synonyms": [
+    "exposure",
+    "safety"
+   ],
+   "patent_speak": [
+    "specific absorption rate",
+    "field strength limit",
+    "emission"
+   ]
+  }
+ ],
+ "cpc": {
+  "find": [
+   {
+    "code": "H02J50/12",
+    "role": "home",
+    "why": "wireless power of the resonant type"
+   },
+   {
+    "code": "H02J50/50",
+    "role": "home",
+    "why": "wireless power using additional relay/repeater devices"
+   },
+   {
+    "code": "A61N1/3787",
+    "role": "cross",
+    "why": "medical implants: transcutaneous charging through the body"
+   },
+   {
+    "code": "B60L53/12",
+    "role": "cross",
+    "why": "electric vehicles: inductive charging"
+   },
+   {
+    "code": "H01F38/14",
+    "role": "cross",
+    "why": "inductive couplings (Tesla's 1897 class)"
+   }
+  ],
+  "check": [
+   {
+    "code": "H02J50/12",
+    "role": "home",
+    "why": "wireless power of the resonant type"
+   },
+   {
+    "code": "H02J50/50",
+    "role": "home",
+    "why": "wireless power using additional relay/repeater devices"
+   },
+   {
+    "code": "A61N1/3787",
+    "role": "cross",
+    "why": "medical implants: transcutaneous charging through the body"
+   },
+   {
+    "code": "B60L53/12",
+    "role": "cross",
+    "why": "electric vehicles: inductive charging"
+   },
+   {
+    "code": "H01F38/14",
+    "role": "cross",
+    "why": "inductive couplings (Tesla's 1897 class)"
+   }
+  ],
+  "improve": [
+   {
+    "code": "H02J50/12",
+    "role": "home",
+    "why": "wireless power of the resonant type"
+   },
+   {
+    "code": "H02J50/50",
+    "role": "home",
+    "why": "wireless power using additional relay/repeater devices"
+   },
+   {
+    "code": "A61N1/3787",
+    "role": "cross",
+    "why": "medical implants: transcutaneous charging through the body"
+   },
+   {
+    "code": "B60L53/12",
+    "role": "cross",
+    "why": "electric vehicles: inductive charging"
+   },
+   {
+    "code": "H01F38/14",
+    "role": "cross",
+    "why": "inductive couplings (Tesla's 1897 class)"
+   }
+  ]
+ },
+ "seeds": {
+  "find": [
+   [
+    "US8461719B2",
+    "wireless energy transfer resonators Q-factor distance"
+   ],
+   [
+    "US7825543B2",
+    "resonator structures evanescent coupling distance larger than size"
+   ],
+   [
+    "US8629578B2",
+    "wireless power transfer source magnetic resonator"
+   ],
+   [
+    "US7774069B2",
+    "transcutaneous energy transfer alignment"
+   ],
+   [
+    "US9002469B2",
+    "transcutaneous energy transfer multiple secondary coils"
+   ]
+  ],
+  "check": [
+   [
+    "US8461719B2",
+    "wireless energy transfer resonators Q-factor distance"
+   ],
+   [
+    "US7825543B2",
+    "resonator structures evanescent coupling distance larger than size"
+   ],
+   [
+    "US8629578B2",
+    "wireless power transfer source magnetic resonator"
+   ],
+   [
+    "US7774069B2",
+    "transcutaneous energy transfer alignment"
+   ],
+   [
+    "US9002469B2",
+    "transcutaneous energy transfer multiple secondary coils"
+   ]
+  ],
+  "improve": [
+   [
+    "US8461719B2",
+    "wireless energy transfer resonators Q-factor distance"
+   ],
+   [
+    "US7825543B2",
+    "resonator structures evanescent coupling distance larger than size"
+   ],
+   [
+    "US8629578B2",
+    "wireless power transfer source magnetic resonator"
+   ],
+   [
+    "US7774069B2",
+    "transcutaneous energy transfer alignment"
+   ],
+   [
+    "US9002469B2",
+    "transcutaneous energy transfer multiple secondary coils"
+   ]
+  ]
+ },
+ "claim_scores": {
+  "find": {
+   "US8461719B2": {
+    "fit": 0.8,
+    "quote": "a source resonator having a Q-factor Q 1 and a characteristic size x 1",
+    "why": "High-Q resonators set the range: the lever that lets power cross a room at low field strength."
+   },
+   "US7825543B2": {
+    "fit": 0.85,
+    "quote": "over a distance D larger than a characteristic size L 1 of said first resonator structure",
+    "why": "Claims transfer beyond the coil size via evanescent coupling: the core of the room-scale goal."
+   },
+   "US8629578B2": {
+    "fit": 0.5,
+    "quote": "configured to transfer power during predefined intervals",
+    "why": "Duty-cycling lowers average exposure; peripherals, short range."
+   },
+   "US7774069B2": {
+    "fit": 0.45,
+    "quote": "A system for transcutaneous energy transfer",
+    "why": "Medical implants live under strict tissue-exposure limits: their alignment tricks transfer."
+   },
+   "US9002469B2": {
+    "fit": 0.4,
+    "quote": "first and second primary coils configured to simultaneously transmit transcutaneous energy",
+    "why": "Splits the power across coils, lowering the peak field near any one coil."
+   },
+   "US649621A": {
+    "fit": 0.3,
+    "quote": "a receiving coil or conductor similarly connected to ground and to an elevated terminal",
+    "why": "Tesla's 1897 root: tuned transmitter/receiver coils, but through the earth, not a room."
+   },
+   "US1119732A": {
+    "fit": 0.2,
+    "quote": "a resonant circuit having its outer conducting boundaries, which are charged to a high potential",
+    "why": "Wardenclyffe-era resonator; high potential, not low field."
+   }
+  },
+  "check": {
+   "US8461719B2": {
+    "fit": 0.8,
+    "quote": "a source resonator having a Q-factor Q 1 and a characteristic size x 1",
+    "why": "High-Q resonators set the range: the lever that lets power cross a room at low field strength."
+   },
+   "US7825543B2": {
+    "fit": 0.85,
+    "quote": "over a distance D larger than a characteristic size L 1 of said first resonator structure",
+    "why": "Claims transfer beyond the coil size via evanescent coupling: the core of the room-scale goal."
+   },
+   "US8629578B2": {
+    "fit": 0.5,
+    "quote": "configured to transfer power during predefined intervals",
+    "why": "Duty-cycling lowers average exposure; peripherals, short range."
+   },
+   "US7774069B2": {
+    "fit": 0.45,
+    "quote": "A system for transcutaneous energy transfer",
+    "why": "Medical implants live under strict tissue-exposure limits: their alignment tricks transfer."
+   },
+   "US9002469B2": {
+    "fit": 0.4,
+    "quote": "first and second primary coils configured to simultaneously transmit transcutaneous energy",
+    "why": "Splits the power across coils, lowering the peak field near any one coil."
+   },
+   "US649621A": {
+    "fit": 0.3,
+    "quote": "a receiving coil or conductor similarly connected to ground and to an elevated terminal",
+    "why": "Tesla's 1897 root: tuned transmitter/receiver coils, but through the earth, not a room."
+   },
+   "US1119732A": {
+    "fit": 0.2,
+    "quote": "a resonant circuit having its outer conducting boundaries, which are charged to a high potential",
+    "why": "Wardenclyffe-era resonator; high potential, not low field."
+   }
+  },
+  "improve": {
+   "US8461719B2": {
+    "fit": 0.8,
+    "quote": "a source resonator having a Q-factor Q 1 and a characteristic size x 1",
+    "why": "High-Q resonators set the range: the lever that lets power cross a room at low field strength."
+   },
+   "US7825543B2": {
+    "fit": 0.85,
+    "quote": "over a distance D larger than a characteristic size L 1 of said first resonator structure",
+    "why": "Claims transfer beyond the coil size via evanescent coupling: the core of the room-scale goal."
+   },
+   "US8629578B2": {
+    "fit": 0.5,
+    "quote": "configured to transfer power during predefined intervals",
+    "why": "Duty-cycling lowers average exposure; peripherals, short range."
+   },
+   "US7774069B2": {
+    "fit": 0.45,
+    "quote": "A system for transcutaneous energy transfer",
+    "why": "Medical implants live under strict tissue-exposure limits: their alignment tricks transfer."
+   },
+   "US9002469B2": {
+    "fit": 0.4,
+    "quote": "first and second primary coils configured to simultaneously transmit transcutaneous energy",
+    "why": "Splits the power across coils, lowering the peak field near any one coil."
+   },
+   "US649621A": {
+    "fit": 0.3,
+    "quote": "a receiving coil or conductor similarly connected to ground and to an elevated terminal",
+    "why": "Tesla's 1897 root: tuned transmitter/receiver coils, but through the earth, not a room."
+   },
+   "US1119732A": {
+    "fit": 0.2,
+    "quote": "a resonant circuit having its outer conducting boundaries, which are charged to a high potential",
+    "why": "Wardenclyffe-era resonator; high potential, not low field."
+   }
+  }
+ },
+ "wildcard": {
+  "principle": "two tuned resonators exchange energy through a near field; efficiency collapses once the gap is much larger than the coils",
+  "quantities": {
+   "distance_m": 2.0
+  },
+  "niches_searched": [
+   "Music (sympathetic strings)",
+   "Kitchen (induction cooktops, H05B)",
+   "Medicine (implant charging)"
+  ],
+  "ideas": [
+   {
+    "niche": "Music (sympathetic strings)",
+    "cpc": "G10D1/00",
+    "mechanism": "passive tuned strings that ring in sympathy and pass the energy along",
+    "transfer": "A sitar's sympathetic strings ring without being touched. Put 3 passive tuned coils (furniture, picture frames) between the transmitter and the lamp so each short hop stays efficient.",
+    "evidence": [
+     {
+      "title": "Sympathetic string (Wikipedia)",
+      "url": "https://en.wikipedia.org/wiki/Sympathetic_string",
+      "kind": "web"
+     }
+    ],
+    "calculator": "relay_resonator_chain",
+    "params": {
+     "distance_m": 2.0,
+     "relays": 3,
+     "coil_radius_m": 0.3,
+     "q": 950
+    },
+    "mechanism_keywords": [
+     "repeater",
+     "relay resonator"
+    ]
+   },
+   {
+    "niche": "Kitchen (induction cooktop)",
+    "cpc": "H05B6/12",
+    "mechanism": "induction hob coil under the pan",
+    "transfer": "Induction hobs move kilowatts through a coil. Hide hob-style coils in the walls?",
+    "evidence": [
+     {
+      "title": "US3761667A Output power control of induction cooking inverter (1971)",
+      "url": "https://patents.google.com/patent/US3761667A/en",
+      "kind": "patent"
+     }
+    ],
+    "calculator": "small_coil_link",
+    "params": {
+     "coil_radius_m": 0.1,
+     "q": 100,
+     "distance_m": 2.0
+    },
+    "mechanism_keywords": [
+     "induction cooking"
+    ]
+   }
+  ]
+ },
+ "improve": {
+  "test_results": [
+   "Bench test: 10 W at 0.5 m worked; at 2 m the lamp stayed dark",
+   "Living-room mock-up: only 2 relay coils can be hidden (picture frame + side table)"
+  ],
+  "constraints": [
+   "max relays 2"
+  ]
+ }
+}

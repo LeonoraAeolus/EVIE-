@@ -1,0 +1,76 @@
+{
+ "_note": "CANNED derivations for mock mode. Hand-written in OpenMath-Nemotron's answer format (steps + \\boxed{}) for the 3 demo ideas; NOT produced by the model. The cross-check against the Python calculator runs for real on every mock run. Set OPENMATH_BASE_URL to get real derivations from your own OpenMath-Nemotron server.",
+ "wardenclyffe": {
+  "C1": {
+   "response": "**Step 1: Self-inductance of each loop.**\n\\[ L = \\mu_0 r\\left(\\ln\\frac{8r}{a} - 2\\right) = 4\\pi\\times10^{-7}\\cdot 0.3\\,(\\ln 800 - 2) = 4\\pi\\times10^{-7}\\cdot 0.3 \\cdot 4.6846 \\approx 1.766\\times10^{-6}\\ \\text{H} \\]\nBoth loops are identical, so \\(L_1 = L_2 = L\\).\n\n**Step 2: Mutual inductance at d = 2 m.**\n\\[ M = \\frac{\\mu_0 \\pi r_1^2 r_2^2}{2\\,(d^2 + r_1^2)^{3/2}} = \\frac{4\\pi\\times10^{-7}\\cdot\\pi\\cdot 0.0081}{2\\cdot 4.09^{3/2}} = \\frac{3.198\\times10^{-8}}{16.543} \\approx 1.933\\times10^{-9}\\ \\text{H} \\]\n\n**Step 3: Coupling coefficient.**\n\\[ k = \\frac{M}{\\sqrt{L_1 L_2}} = \\frac{1.933\\times10^{-9}}{1.766\\times10^{-6}} \\approx 1.0945\\times10^{-3} \\]\n\n**Step 4: Efficiency with the optimal load.** Let \\(U^2 = k^2 Q_1 Q_2\\). The receiver delivers power to the load \\(R_L\\) and loses it in its own resistance \\(R_2\\); the reflected resistance into the transmitter is \\(\\omega^2 M^2/(R_2+R_L)\\). Maximising\n\\[ \\eta = \\frac{\\omega^2M^2}{(R_2+R_L)R_1 + \\omega^2M^2}\\cdot\\frac{R_L}{R_2+R_L} \\]\nover \\(R_L\\) gives \\(R_L = R_2\\sqrt{1+U^2}\\) and\n\\[ \\eta_{\\max} = \\frac{k^2 Q_1 Q_2}{\\left(1+\\sqrt{1+k^2 Q_1 Q_2}\\right)^2} \\]\n\n**Step 5: Evaluate.** \\(U^2 = (1.0945\\times10^{-3})^2 \\cdot 950^2 \\approx 1.0812\\), \\(\\sqrt{1+U^2} \\approx 1.4426\\).\n\\[ \\eta_{\\max} = \\frac{1.0812}{(2.4426)^2} = \\frac{1.0812}{5.9664} \\approx 0.1812 \\]\n\nThe maximum efficiency is about 18.1%.\n\n\\[ \\boxed{18.1\\%} \\]"
+  },
+  "C2": {
+   "response": "**Step 1: Quality factor.** The bandwidth is \\(0.2 f_0\\), so\n\\[ Q = \\frac{f_0}{0.2 f_0} = 5 \\]\n\n**Step 2: Energy decay.** With \\(Q = \\omega_0 \\dfrac{W}{P_{\\text{loss}}}\\) and \\(P_{\\text{loss}} = -\\dfrac{dW}{dt}\\):\n\\[ \\frac{dW}{dt} = -\\frac{\\omega_0}{Q} W \\quad\\Rightarrow\\quad W(t) = W_0 e^{-\\omega_0 t / Q} \\]\n\n**Step 3: Time constant.**\n\\[ \\tau = \\frac{Q}{\\omega_0} = \\frac{Q}{2\\pi f_0} \\]\n\n**Step 4: Evaluate.**\n\\[ \\tau = \\frac{5}{2\\pi \\cdot 7.83} = \\frac{5}{49.197} \\approx 0.1016\\ \\text{s} \\]\n\n\\[ \\boxed{\\tau = \\frac{Q}{2\\pi f_0} \\approx 0.102} \\]"
+  },
+  "C3": {
+   "problem_spec": {
+    "quantity": "power the tower must send",
+    "target_metric": "tower_power_needed_gw",
+    "unit": "GW",
+    "variables": {},
+    "reference": "",
+    "problem": "A transmitter must supply N = 1,000,000 homes, each drawing p = 1000 W on average, through a link with end-to-end efficiency eta = 0.5. Using conservation of energy (power arriving equals power used), derive the transmitter input power P_in as a formula in N, p and eta, then evaluate it in gigawatts."
+   },
+   "response": "**Step 1: Energy balance.** Power that arrives at the homes is the fraction \\(\\eta\\) of what the tower puts in, and it must equal what the homes use:\n\\[ \\eta P_{\\text{in}} = N p \\]\n\n**Step 2: Solve for the input power.**\n\\[ P_{\\text{in}} = \\frac{N p}{\\eta} \\]\n\n**Step 3: Evaluate.**\n\\[ P_{\\text{in}} = \\frac{10^6 \\cdot 1000\\ \\text{W}}{0.5} = 2\\times10^{9}\\ \\text{W} = 2\\ \\text{GW} \\]\n\n\\[ \\boxed{2} \\]"
+  },
+  "spec:wireless_power": {
+   "response": "**Step 1: Set up the circuit.** Transmitter: \\(R_1, L_1, C_1\\) at resonance; receiver: \\(R_2, L_2, C_2\\) with load \\(R_L\\). At resonance the receiver impedance is purely resistive, \\(R_2 + R_L\\), and it reflects \\(\\dfrac{\\omega^2 M^2}{R_2+R_L}\\) into the transmitter.\n\n**Step 2: Efficiency.**\n\\[ \\eta = \\frac{\\omega^2M^2}{R_1(R_2+R_L) + \\omega^2M^2}\\cdot\\frac{R_L}{R_2+R_L} \\]\nWrite \\(U^2 = \\dfrac{\\omega^2M^2}{R_1R_2} = k^2Q_1Q_2\\) and \\(x = R_L/R_2\\):\n\\[ \\eta(x) = \\frac{U^2 x}{(1+x)\\left[(1+x) + U^2\\right]} \\]\n\n**Step 3: Optimal load.** Setting \\(d\\eta/dx = 0\\) gives \\(x^2 = 1+U^2\\), i.e. \\(R_L = R_2\\sqrt{1+U^2}\\).\n\n**Step 4: Maximum efficiency.**\n\\[ \\eta_{\\max} = \\frac{U^2}{\\left(1+\\sqrt{1+U^2}\\right)^2} \\]\n\n**Step 5: Evaluate with \\(U = 4.28\\).** \\(U^2 = 18.318\\), \\(\\sqrt{1+U^2} = 4.3953\\):\n\\[ \\eta_{\\max} = \\frac{18.318}{(5.3953)^2} = \\frac{18.318}{29.109} \\approx 0.6293 \\]\n\n\\[ \\boxed{62.9\\%} \\]"
+  }
+ },
+ "water_car": {
+  "C1": {
+   "response": "**Step 1: Electricity used to split 1 mol of water.**\n\\[ E_{\\text{in}} = \\frac{\\text{HHV}}{\\eta_e} = \\frac{285.8}{0.7} \\approx 408.29\\ \\text{kJ} \\]\n\n**Step 2: Electricity returned.** The engine turns the LHV into shaft work, the generator turns shaft work into electricity:\n\\[ E_{\\text{back}} = \\text{LHV}\\,\\eta_{\\text{engine}}\\,\\eta_g = 241.8 \\cdot 0.25 \\cdot 0.9 = 54.405\\ \\text{kJ} \\]\n\n**Step 3: Loop gain.**\n\\[ G = \\frac{E_{\\text{back}}}{E_{\\text{in}}} = \\frac{\\text{LHV}\\,\\eta_{\\text{engine}}\\,\\eta_g\\,\\eta_e}{\\text{HHV}} = \\frac{54.405}{408.29} \\approx 0.1333 \\]\n\nSince \\(G < 1\\), the loop returns far less than it consumes.\n\n\\[ \\boxed{0.133} \\]"
+  },
+  "C2": {
+   "problem_spec": {
+    "quantity": "minimum cell voltage to split water",
+    "target_metric": "minimum_cell_voltage_v",
+    "unit": "V",
+    "variables": {
+     "Delta_G": 237130,
+     "n": 2,
+     "F": 96485
+    },
+    "reference": "Delta_G/(n*F)",
+    "problem": "Splitting liquid water at 25 C requires at least the Gibbs free energy Delta G = 237.13 kJ per mole of water. Each water molecule split transfers n = 2 electrons, and the Faraday constant is F = 96485 C/mol. Derive the minimum (reversible) cell voltage from Delta G = n F E and evaluate it in volts."
+   },
+   "response": "**Step 1: Relate electrical work and Gibbs energy.** For a reversible cell the electrical work per mole equals the Gibbs energy change:\n\\[ \\Delta G = n F E_{\\min} \\]\n\n**Step 2: Solve for the voltage.**\n\\[ E_{\\min} = \\frac{\\Delta G}{n F} \\]\n\n**Step 3: Evaluate.**\n\\[ E_{\\min} = \\frac{237130}{2 \\cdot 96485} = \\frac{237130}{192970} \\approx 1.229\\ \\text{V} \\]\n\n\\[ \\boxed{1.229} \\]"
+  },
+  "C3": {
+   "response": "**Step 1: Total energy in.** Only one input is listed:\n\\[ E_{\\text{in}} = 408.3\\ \\text{kJ per mol H}_2\\text{O} \\]\n\n**Step 2: Total energy out.**\n\\[ E_{\\text{out}} = 133.0\\ \\text{kJ per mol H}_2\\text{O} \\]\n\n**Step 3: Efficiency.** By conservation of energy \\(E_{\\text{out}} \\le E_{\\text{in}}\\), and\n\\[ \\eta = \\frac{E_{\\text{out}}}{E_{\\text{in}}} = \\frac{133.0}{408.3} \\approx 0.3257 \\]\n\n\\[ \\boxed{0.326} \\]"
+  },
+  "spec:h2_backup": {
+   "response": "**Step 1: Electrical energy needed.**\n\\[ E = P t = 150\\ \\text{W} \\times 48\\ \\text{h} = 7200\\ \\text{Wh} = 7.2\\ \\text{kWh} \\]\n\n**Step 2: Hydrogen chemical energy needed.** The fuel cell delivers a fraction \\(\\eta\\) of the hydrogen's LHV:\n\\[ E = \\eta\\, m\\, \\text{LHV} \\quad\\Rightarrow\\quad m = \\frac{P t}{\\eta\\,\\text{LHV}} \\]\n\n**Step 3: Evaluate.**\n\\[ m = \\frac{7.2}{0.5 \\times 33.33} = \\frac{7.2}{16.665} \\approx 0.432\\ \\text{kg} \\]\n\n\\[ \\boxed{0.432} \\]"
+  }
+ },
+ "tesla_turbine": {
+  "C1": {
+   "response": "**Step 1: Angular speed.**\n\\[ \\omega = \\frac{2\\pi \\cdot 10000}{60} \\approx 1047.20\\ \\text{rad/s} \\]\n\n**Step 2: Boundary-layer thickness.**\n\\[ \\delta = 5\\sqrt{\\frac{\\nu}{\\omega}} = 5\\sqrt{\\frac{1.5\\times10^{-5}}{1047.20}} = 5\\sqrt{1.4324\\times10^{-8}} \\]\n\n**Step 3: Evaluate.** \\(\\sqrt{1.4324\\times10^{-8}} \\approx 1.1968\\times10^{-4}\\ \\text{m}\\), so\n\\[ \\delta \\approx 5.984\\times10^{-4}\\ \\text{m} = 0.598\\ \\text{mm} \\]\n\n\\[ \\boxed{0.598} \\]"
+  },
+  "C2": {
+   "response": "**Step 1: Angular speed.**\n\\[ \\omega = 2\\pi \\frac{N}{60} = \\frac{2\\pi \\cdot 10000}{60} \\approx 1047.2\\ \\text{rad/s} \\]\n\n**Step 2: Von Karman boundary layer.**\n\\[ \\delta = 5\\sqrt{\\frac{\\nu}{\\omega}} \\]\n\n**Step 3: Evaluate in metres, then millimetres.**\n\\[ \\delta = 5\\sqrt{\\frac{1.5\\times 10^{-5}}{1047.2}} \\approx 5.98\\times10^{-4}\\ \\text{m} \\approx 0.60\\ \\text{mm} \\]\n\n\\[ \\boxed{0.598} \\]"
+  },
+  "C3": {
+   "problem_spec": {
+    "quantity": "extra fuel a Tesla turbine plant would burn",
+    "target_metric": "extra_fuel_pct",
+    "unit": "%",
+    "variables": {
+     "eta_s": 0.9,
+     "eta_t": 0.41
+    },
+    "reference": "100*(eta_s/eta_t - 1)",
+    "problem": "A 500 MW power plant can use a steam turbine with efficiency eta_s = 0.90 or a Tesla disc turbine with efficiency eta_t = 0.41. For the same electrical output, the steam (fuel) energy needed is output / efficiency. Derive the extra fuel needed with the Tesla turbine as a percentage of the fuel needed with the steam turbine, as a formula in eta_s and eta_t, then evaluate it in percent."
+   },
+   "response": "**Step 1: Fuel energy for each turbine.**\n\\[ E_s = \\frac{500}{0.90} \\approx 555.6\\ \\text{MW}, \\qquad E_t = \\frac{500}{0.41} \\approx 1219.5\\ \\text{MW} \\]\n\n**Step 2: Extra fuel as a fraction.** The output cancels:\n\\[ \\frac{E_t}{E_s} - 1 = \\frac{\\eta_s}{\\eta_t} - 1 \\]\n\n**Step 3: Evaluate.**\n\\[ \\frac{0.90}{0.41} - 1 = 2.1951 - 1 = 1.1951 \\]\nThat is about 119.5% more fuel.\n\n\\[ \\boxed{119.5\\%} \\]"
+  },
+  "spec:disc_pump": {
+   "response": "**Step 1: Convert the flow.**\n\\[ Q = 60\\ \\frac{\\text{L}}{\\text{min}} = \\frac{0.060\\ \\text{m}^3}{60\\ \\text{s}} = 0.001\\ \\text{m}^3/\\text{s} \\]\n\n**Step 2: Hydraulic power.** Lifting a mass flow \\(\\rho Q\\) through height \\(H\\) needs\n\\[ P_h = \\rho g Q H \\]\n\n**Step 3: Evaluate.**\n\\[ P_h = 998 \\times 9.81 \\times 0.001 \\times 3 \\approx 29.37\\ \\text{W} \\]\n\n\\[ \\boxed{29.4} \\]"
+  }
+ }
+}

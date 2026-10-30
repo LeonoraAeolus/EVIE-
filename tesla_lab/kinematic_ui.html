@@ -1,0 +1,930 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>V8 Kinematic Simulator // EVIE</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100vw;height:100vh;overflow:hidden;background:#1a1a1a;color:#e0e0e0;font-family:'Inter',system-ui,sans-serif;user-select:none}
+#app{display:grid;grid-template-rows:auto 1fr auto;width:100vw;height:100vh}
+/* TOP BAR */
+header{display:flex;justify-content:space-between;align-items:center;padding:8px 16px;background:#252525;border-bottom:1px solid #333;gap:12px;flex-shrink:0}
+.tleft{display:flex;flex-direction:column;gap:3px}
+.title-row{display:flex;align-items:center;gap:10px}
+.eng-title{font-size:14px;font-weight:800;color:#fff;letter-spacing:.05em;text-transform:uppercase}
+.legend{display:flex;gap:5px;background:#1f1f1f;padding:2px 7px;border-radius:3px;border:1px solid #333;font-size:9px;font-weight:700;font-family:monospace}
+.li{display:flex;align-items:center;gap:3px}
+.ld{width:6px;height:6px;border-radius:50%}
+.sub{font-size:10px;color:#888;font-family:monospace;letter-spacing:.04em}
+.tach-row{display:flex;align-items:center;gap:8px;margin-top:1px}
+.rpm-num{font-size:15px;font-weight:800;color:#fff;font-family:monospace}
+#tach{display:flex;gap:2px}
+.tb{width:5px;height:9px;background:#333;border-radius:1px}
+.tb.lit{background:#e63030;box-shadow:0 0 3px rgba(230,48,48,.4)}
+.tunit{font-size:9px;color:#888;font-family:monospace}
+/* TOP RIGHT TELEMETRY */
+.tright{display:flex;align-items:center;gap:12px}
+.cylbox{border-left:1px solid #333;padding-left:14px;display:flex;flex-direction:column;gap:2px}
+.cylid{font-family:monospace;font-size:10px;font-weight:700;color:#888;display:flex;justify-content:space-between;gap:10px}
+.cylid strong{color:#fff}
+.phase-hl{font-size:17px;font-weight:800;letter-spacing:.02em}
+.quad{display:grid;grid-template-columns:1fr 1fr;gap:2px 5px;font-family:monospace;font-size:9px;font-weight:700;margin-top:1px}
+.qb{color:#444;padding:1px 3px;border-radius:2px}
+.qb.on{color:#fff;background:rgba(255,255,255,.1)}
+.press{font-family:monospace;font-size:13px;font-weight:800;color:#e63030;background:rgba(230,48,48,.1);border:1px solid rgba(230,48,48,.25);padding:4px 9px;border-radius:3px;white-space:nowrap}
+/* MAIN BODY */
+main{display:grid;grid-template-columns:248px 1fr 278px;height:100%;overflow:hidden}
+/* SIDEBARS */
+aside{background:#1f1f1f;display:flex;flex-direction:column;overflow-y:auto}
+aside.L{border-right:1px solid #333}
+aside.R{border-left:1px solid #333}
+.psec{padding:10px;border-bottom:1px solid #333;display:flex;flex-direction:column;gap:5px}
+.psec.grow{flex:1}
+.ptitle{font-family:monospace;font-size:9px;font-weight:700;color:#888;letter-spacing:.08em;text-transform:uppercase;display:flex;justify-content:space-between}
+.ptitle span.hi{color:#fff}
+.ccard{background:#161616;border:1px solid #333;border-radius:3px;overflow:hidden}
+.pcap{font-family:monospace;font-size:9px;color:#888;line-height:1.4}
+/* 3D VIEWPORT */
+#vp{position:relative;width:100%;height:100%;background:#141414;overflow:hidden}
+#host3d{width:100%;height:100%;display:block}
+/* BOTTOM BAR */
+footer{display:grid;grid-template-columns:270px 1fr auto;align-items:center;padding:7px 16px;background:#252525;border-top:1px solid #333;gap:16px;flex-shrink:0}
+.ctrl-L{display:flex;flex-direction:column;gap:5px}
+.trow{display:flex;align-items:center;gap:5px}
+.btn{background:#2a2a2a;color:#ccc;border:1px solid #333;border-radius:3px;padding:4px 9px;font-family:monospace;font-size:10px;font-weight:700;cursor:pointer;transition:all .12s}
+.btn:hover{background:#383838;color:#fff}
+.btn.red{background:#e63030;color:#fff;border-color:#e63030}
+.btn.red:hover{background:#ff4040}
+.slrow{display:flex;align-items:center;gap:6px;font-family:monospace;font-size:9px;color:#888}
+.slrow input{flex:1;height:3px;accent-color:#e63030;cursor:pointer}
+.slval{width:34px;text-align:right;color:#fff}
+.ctrl-C{display:flex;flex-direction:column;align-items:center;gap:3px}
+.ftitle{font-family:monospace;font-size:8px;font-weight:700;color:#888;letter-spacing:.08em;text-transform:uppercase}
+.pills{display:flex;gap:5px}
+.pill{width:26px;height:26px;border-radius:50%;background:#2a2a2a;border:1px solid #333;color:#888;font-family:monospace;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .12s}
+.pill:hover{border-color:#888;color:#fff}
+.pill.on{background:#e63030;color:#fff;border-color:#e63030;box-shadow:0 0 8px rgba(230,48,48,.5)}
+.fsub{font-family:monospace;font-size:8px;color:#666}
+.ctrl-R{display:flex;flex-direction:column;align-items:flex-end;gap:3px}
+.brow{display:flex;align-items:center;gap:3px}
+.blbl{font-family:monospace;font-size:8px;font-weight:700;color:#888;width:58px;text-align:right}
+.tog{background:#2a2a2a;color:#777;border:1px solid #333;border-radius:2px;padding:2px 6px;font-family:monospace;font-size:8px;font-weight:700;cursor:pointer;text-transform:uppercase;transition:all .12s}
+.tog:hover{color:#fff;background:#333}
+.tog.on{background:#e63030;color:#fff;border-color:#e63030}
+</style>
+</head>
+<body>
+<div id="app">
+
+<!-- TOP BAR -->
+<header>
+  <div class="tleft">
+    <div class="title-row">
+      <span class="eng-title">V8 · Four-Stroke</span>
+      <div class="legend">
+        <span class="li"><span class="ld" style="background:#4a9eff"></span>AIR&amp;FUEL</span>
+        <span style="color:#444">|</span>
+        <span class="li"><span class="ld" style="background:#45c97a"></span>COMPRESSED</span>
+        <span style="color:#444">|</span>
+        <span class="li"><span class="ld" style="background:#ff6b35"></span>COMBUSTION</span>
+        <span style="color:#444">|</span>
+        <span class="li"><span class="ld" style="background:#888"></span>EXHAUST</span>
+      </div>
+    </div>
+    <div class="sub">90° CROSS-PLANE · FIRING ORDER 1-8-4-3-6-5-7-2 · 5.8 L</div>
+    <div class="tach-row">
+      <span class="rpm-num" id="rpmNum">2400</span>
+      <div id="tach"></div>
+      <span class="tunit">REV/MIN</span>
+      <span style="color:#555;font-size:9px;margin-left:4px;font-family:monospace">Crankshaft</span>
+    </div>
+  </div>
+  <div class="tright">
+    <div class="cylbox">
+      <div class="cylid">
+        <span>CYLINDER <strong id="hCylNum">6</strong></span>
+        <span><strong id="hCrank">218°</strong> CRANK</span>
+      </div>
+      <div class="phase-hl" id="hPhase" style="color:#888">Exhaust</div>
+      <div class="quad">
+        <span class="qb" id="bIntake">INTAKE</span>
+        <span class="qb" id="bCompression">COMPRESSION</span>
+        <span class="qb" id="bPower">POWER</span>
+        <span class="qb on" id="bExhaust">EXHAUST ←</span>
+      </div>
+    </div>
+    <div class="press" id="hPress">1.1 BAR CHAMBER PRESS</div>
+  </div>
+</header>
+
+<!-- MAIN 3-COLUMN -->
+<main>
+  <!-- LEFT SIDEBAR -->
+  <aside class="L">
+    <div class="psec">
+      <div class="ptitle">
+        <span>SLIDER-CRANK</span>
+        <span class="hi" id="scDeg">218° ATDC</span>
+      </div>
+      <div class="ccard">
+        <canvas id="cvSC" width="226" height="190"></canvas>
+      </div>
+      <div class="pcap">
+        <strong>STROKE 88.4 MM · ROD 150 MM</strong><br>
+        <span style="color:#666">s = r·cos(θ) + √(L² − r²·sin²(θ))</span>
+      </div>
+    </div>
+    <div class="psec grow">
+      <div class="ptitle">
+        <span>CROSS-PLANE CRANK</span>
+        <span>FRONT VIEW</span>
+      </div>
+      <div class="ccard">
+        <canvas id="cvCP" width="226" height="180"></canvas>
+      </div>
+      <div class="pcap">
+        4 Journals 90° apart · Banks at ±45°<br>
+        <span style="color:#4a9eff">R BANK +45°</span> | <span style="color:#ff6b35">L BANK -45°</span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- CENTER 3D VIEWPORT -->
+  <section id="vp">
+    <div id="host3d"></div>
+  </section>
+
+  <!-- RIGHT SIDEBAR -->
+  <aside class="R">
+    <div class="psec">
+      <div class="ptitle">
+        <span>VALVE TIMING</span>
+        <span style="color:#e63030">DRAG TO SCRUB</span>
+      </div>
+      <div class="ccard">
+        <canvas id="cvVT" width="256" height="165" style="cursor:ew-resize"></canvas>
+      </div>
+      <div class="pcap" id="capVT">PISTON 6 · IN 0.00 mm · EX 0.70 mm</div>
+    </div>
+    <div class="psec grow">
+      <div class="ptitle">
+        <span>INDICATOR DIAGRAM</span>
+        <span id="pvLabel">CYL 6</span>
+      </div>
+      <div class="ccard">
+        <canvas id="cvPV" width="256" height="185"></canvas>
+      </div>
+      <div class="pcap">
+        Pressure vs Volume (Otto Cycle)<br>
+        <span style="color:#666">CR=10.5:1 · Peak ~36 Bar</span>
+      </div>
+    </div>
+  </aside>
+</main>
+
+<!-- BOTTOM BAR -->
+<footer>
+  <div class="ctrl-L">
+    <div class="trow">
+      <button class="btn red" id="btnPP" onclick="togglePlay()">■ PAUSE</button>
+      <button class="btn" onclick="step(-15)">-15°</button>
+      <button class="btn" onclick="step(+15)">+15°</button>
+    </div>
+    <div class="slrow">
+      <span>ENGINE SPEED</span>
+      <input type="range" id="slRPM" min="500" max="8000" step="50" value="2400" oninput="setRPM(+this.value)">
+      <span class="slval" id="vRPM">2400</span>
+    </div>
+    <div class="slrow">
+      <span>PLAYBACK</span>
+      <input type="range" id="slSpd" min="0.05" max="2" step="0.05" value="0.25" oninput="setSpeed(+this.value)">
+      <span class="slval" id="vSpd">1/4x</span>
+    </div>
+  </div>
+
+  <div class="ctrl-C">
+    <span class="ftitle">FIRING ORDER — CLICK TO TRACK</span>
+    <div class="pills" id="pills"></div>
+    <span class="fsub">ONE POWER STROKE EVERY 90° OF CRANK ROTATION</span>
+  </div>
+
+  <div class="ctrl-R">
+    <div class="brow">
+      <span class="blbl">CAMERA:</span>
+      <button class="tog on" id="c-HERO" onclick="cam('HERO')">HERO</button>
+      <button class="tog" id="c-FRONT" onclick="cam('FRONT')">FRONT</button>
+      <button class="tog" id="c-SIDE" onclick="cam('SIDE')">SIDE</button>
+      <button class="tog" id="c-VALLEY" onclick="cam('VALLEY')">VALLEY</button>
+      <button class="tog" id="c-CYL" onclick="cam('CYL')">CYL</button>
+    </div>
+    <div class="brow">
+      <span class="blbl">CUTAWAY:</span>
+      <button class="tog on" id="x-GLASS" onclick="cut('GLASS')">GLASS</button>
+      <button class="tog" id="x-SECTION" onclick="cut('SECTION')">SECTION</button>
+      <button class="tog" id="x-SOLID" onclick="cut('SOLID')">SOLID</button>
+    </div>
+    <div class="brow">
+      <span class="blbl">OVERLAYS:</span>
+      <button class="tog on" id="o-CALLOUTS" onclick="ovl('CALLOUTS')">CALLOUTS</button>
+      <button class="tog on" id="o-CHARGE" onclick="ovl('CHARGE')">CHARGE</button>
+      <button class="tog" id="o-ARROWS" onclick="ovl('ARROWS')">ARROWS</button>
+      <button class="tog" id="o-ISOLATE" onclick="ovl('ISOLATE')">ISOLATE</button>
+      <button class="tog" id="o-REFRACT" onclick="ovl('REFRACT')">REFRACT</button>
+      <button class="tog on" id="o-CHARTS" onclick="ovl('CHARTS')">CHARTS</button>
+    </div>
+  </div>
+</footer>
+
+</div>
+<script>
+// ═══════════════════════════════════════════════════════════════════
+// PHYSICS CONSTANTS (verified from kinematic_engine.py)
+// ═══════════════════════════════════════════════════════════════════
+const ES = {
+  bore:102, stroke:88.4, rod:150, crank_throw:44.2, cr:10.5,
+  firing:[1,8,4,3,6,5,7,2],
+  pin_phase:[0,0,90,90,270,270,180,180],
+  bank_ang:[45,-45,45,-45,45,-45,45,-45]
+};
+
+const S = {
+  playing:true, theta:218, rpm:2400, speed:0.25,
+  selCyl:6, camPreset:'HERO', cutMode:'GLASS',
+  ovl:{CALLOUTS:true,CHARGE:true,ARROWS:false,ISOLATE:false,REFRACT:false,CHARTS:true}
+};
+
+// ═══════════════════════════════════════════════════════════════════
+// KINEMATICS
+// ═══════════════════════════════════════════════════════════════════
+function pistonDist(theta, ci) {
+  const r=ES.crank_throw, L=ES.rod;
+  const eff=((theta+ES.pin_phase[ci]-ES.bank_ang[ci])%360+360)%360;
+  const rad=eff*Math.PI/180;
+  return (r+L)-(r*Math.cos(rad)+Math.sqrt(Math.max(0,L*L-r*r*Math.sin(rad)**2)));
+}
+
+function phase(theta, ci) {
+  const ca=((theta+ES.pin_phase[ci]-ES.bank_ang[ci])%720+720)%720;
+  if(ca<180) return {p:'POWER',c:'#ff6b35',l:'Combustion'};
+  if(ca<360) return {p:'EXHAUST',c:'#888',l:'Exhaust'};
+  if(ca<540) return {p:'INTAKE',c:'#4a9eff',l:'Air & Fuel'};
+  return {p:'COMPRESSION',c:'#45c97a',l:'Compressed'};
+}
+
+function pressure(dist, p) {
+  const sp=Math.min(1,Math.max(0,dist/ES.stroke));
+  if(p==='POWER') return 1+35*Math.pow(1-sp,1.3);
+  if(p==='EXHAUST') return 1.1+1.5*(1-sp);
+  if(p==='INTAKE') return 0.9;
+  return 1+14*Math.pow(1-sp,1.35);
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// TACHOMETER
+// ═══════════════════════════════════════════════════════════════════
+function initTach() {
+  const h=document.getElementById('tach');
+  h.innerHTML='';
+  for(let i=0;i<22;i++){const d=document.createElement('div');d.className='tb';h.appendChild(d);}
+}
+
+function updateTach() {
+  const blks=document.querySelectorAll('.tb');
+  const pct=Math.min(1,(S.rpm-500)/7500);
+  const lit=Math.round(pct*blks.length);
+  blks.forEach((b,i)=>b.classList.toggle('lit',i<lit));
+  document.getElementById('rpmNum').textContent=Math.round(S.rpm);
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// FIRING ORDER PILLS
+// ═══════════════════════════════════════════════════════════════════
+function initPills() {
+  const h=document.getElementById('pills');
+  h.innerHTML='';
+  ES.firing.forEach(n=>{
+    const b=document.createElement('button');
+    b.className='pill'+(n===S.selCyl?' on':'');
+    b.id='pill'+n; b.textContent=n;
+    b.onclick=()=>selCyl(n);
+    h.appendChild(b);
+  });
+}
+
+function selCyl(n) {
+  S.selCyl=n;
+  document.querySelectorAll('.pill').forEach(p=>p.classList.remove('on'));
+  const el=document.getElementById('pill'+n);
+  if(el) el.classList.add('on');
+  redrawCharts();
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// TOP BAR TELEMETRY UPDATE
+// ═══════════════════════════════════════════════════════════════════
+function updateHUD() {
+  const ci=S.selCyl-1;
+  const dist=pistonDist(S.theta,ci);
+  const {p,c,l}=phase(S.theta,ci);
+  const pr=pressure(dist,p);
+  const eff=Math.round(((S.theta+ES.pin_phase[ci]-ES.bank_ang[ci])%720+720)%720);
+
+  document.getElementById('hCylNum').textContent=S.selCyl;
+  document.getElementById('hCrank').textContent=eff+'°';
+  const ph=document.getElementById('hPhase');
+  ph.textContent=l; ph.style.color=c;
+  document.getElementById('scDeg').textContent=(eff%360)+'° ATDC';
+  document.getElementById('pvLabel').textContent='CYL '+S.selCyl;
+  document.getElementById('capVT').textContent='PISTON '+S.selCyl+' · IN 0.00 mm · EX 0.70 mm';
+
+  ['Intake','Compression','Power','Exhaust'].forEach(ph2=>{
+    const el=document.getElementById('b'+ph2);
+    if(!el) return;
+    const match=ph2.toUpperCase()===p;
+    el.className='qb'+(match?' on':'');
+    el.textContent=ph2.toUpperCase()+(match?' ←':'');
+  });
+
+  document.getElementById('hPress').textContent=pr.toFixed(1)+' BAR CHAMBER PRESS';
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// SLIDER-CRANK 2D DIAGRAM
+// ═══════════════════════════════════════════════════════════════════
+function drawSliderCrank() {
+  const cv=document.getElementById('cvSC');
+  const ctx=cv.getContext('2d');
+  const W=cv.width,H=cv.height;
+  ctx.clearRect(0,0,W,H);
+
+  const ci=S.selCyl-1;
+  const pp=ES.pin_phase[ci], ba=ES.bank_ang[ci];
+  const eff=((S.theta+pp-ba)%360+360)%360;
+  const rad=eff*Math.PI/180;
+
+  const cx=W/2, cy=H-38;
+  const r=28, L=82;
+
+  // Crank circle
+  ctx.strokeStyle='#2d2d2d'; ctx.lineWidth=1;
+  ctx.beginPath(); ctx.arc(cx,cy,r,0,Math.PI*2); ctx.stroke();
+
+  // Crankpin position
+  const px=cx+r*Math.sin(rad);
+  const py=cy-r*Math.cos(rad);
+
+  // Wrist pin position (vertical bore axis)
+  const spos=r*Math.cos(rad)+Math.sqrt(Math.max(0,L*L-r*r*Math.sin(rad)**2));
+  const wy=cy-spos;
+  const wx=cx;
+
+  // Connecting rod
+  ctx.strokeStyle='#d0d0d0'; ctx.lineWidth=2.5;
+  ctx.beginPath(); ctx.moveTo(px,py); ctx.lineTo(wx,wy); ctx.stroke();
+
+  // Crank throw arm
+  ctx.strokeStyle='#ff6b35'; ctx.lineWidth=2;
+  ctx.beginPath(); ctx.moveTo(cx,cy); ctx.lineTo(px,py); ctx.stroke();
+
+  // Crankpin dot
+  ctx.fillStyle='#fff';
+  ctx.beginPath(); ctx.arc(px,py,3.5,0,Math.PI*2); ctx.fill();
+
+  // Cylinder walls
+  const hw=22;
+  ctx.strokeStyle='#3a3a3a'; ctx.lineWidth=1;
+  ctx.beginPath();
+  ctx.moveTo(cx-hw,12); ctx.lineTo(cx-hw,cy-r-5);
+  ctx.moveTo(cx+hw,12); ctx.lineTo(cx+hw,cy-r-5);
+  ctx.stroke();
+
+  // Piston block
+  const ph=20;
+  ctx.fillStyle='#1e1e1e'; ctx.strokeStyle='#4a9eff'; ctx.lineWidth=1.5;
+  ctx.fillRect(cx-hw,wy-ph/2,hw*2,ph);
+  ctx.strokeRect(cx-hw,wy-ph/2,hw*2,ph);
+
+  // Wrist pin dot
+  ctx.fillStyle='#4a9eff';
+  ctx.beginPath(); ctx.arc(wx,wy,2.5,0,Math.PI*2); ctx.fill();
+
+  // Crank center dot
+  ctx.fillStyle='#555';
+  ctx.beginPath(); ctx.arc(cx,cy,3,0,Math.PI*2); ctx.fill();
+
+  // Stroke dimension annotation
+  ctx.strokeStyle='#333'; ctx.lineWidth=1;
+  ctx.beginPath(); ctx.moveTo(cx+hw+6,14); ctx.lineTo(cx+hw+6,cy-r-5);
+  ctx.moveTo(cx+hw+3,14); ctx.lineTo(cx+hw+9,14);
+  ctx.moveTo(cx+hw+3,cy-r-5); ctx.lineTo(cx+hw+9,cy-r-5);
+  ctx.stroke();
+  ctx.fillStyle='#666'; ctx.font='8px monospace'; ctx.textAlign='left';
+  ctx.fillText('89MM',cx+hw+11,(14+cy-r-5)/2+3);
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// CROSS-PLANE CRANK END VIEW
+// ═══════════════════════════════════════════════════════════════════
+function drawCrankEnd() {
+  const cv=document.getElementById('cvCP');
+  const ctx=cv.getContext('2d');
+  const W=cv.width,H=cv.height;
+  ctx.clearRect(0,0,W,H);
+  const cx=W/2, cy=H/2, R=48;
+
+  // Bank guide lines
+  ctx.strokeStyle='#2a2a2a'; ctx.lineWidth=1; ctx.setLineDash([3,3]);
+  [-45,45].forEach(a=>{
+    const ra=a*Math.PI/180;
+    ctx.beginPath(); ctx.moveTo(cx,cy);
+    ctx.lineTo(cx+75*Math.sin(ra),cy-75*Math.cos(ra)); ctx.stroke();
+  });
+  ctx.setLineDash([]);
+
+  // Bank labels
+  ctx.font='8px monospace'; ctx.textAlign='center';
+  ctx.fillStyle='#4a9eff'; ctx.fillText('R BANK',cx+42,cy-52);
+  ctx.fillStyle='#ff6b35'; ctx.fillText('L BANK',cx-42,cy-52);
+
+  // Throw circle
+  ctx.strokeStyle='#252525'; ctx.lineWidth=1;
+  ctx.beginPath(); ctx.arc(cx,cy,R,0,Math.PI*2); ctx.stroke();
+
+  // 4 crankpins
+  const pinPhases=[0,90,270,180];
+  const pinColors=['#ffffff','#ff6b35','#45c97a','#4a9eff'];
+  pinPhases.forEach((pp,i)=>{
+    const ra=(S.theta+pp)*Math.PI/180;
+    const px=cx+R*Math.sin(ra), py=cy-R*Math.cos(ra);
+    ctx.strokeStyle='#3a3a3a'; ctx.lineWidth=1.5;
+    ctx.beginPath(); ctx.moveTo(cx,cy); ctx.lineTo(px,py); ctx.stroke();
+    // Diamond
+    ctx.fillStyle=pinColors[i];
+    ctx.beginPath(); ctx.moveTo(px,py-5); ctx.lineTo(px+5,py);
+    ctx.lineTo(px,py+5); ctx.lineTo(px-5,py); ctx.closePath(); ctx.fill();
+    ctx.fillStyle='#888'; ctx.font='7px monospace'; ctx.textAlign='left';
+    ctx.fillText('P'+(i+1),px+7,py+3);
+  });
+
+  // Hub
+  ctx.fillStyle='#e63030';
+  ctx.beginPath(); ctx.arc(cx,cy,5,0,Math.PI*2); ctx.fill();
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// VALVE TIMING CHART
+// ═══════════════════════════════════════════════════════════════════
+function drawValveTiming() {
+  const cv=document.getElementById('cvVT');
+  const ctx=cv.getContext('2d');
+  const W=cv.width,H=cv.height;
+  ctx.clearRect(0,0,W,H);
+
+  const ci=S.selCyl-1;
+  const pp=ES.pin_phase[ci],ba=ES.bank_ang[ci];
+  const ca=((S.theta+pp-ba)%720+720)%720;
+
+  // Phase bands
+  const bands=[
+    {l:'POWER',c:'rgba(255,107,53,.1)',x0:0,x1:180},
+    {l:'EXHAUST',c:'rgba(136,136,136,.07)',x0:180,x1:360},
+    {l:'INTAKE',c:'rgba(74,158,255,.1)',x0:360,x1:540},
+    {l:'COMPRESS',c:'rgba(69,201,122,.1)',x0:540,x1:720}
+  ];
+  const yBase=H-18;
+  bands.forEach(b=>{
+    const bx=(b.x0/720)*W, bw=((b.x1-b.x0)/720)*W;
+    ctx.fillStyle=b.c; ctx.fillRect(bx,0,bw,yBase);
+    ctx.fillStyle='#555'; ctx.font='7px monospace'; ctx.textAlign='left';
+    ctx.fillText(b.l,bx+3,10);
+  });
+
+  // Baseline
+  ctx.strokeStyle='#2d2d2d'; ctx.lineWidth=1;
+  ctx.beginPath(); ctx.moveTo(0,yBase); ctx.lineTo(W,yBase); ctx.stroke();
+
+  // Intake lift curve (peaks at ~450°)
+  ctx.strokeStyle='#4a9eff'; ctx.lineWidth=1.8;
+  ctx.beginPath();
+  let first=true;
+  for(let d=0;d<=720;d+=3){
+    let lift=0;
+    if(d>=340&&d<=560) lift=Math.sin((d-340)/220*Math.PI)*40;
+    const x=(d/720)*W, y=yBase-lift;
+    first?(ctx.moveTo(x,y),first=false):ctx.lineTo(x,y);
+  }
+  ctx.stroke();
+
+  // Exhaust lift curve (peaks at ~90°)
+  ctx.strokeStyle='#888'; ctx.lineWidth=1.8;
+  ctx.beginPath(); first=true;
+  for(let d=0;d<=720;d+=3){
+    let lift=0;
+    if(d>=20&&d<=200) lift=Math.sin((d-20)/180*Math.PI)*40;
+    const x=(d/720)*W, y=yBase-lift;
+    first?(ctx.moveTo(x,y),first=false):ctx.lineTo(x,y);
+  }
+  ctx.stroke();
+
+  // Current position cursor
+  const cx2=(ca/720)*W;
+  ctx.strokeStyle='#e63030'; ctx.lineWidth=1.5;
+  ctx.beginPath(); ctx.moveTo(cx2,0); ctx.lineTo(cx2,yBase); ctx.stroke();
+
+  // Degree labels
+  ctx.fillStyle='#555'; ctx.font='7px monospace'; ctx.textAlign='center';
+  [0,180,360,540,720].forEach(d=>{
+    const x=(d/720)*W;
+    ctx.fillText(d+'°',x,H-4);
+  });
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// P-V INDICATOR DIAGRAM
+// ═══════════════════════════════════════════════════════════════════
+function drawPV() {
+  const cv=document.getElementById('cvPV');
+  const ctx=cv.getContext('2d');
+  const W=cv.width,H=cv.height;
+  ctx.clearRect(0,0,W,H);
+
+  const ci=S.selCyl-1;
+  const ca=((S.theta+ES.pin_phase[ci]-ES.bank_ang[ci])%720+720)%720;
+
+  const pad={l:28,r:10,t:10,b:20};
+  const cW=W-pad.l-pad.r, cH=H-pad.t-pad.b;
+
+  function toX(v){return pad.l+v*cW;}
+  function toY(p){return pad.t+cH-Math.min(1,p/40)*cH;}
+
+  const CR=ES.cr;
+  const Vmin=1/CR, Vmax=1.0;
+  function normV(v){return (v-Vmin)/(Vmax-Vmin);}
+
+  // Grid
+  ctx.strokeStyle='#222'; ctx.lineWidth=1;
+  for(let p=0;p<=40;p+=10){
+    const y=toY(p); ctx.beginPath(); ctx.moveTo(pad.l,y); ctx.lineTo(W-pad.r,y); ctx.stroke();
+    ctx.fillStyle='#555'; ctx.font='7px monospace'; ctx.textAlign='right';
+    ctx.fillText(p,pad.l-3,y+3);
+  }
+
+  // Otto cycle curve points
+  const pts=[];
+  // Compression: BDC(V=1,P=1) to TDC(V=1/CR,P=CR^1.35)
+  for(let d=0;d<=180;d+=6){
+    const v=1-(d/180)*(1-Vmin);
+    const p_=Math.pow(1/v,1.35);
+    pts.push({v:normV(v),p:Math.min(40,p_),phase:'COMPRESSION'});
+  }
+  // Power: TDC peak to BDC
+  const peakP=Math.pow(CR,1.35)*2.5;
+  for(let d=0;d<=180;d+=6){
+    const v=Vmin+(d/180)*(Vmax-Vmin);
+    const p_=peakP*Math.pow(Vmin/v,1.3);
+    pts.push({v:normV(v),p:Math.min(40,p_),phase:'POWER'});
+  }
+  // Exhaust (pressure drop at BDC) + Intake (back to start)
+  for(let d=0;d<=360;d+=6){
+    const v=Vmax;
+    const p_=d<180?Math.max(1,2.5-d/180*1.5):0.9;
+    pts.push({v:normV(v),p:p_,phase:d<180?'EXHAUST':'INTAKE'});
+  }
+
+  // Draw loop
+  const phaseColors={COMPRESSION:'#45c97a',POWER:'#ff6b35',EXHAUST:'#888',INTAKE:'#4a9eff'};
+  let prev=null;
+  pts.forEach(pt=>{
+    if(!prev){prev=pt;return;}
+    ctx.strokeStyle=phaseColors[pt.phase]||'#888'; ctx.lineWidth=2;
+    ctx.beginPath(); ctx.moveTo(toX(prev.v),toY(prev.p)); ctx.lineTo(toX(pt.v),toY(pt.p)); ctx.stroke();
+    prev=pt;
+  });
+
+  // Animated dot for current position
+  const phaseInfo=phase(S.theta,ci);
+  const dotColor=phaseInfo.c;
+  // Find approximate dot position
+  let dotV,dotP;
+  if(phaseInfo.p==='COMPRESSION'){
+    const frac=((ca%720))/180;
+    dotV=normV(1-(frac)*(1-Vmin));
+    dotP=Math.min(40,Math.pow(1/Math.max(Vmin,1-frac*(1-Vmin)),1.35));
+  } else if(phaseInfo.p==='POWER'){
+    const frac=((ca%720)-180)/180;
+    const v=Vmin+frac*(Vmax-Vmin);
+    dotV=normV(v);
+    const peak=Math.pow(CR,1.35)*2.5;
+    dotP=Math.min(40,peak*Math.pow(Vmin/Math.max(Vmin,v),1.3));
+  } else if(phaseInfo.p==='EXHAUST'){
+    dotV=normV(Vmax); dotP=Math.max(1,2.5-((ca%720-360)/180)*1.5);
+  } else {
+    dotV=normV(Vmax); dotP=0.9;
+  }
+  ctx.fillStyle=dotColor;
+  ctx.beginPath(); ctx.arc(toX(dotV),toY(dotP),4,0,Math.PI*2); ctx.fill();
+
+  // Axis labels
+  ctx.fillStyle='#555'; ctx.font='7px monospace'; ctx.textAlign='center';
+  ctx.fillText('BDC',W-pad.r,H-4);
+  ctx.fillText('TDC',pad.l,H-4);
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// THREE.JS 3D ENGINE
+// ═══════════════════════════════════════════════════════════════════
+let scene3,cam3,rend3,ctrl3,root3,crank3;
+const pistons3=[];
+const rods3=[];
+const SC=0.0035;
+
+const CAM_PRESETS={
+  HERO:{pos:[0.8,0.6,1.2],tgt:[0,0,0]},
+  FRONT:{pos:[0,0,2],tgt:[0,0,0]},
+  SIDE:{pos:[2,0.2,0],tgt:[0,0,0]},
+  VALLEY:{pos:[0,1.4,0.2],tgt:[0,-0.2,0]},
+  CYL:{pos:[0.3,1.1,0.4],tgt:[0.1,0,0]}
+};
+
+let matBlock,matCrank3,matRod3,matSleeveGlass;
+
+function init3D() {
+  const h=document.getElementById('host3d');
+  scene3=new THREE.Scene();
+  scene3.background=new THREE.Color(0x141414);
+
+  cam3=new THREE.PerspectiveCamera(40,h.clientWidth/h.clientHeight,0.01,50);
+  cam3.position.set(0.8,0.6,1.2);
+
+  rend3=new THREE.WebGLRenderer({antialias:true});
+  rend3.setPixelRatio(Math.min(window.devicePixelRatio,2));
+  rend3.setSize(h.clientWidth,h.clientHeight);
+  rend3.shadowMap.enabled=true;
+  rend3.localClippingEnabled=true;
+  h.appendChild(rend3.domElement);
+
+  ctrl3=new THREE.OrbitControls(cam3,rend3.domElement);
+  ctrl3.enableDamping=true; ctrl3.dampingFactor=0.06;
+
+  // Lighting
+  scene3.add(new THREE.AmbientLight(0xffffff,0.7));
+  const d1=new THREE.DirectionalLight(0xffffff,0.95);
+  d1.position.set(5,10,7); d1.castShadow=true; scene3.add(d1);
+  const d2=new THREE.DirectionalLight(0x7090b0,0.4);
+  d2.position.set(-5,-4,-6); scene3.add(d2);
+
+  const grid=new THREE.GridHelper(5,24,0x2a2a2a,0x1e1e1e);
+  grid.position.y=-0.65; scene3.add(grid);
+
+  root3=new THREE.Group(); scene3.add(root3);
+
+  // Materials
+  matBlock=new THREE.MeshStandardMaterial({color:0x262629,metalness:.85,roughness:.4,transparent:true,opacity:.35});
+  matCrank3=new THREE.MeshStandardMaterial({color:0xcccccc,metalness:.9,roughness:.25});
+  matRod3=new THREE.MeshStandardMaterial({color:0xaaaaaa,metalness:.85,roughness:.35});
+  matSleeveGlass=new THREE.MeshPhysicalMaterial({color:0x4a9eff,metalness:.1,roughness:.1,transparent:true,opacity:.25,side:THREE.DoubleSide});
+
+  buildBlock3();
+  buildCrank3();
+  buildPistons3();
+  window.addEventListener('resize',on3DResize);
+}
+
+function buildBlock3() {
+  const bg=new THREE.Group(); root3.add(bg);
+  // Crankcase box
+  const cg=new THREE.BoxGeometry(0.35*SC*100,0.16*SC*100,0.46*SC*100);
+  const cm=new THREE.Mesh(cg,matBlock); cm.position.y=-0.12; bg.add(cm);
+  // 8 cylinder sleeves
+  const bR=(ES.bore/2)*SC, bH=200*SC;
+  const geo=new THREE.CylinderGeometry(bR+.005,bR+.005,bH,20,1,true);
+  const zOffs=[-0.45,-0.15,0.15,0.45];
+  for(let i=0;i<8;i++){
+    const ba2=ES.bank_ang[i]*Math.PI/180;
+    const zi=Math.floor(i/2);
+    const sl=new THREE.Mesh(geo,matSleeveGlass);
+    sl.position.set(200*SC*Math.sin(ba2),200*SC*Math.cos(ba2),zOffs[zi]+(i%2===0?-.025:.025));
+    sl.rotation.z=-ba2;
+    bg.add(sl);
+  }
+}
+
+function buildCrank3() {
+  crank3=new THREE.Group(); root3.add(crank3);
+  // Main shaft
+  const sg=new THREE.CylinderGeometry(22*SC,22*SC,1.05,20);
+  const sm=new THREE.Mesh(sg,matCrank3); sm.rotation.x=Math.PI/2; crank3.add(sm);
+  // 4 crankpins
+  const zPins=[-0.45,-0.15,0.15,0.45];
+  const pinPhs=[0,90,270,180];
+  for(let j=0;j<4;j++){
+    const pg=new THREE.Group(); pg.position.z=zPins[j]; crank3.add(pg);
+    const paR=pinPhs[j]*Math.PI/180;
+    const thr=ES.crank_throw*SC;
+    const pin=new THREE.Mesh(new THREE.CylinderGeometry(18*SC,18*SC,68*SC,14),matCrank3);
+    pin.rotation.x=Math.PI/2;
+    pin.position.set(thr*Math.sin(paR),-thr*Math.cos(paR),0);
+    pg.add(pin);
+    // Counterweight
+    [-0.036,0.036].forEach(zo=>{
+      const wg=new THREE.BoxGeometry(55*SC,100*SC,12*SC);
+      const w=new THREE.Mesh(wg,matCrank3);
+      w.position.set(-thr*.65*Math.sin(paR),thr*.65*Math.cos(paR),zo);
+      w.rotation.z=-paR; pg.add(w);
+    });
+  }
+}
+
+function buildPistons3() {
+  const zOffs=[-0.45,-0.15,0.15,0.45];
+  const pR=(ES.bore/2-2)*SC, pH=52*SC, rL=ES.rod*SC;
+  for(let i=0;i<8;i++){
+    const zi=Math.floor(i/2);
+    const zp=zOffs[zi]+(i%2===0?-.025:.025);
+
+    // Piston
+    const pm=new THREE.MeshStandardMaterial({color:0xff6b35,metalness:.6,roughness:.35});
+    const p3=new THREE.Mesh(new THREE.CylinderGeometry(pR,pR,pH,18),pm);
+    p3.castShadow=true; root3.add(p3); pistons3.push(p3);
+
+    // Rod group
+    const rg=new THREE.Group(); root3.add(rg); rods3.push(rg);
+    const rb=new THREE.Mesh(new THREE.BoxGeometry(14*SC,rL,10*SC),matRod3);
+    rb.position.y=rL/2; rg.add(rb);
+    const be=new THREE.Mesh(new THREE.CylinderGeometry(24*SC,24*SC,14*SC,14),matRod3);
+    be.rotation.x=Math.PI/2; rg.add(be);
+    const se=new THREE.Mesh(new THREE.CylinderGeometry(13*SC,13*SC,12*SC,14),matRod3);
+    se.position.y=rL; se.rotation.x=Math.PI/2; rg.add(se);
+  }
+}
+
+function update3D(theta) {
+  if(!crank3) return;
+  crank3.rotation.z=-theta*Math.PI/180;
+  const rT=ES.crank_throw*SC, rL=ES.rod*SC;
+  const zOffs=[-0.45,-0.15,0.15,0.45];
+
+  for(let i=0;i<8;i++){
+    const ba2=ES.bank_ang[i]*Math.PI/180;
+    const pp2=ES.pin_phase[i];
+    const zi=Math.floor(i/2);
+    const zp=zOffs[zi]+(i%2===0?-.025:.025);
+
+    // Crankpin world pos
+    const pa=(theta+pp2)*Math.PI/180;
+    const cpX=rT*Math.sin(pa), cpY=-rT*Math.cos(pa);
+
+    // Wrist pin world pos along bore axis
+    const dist=pistonDist(theta,i);
+    const sLen=(ES.crank_throw+ES.rod-dist)*SC;
+    const wpX=sLen*Math.sin(ba2), wpY=sLen*Math.cos(ba2);
+
+    // Piston
+    const p3=pistons3[i];
+    p3.position.set(wpX,wpY,zp); p3.rotation.z=-ba2;
+
+    // Phase color
+    const {p,c}=phase(theta,i);
+    const isolated=S.ovl.ISOLATE&&(i+1)!==S.selCyl;
+    p3.material.color.set(isolated?'#2a2a2a':c);
+
+    // Connecting rod
+    const rg=rods3[i];
+    rg.position.set(cpX,cpY,zp);
+    const dx=wpX-cpX, dy=wpY-cpY;
+    rg.rotation.z=-Math.atan2(dx,dy);
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// CONTROLS
+// ═══════════════════════════════════════════════════════════════════
+function togglePlay() {
+  S.playing=!S.playing;
+  const btn=document.getElementById('btnPP');
+  btn.textContent=S.playing?'■ PAUSE':'▶ PLAY';
+  btn.className='btn'+(S.playing?' red':'');
+}
+
+function step(delta) {
+  S.theta=(S.theta+delta+720)%720;
+  tick();
+}
+
+function setRPM(v) {
+  S.rpm=v;
+  document.getElementById('vRPM').textContent=Math.round(v);
+  updateTach();
+}
+
+function setSpeed(v) {
+  S.speed=v;
+  const label=v>=1?v.toFixed(1)+'x':'1/'+Math.round(1/v)+'x';
+  document.getElementById('vSpd').textContent=label;
+}
+
+function cam(name) {
+  S.camPreset=name;
+  document.querySelectorAll('[id^="c-"]').forEach(b=>b.classList.remove('on'));
+  const el=document.getElementById('c-'+name); if(el) el.classList.add('on');
+  const pr=CAM_PRESETS[name]||CAM_PRESETS.HERO;
+  if(!cam3) return;
+  const sp=cam3.position.clone(), ep=new THREE.Vector3(...pr.pos);
+  const st=ctrl3.target.clone(), et=new THREE.Vector3(...pr.tgt);
+  let t=0;
+  function lerpCam(){
+    t+=0.09; cam3.position.lerpVectors(sp,ep,t);
+    ctrl3.target.lerpVectors(st,et,t); ctrl3.update();
+    if(t<1) requestAnimationFrame(lerpCam);
+  }
+  lerpCam();
+}
+
+function cut(mode) {
+  S.cutMode=mode;
+  document.querySelectorAll('[id^="x-"]').forEach(b=>b.classList.remove('on'));
+  const el=document.getElementById('x-'+mode); if(el) el.classList.add('on');
+  if(!matBlock||!rend3) return;
+  if(mode==='GLASS'){
+    matBlock.transparent=true; matBlock.opacity=0.3;
+    rend3.clippingPlanes=[];
+  } else if(mode==='SECTION'){
+    matBlock.transparent=false; matBlock.opacity=1;
+    rend3.clippingPlanes=[new THREE.Plane(new THREE.Vector3(1,0,0),0)];
+  } else {
+    matBlock.transparent=false; matBlock.opacity=1;
+    rend3.clippingPlanes=[];
+  }
+}
+
+function ovl(name) {
+  S.ovl[name]=!S.ovl[name];
+  const el=document.getElementById('o-'+name); if(el) el.classList.toggle('on',S.ovl[name]);
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// VALVE TIMING DRAG-TO-SCRUB
+// ═══════════════════════════════════════════════════════════════════
+(function(){
+  const cv=document.getElementById('cvVT');
+  let dragging=false;
+  cv.addEventListener('mousedown',e=>{dragging=true;scrub(e,cv);});
+  cv.addEventListener('mousemove',e=>{if(dragging) scrub(e,cv);});
+  window.addEventListener('mouseup',()=>{dragging=false;});
+  function scrub(e,cv){
+    const rect=cv.getBoundingClientRect();
+    const frac=Math.max(0,Math.min(1,(e.clientX-rect.left)/rect.width));
+    S.theta=frac*720; tick();
+  }
+})();
+
+// ═══════════════════════════════════════════════════════════════════
+// ANIMATION LOOP
+// ═══════════════════════════════════════════════════════════════════
+let lastT=null;
+function redrawCharts() {
+  drawSliderCrank(); drawCrankEnd(); drawValveTiming(); drawPV(); updateHUD();
+}
+
+function tick() {
+  update3D(S.theta); redrawCharts(); updateTach();
+}
+
+function animate(ts) {
+  requestAnimationFrame(animate);
+  if(S.playing) {
+    if(lastT!==null){
+      const dt=(ts-lastT)/1000;
+      const dps=(S.rpm/60)*360*S.speed;
+      S.theta=(S.theta+dps*dt)%720;
+      tick();
+    }
+    lastT=ts;
+  } else {
+    lastT=null;
+    ctrl3&&ctrl3.update();
+    rend3&&rend3.render(scene3,cam3);
+  }
+  if(S.playing){ctrl3&&ctrl3.update(); rend3&&rend3.render(scene3,cam3);}
+}
+
+function on3DResize() {
+  const h=document.getElementById('host3d');
+  if(!h||!cam3||!rend3) return;
+  cam3.aspect=h.clientWidth/h.clientHeight;
+  cam3.updateProjectionMatrix();
+  rend3.setSize(h.clientWidth,h.clientHeight);
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════════════════════════
+initTach(); initPills();
+init3D();
+tick();
+requestAnimationFrame(animate);
+</script>
+</body>
+</html>
