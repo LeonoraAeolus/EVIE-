@@ -523,7 +523,7 @@ def build_procedural_assembly(archetype: str, prompt: str = "", profile_id: str 
             "color": "#1E293B",
             "kinematics": {"type": "static"}
         })
-    elif any(k in p_lower for k in ["grip", "clamp", "jaw", "robot", "hand", "finger", "chuck"]):
+    elif matched_arch == "robotic_gripper":
         arch = "robotic_gripper"
         # Parse jaw/finger count dynamically from prompt
         num_jaws = None
@@ -687,7 +687,7 @@ def build_procedural_assembly(archetype: str, prompt: str = "", profile_id: str 
                     "color": "#EF4444",
                     "kinematics": {"type": "prismatic", "stroke": round(0.08 * scale, 3), "dir": dir_vec}
                 })
-    elif any(k in p_lower for k in ["turbine", "impeller", "pump", "fan", "blower", "compressor"]):
+    elif matched_arch == "turbine_impeller":
         arch = "turbine_impeller"
         num_blades = None
         m = re.search(r'(\d+)\s*(?:-|x|\s)?\s*(?:blade|vane|fin)', p_lower)
@@ -766,7 +766,7 @@ def build_procedural_assembly(archetype: str, prompt: str = "", profile_id: str 
             {"id": "connecting_rods", "label": "5. Articulated Rod Assemblies", "anchor": [0.0, 0.18, 0.0]}
         ]
         parts = []
-    elif any(k in p_lower for k in ["arm", "drone", "quad", "spar"]):
+    elif matched_arch == "drone_arm":
         arch = "drone_arm"
         title = "Parametric Drone Arm & Motor Truss"
         desc = "Lightweight cantilever spar resisting motor thrust and landing shocks."
