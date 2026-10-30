@@ -16,7 +16,7 @@ import re
 from typing import Any, Dict, List
 
 
-def query_tavily_cots(prompt: str) -> List[Dict[str, Any]]:
+def query_tavily_cots(prompt: str, max_results: int = 8) -> List[Dict[str, Any]]:
     """Retrieve commercial off-the-shelf hardware, standards, and datasheets via Tavily."""
     try:
         from tesla_lab.config import get_settings
@@ -26,7 +26,7 @@ def query_tavily_cots(prompt: str) -> List[Dict[str, Any]]:
             return []
         client = TavilyClient(s)
         q = f"{prompt} mechanical hardware specifications standard fasteners bearings dimensions"
-        res = client.search(q, max_results=4, depth="basic")
+        res = client.search(q, max_results=max_results, depth="basic")
         results = []
         for r in res.get("results", []):
             url = r.get("url", "")
@@ -95,7 +95,7 @@ def query_nemotron_intent(prompt: str, tavily_sources: List[Dict[str, Any]]) -> 
             return None
 
         client = OpenAI(base_url=s.nebius_base_url, api_key=s.nebius_api_key)
-        sources_summary = "\n".join([f"- {s.get('title')}: {s.get('snippet')}" for s in tavily_sources[:3]])
+        sources_summary = "\n".join([f"- {s.get('title')}: {s.get('snippet')}" for s in tavily_sources[:5]])
         
         sys_prompt = (
             "You are EVIE, a principal mechanical hardware and CAD AI engineer inspired by Spider-Man's EV tactical assistant. "
@@ -177,6 +177,109 @@ def _query_nemotron_insight(system_prompt: str, user_prompt: str) -> str | None:
         return None
 
 
+def analyze_part_photo(image_data_url: str) -> Dict[str, Any]:
+    """Analyze a broken mechanical part photo using Nemotron-3.5-Super-VL.
+
+    Extracts reverse-engineered mechanism geometry, failure diagnosis, and synthesizes
+    a reinforced 3D CAD prompt for build_procedural_assembly().
+    """
+    fallback: Dict[str, Any] = {
+        "mechanism_type": "cantilever_bracket",
+        "estimated_span_mm": 95.0,
+        "estimated_load_kg": 4.5,
+        "recommended_material": "petg_carbon",
+        "failure_mode": "Brittle tensile delamination along the root mounting radius under cyclical bending moment.",
+        "synthesized_prompt": "Reinforced gusseted cantilever bracket with 95mm span, dual M4 bolt pattern, and 45-degree stiffener ribs for 4.5kg load in petg_carbon",
+        "model": "fallback-deterministic"
+    }
+
+    if not image_data_url or not isinstance(image_data_url, str):
+        return fallback
+
+    try:
+        from tesla_lab.config import get_settings
+        from openai import OpenAI
+        s = get_settings()
+
+        if not s.nebius_api_key:
+            return fallback
+
+        client = OpenAI(base_url=s.nebius_base_url, api_key=s.nebius_api_key)
+
+        sys_prompt = (
+            "You are EVIE, a principal reverse-engineering and additive manufacturing specialist. "
+            "Analyze the provided image of a mechanical, structural, or 3D physical component (e.g. bracket, gear, linkage, impeller, organic lattice, sculpture, or housing). "
+            "Accurately identify what object this is, its physical geometry, dimensions, and provide a clear 3D CAD prompt. "
+            "Output valid JSON ONLY with these exact keys:\n"
+            "{\n"
+            '  "mechanism_type": "string",\n'
+            '  "estimated_span_mm": float,\n'
+            '  "estimated_load_kg": float,\n'
+            '  "recommended_material": "pla_tough" | "petg_carbon" | "nylon_pa12",\n'
+            '  "failure_mode": "Concise failure or geometric feature diagnosis",\n'
+            '  "synthesized_prompt": "Concise, parametric prompt describing the physical part, dimensions, features, and kinematics for 3D procedural CAD generation"\n'
+            "}\n"
+            "Respond strictly with valid JSON only."
+        )
+
+        resp = client.chat.completions.create(
+            model="nvidia/Nemotron-3.5-Super-VL",
+            messages=[
+                {"role": "system", "content": sys_prompt},
+                {
+                    "role": "user",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "Inspect this physical 3D component. Accurately identify what object this is, its physical geometry, dimensions, and provide a clear 3D CAD synthesis prompt."
+                        },
+                        {
+                            "type": "image_url",
+                            "image_url": {"url": image_data_url}
+                        }
+                    ]
+                }
+            ],
+            max_tokens=2500,
+            temperature=0.2,
+            timeout=40.0
+        )
+
+        msg = resp.choices[0].message
+        raw = (msg.content or getattr(msg, "reasoning_content", None) or "").strip()
+        raw = raw.replace("\u2011", "-").replace("—", "-")
+
+        start = raw.find("{")
+        end = raw.rfind("}")
+        if start != -1 and end != -1 and end > start:
+            parsed = robust_json_loads(raw[start:end+1])
+            mech_type = str(parsed.get("mechanism_type") or "mechanical_component").strip()
+            span_mm = float(parsed.get("estimated_span_mm") or 90.0)
+            load_kg = float(parsed.get("estimated_load_kg") or 2.5)
+
+            mat = str(parsed.get("recommended_material") or "petg_carbon").strip().lower()
+            if mat not in ["pla_tough", "petg_carbon", "nylon_pa12"]:
+                mat = "petg_carbon"
+
+            failure = str(parsed.get("failure_mode") or "Physical geometric feature detected.").strip()
+            prompt_synth = str(parsed.get("synthesized_prompt") or "").strip()
+            if not prompt_synth:
+                prompt_synth = f"Parametric 3D {mech_type} with {span_mm:.0f}mm span for {mat} 3D printing"
+
+            return {
+                "mechanism_type": mech_type,
+                "estimated_span_mm": span_mm,
+                "estimated_load_kg": load_kg,
+                "recommended_material": mat,
+                "failure_mode": failure,
+                "synthesized_prompt": prompt_synth,
+                "model": "nvidia/Nemotron-3.5-Super-VL"
+            }
+        return fallback
+    except Exception:
+        return fallback
+
+
 # ── Material Properties Library ───────────────────────────────────────────────
 MATERIALS = {
     "pla_tough": {
@@ -186,6 +289,13 @@ MATERIALS = {
         "yield_strength_z_mpa": 26.0,
         "density_g_cm3": 1.24,
         "cost_per_kg_usd": 22.0,
+        "tooling": {
+            "nozzle": "0.4mm Standard Brass",
+            "hotend_temp_c": 210,
+            "bed_temp_c": 55,
+            "chamber": "Open Frame",
+            "wear_rating": "Standard Brass"
+        }
     },
     "petg_carbon": {
         "name": "PETG Carbon",
@@ -194,6 +304,13 @@ MATERIALS = {
         "yield_strength_z_mpa": 31.0,
         "density_g_cm3": 1.29,
         "cost_per_kg_usd": 38.0,
+        "tooling": {
+            "nozzle": "0.4mm Hardened Steel",
+            "hotend_temp_c": 255,
+            "bed_temp_c": 80,
+            "chamber": "Draft Shield / Enclosed",
+            "wear_rating": "Abrasive (Hardened Steel Required)"
+        }
     },
     "nylon_pa12": {
         "name": "Nylon PA12",
@@ -202,6 +319,13 @@ MATERIALS = {
         "yield_strength_z_mpa": 35.0,
         "density_g_cm3": 1.01,
         "cost_per_kg_usd": 55.0,
+        "tooling": {
+            "nozzle": "0.4mm Hardened Steel / Ruby",
+            "hotend_temp_c": 285,
+            "bed_temp_c": 100,
+            "chamber": "Heated Enclosed Dry Box",
+            "wear_rating": "Abrasive & Hygroscopic"
+        }
     },
 }
 
@@ -688,6 +812,105 @@ def build_procedural_assembly(archetype: str, prompt: str = "", profile_id: str 
                 "kinematics": {"type": "static"}
             }
         ]
+    elif any(k in p_lower for k in [
+        "organic", "sculpture", "biomorphic", "ribbon", "lattice", "torus",
+        "minimal surface", "art", "fluid", "curvilinear", "gyroid"
+    ]):
+        arch = "organic_sculpture"
+        title = "Biomorphic Curvilinear Lattice Sculpture"
+        desc = "Continuous fluid 3D spline ribbons with an interlocking topological torus knot void and cantilevered aerodynamic wing."
+        gov_eq = r"\nabla^2 \phi = 2H, \quad \sigma_{max} = \frac{M_{cantilever} \cdot c}{I} \le \frac{\sigma_y}{SF}"
+        rows = [
+            {"key": "Mean Curvature", "val": f"{0.18 / scale:.3f} mm⁻¹ (H ≈ 0 Minimal Surface)"},
+            {"key": "Cantilever Span", "val": f"{base_span * scale * 1.15:.1f} mm Overhang Reach"},
+            {"key": "Ribbon Thickness", "val": f"{4.2 * scale:.1f} mm Variable Smooth Shell"},
+            {"key": "Safety Factor", "val": f"{target_sf:.2f}x Structural Self-Weight"}
+        ]
+        ribbon_pts = [
+            [-0.32 * scale, -0.15 * scale, 0.18 * scale],
+            [-0.18 * scale, 0.08 * scale, 0.32 * scale],
+            [0.06 * scale, 0.32 * scale, 0.22 * scale],
+            [0.28 * scale, 0.42 * scale, 0.04 * scale],
+            [0.42 * scale, 0.22 * scale, -0.18 * scale],
+            [0.18 * scale, 0.04 * scale, -0.32 * scale],
+            [-0.12 * scale, -0.10 * scale, -0.18 * scale],
+            [-0.22 * scale, -0.14 * scale, 0.06 * scale],
+        ]
+        wing_pts = [
+            [0.06 * scale, 0.12 * scale, -0.04 * scale],
+            [0.24 * scale, 0.26 * scale, -0.14 * scale],
+            [0.52 * scale, 0.40 * scale, -0.04 * scale],
+            [0.65 * scale, 0.50 * scale, 0.16 * scale],
+            [0.48 * scale, 0.45 * scale, 0.30 * scale],
+            [0.22 * scale, 0.30 * scale, 0.20 * scale],
+        ]
+        parts = [
+            {
+                "id": "primary_flowing_ribbon",
+                "name": "Primary Flowing Biomorphic Ribbon",
+                "primitive": "spline_ribbon",
+                "dimensions": {
+                    "tube_radius": round(0.045 * scale, 3),
+                    "tubular_segments": 64,
+                    "radial_segments": 14
+                },
+                "curve_points": [[round(c, 3) for c in pt] for pt in ribbon_pts],
+                "position": [0.0, 0.0, 0.0],
+                "rotation": [0.0, 0.0, 0.0],
+                "material": "sculptural_ceramic",
+                "color": "#F8FAFC",
+                "kinematics": {"type": "revolute", "axis": "y", "speed_ratio": 0.2}
+            },
+            {
+                "id": "interlocking_lattice_knot",
+                "name": "Interlocking Curvilinear Lattice Knot",
+                "primitive": "torus_knot",
+                "dimensions": {
+                    "radius": round(0.24 * scale, 3),
+                    "tube": round(0.042 * scale, 3),
+                    "p": 2,
+                    "q": 3,
+                    "tubular_segments": 128,
+                    "radial_segments": 16
+                },
+                "position": [0.0, round(0.18 * scale, 3), 0.0],
+                "rotation": [0.35, 0.20, 0.0],
+                "material": "sculptural_ceramic",
+                "color": "#FFFFFF",
+                "kinematics": {"type": "revolute", "axis": "y", "speed_ratio": 0.3}
+            },
+            {
+                "id": "cantilever_overhang_wing",
+                "name": "Cantilevered Overhang Wing",
+                "primitive": "spline_ribbon",
+                "dimensions": {
+                    "tube_radius": round(0.038 * scale, 3),
+                    "tubular_segments": 48,
+                    "radial_segments": 12
+                },
+                "curve_points": [[round(c, 3) for c in pt] for pt in wing_pts],
+                "position": [0.0, 0.0, 0.0],
+                "rotation": [0.0, 0.0, 0.0],
+                "material": "sculptural_ceramic",
+                "color": "#F1F5F9",
+                "kinematics": {"type": "flexure", "axis": "y", "amplitude": 0.2}
+            },
+            {
+                "id": "sculpture_pedestal",
+                "name": "Biomorphic Sculptural Pedestal Base",
+                "primitive": "organic_pedestal",
+                "dimensions": {
+                    "radius_bottom": round(0.42 * scale, 3),
+                    "radius_top": round(0.30 * scale, 3),
+                    "height": round(0.14 * scale, 3)
+                },
+                "position": [0.0, round(-0.24 * scale, 3), 0.0],
+                "rotation": [0.0, 0.0, 0.0],
+                "material": "sculptural_ceramic",
+                "color": "#E2E8F0",
+                "kinematics": {"type": "static"}
+            }
+        ]
     elif any(k in p_lower for k in ["hinge", "flexure", "compliant", "bistable", "cantilever"]):
         arch = "flexure_hinge"
         title = "Reinforced Replacement Hinge Assembly"
@@ -881,7 +1104,7 @@ def build_procedural_assembly(archetype: str, prompt: str = "", profile_id: str 
 def extract_intent(prompt: str) -> Dict[str, Any]:
     """Parse user prompt and return identified archetype with smart defaults, grounded by Tavily and Nemotron."""
     # 1. Real-time COTS hardware and standards research via Tavily
-    tavily_sources = query_tavily_cots(prompt)
+    tavily_sources = query_tavily_cots(prompt, max_results=8)
 
     # 2. Real-time Nemotron synthesis
     nemotron_data = query_nemotron_intent(prompt, tavily_sources)
@@ -952,6 +1175,11 @@ def size_candidates(specs: Dict[str, Any]) -> Dict[str, Any]:
             archetype = "drone_arm"
         elif any(k in p_lower for k in ["bracket", "mount", "extrusion", "gusset", "shelf"]):
             archetype = "equipment_bracket"
+        elif any(k in p_lower for k in [
+            "organic", "sculpture", "biomorphic", "ribbon", "lattice", "torus",
+            "minimal surface", "art", "fluid", "curvilinear", "gyroid"
+        ]):
+            archetype = "organic_sculpture"
         elif any(k in p_lower for k in ["hinge", "flexure", "compliant", "bistable", "cantilever"]):
             archetype = "flexure_hinge"
         elif not archetype:
@@ -1033,7 +1261,19 @@ def size_candidates(specs: Dict[str, Any]) -> Dict[str, Any]:
                 {"part": "M3 Heat-Set Threaded Insert", "qty": 2, "unit": "Brass", "cost": "$0.15"},
             ]
 
-        if archetype == "kinematic_engine":
+        if archetype == "organic_sculpture":
+            T_mm = 2.8 if prof["id"] == "lightweight" else (4.2 if prof["id"] == "balanced" else 6.0)
+            W_mm = round(T_mm * 3.5, 1)
+            vol_cm3 = (span_mm * W_mm * T_mm) / 1000.0 * (prof["infill"] / 100.0 + 0.35)
+            weight_g = round(vol_cm3 * mat["density_g_cm3"] * 1.8, 1)
+            print_time_min = max(25, round(weight_g * 2.2 + prof["walls"] * 4.0))
+            cost_usd = round((weight_g / 1000.0) * mat["cost_per_kg_usd"], 2)
+            bom = [
+                {"part": f"3D Printed Biomorphic Monolith ({mat['name']})", "qty": 1, "unit": f"{weight_g}g", "cost": f"${cost_usd}"},
+                {"part": "Non-Slip Weighted Base Pads", "qty": 4, "unit": "Silicone Elastomer", "cost": "$0.40"},
+                {"part": "Internal Alignment Reinforcement Dowel", "qty": 1, "unit": "Carbon Fiber", "cost": "$0.60"}
+            ]
+        elif archetype == "kinematic_engine":
             if prof["id"] == "lightweight":
                 bore_mm, stroke_mm, rod_mm = 85.0, 70.0, 120.0
                 scale_ratio = 0.62
@@ -1090,6 +1330,7 @@ def size_candidates(specs: Dict[str, Any]) -> Dict[str, Any]:
                 "walls_count": prof["walls"],
                 "material_name": mat["name"],
                 "material_key": mat_key,
+                "tooling": mat.get("tooling", {}),
                 "youngs_modulus_gpa": E_gpa,
                 "mount_pattern": mount_pat,
                 "scale_ratio": scale_ratio,
@@ -1137,6 +1378,7 @@ def size_candidates(specs: Dict[str, Any]) -> Dict[str, Any]:
             "walls_count": prof["walls"],
             "material_name": mat["name"],
             "material_key": mat_key,
+            "tooling": mat.get("tooling", {}),
             "youngs_modulus_gpa": E_gpa,
             "mount_pattern": mount_pat,
             "bom": bom,
@@ -1350,6 +1592,91 @@ def _cylinder_facets(cx: float, cy: float, cz: float, radius: float, height: flo
     return facets
 
 
+def _tube_mesh_facets(points: List[tuple], radius: float, radial_segments: int = 12, closed: bool = False):
+    """Generate manifold STL facets for a 3D tubular mesh around a centerline curve."""
+    if len(points) < 2:
+        return []
+    ring_points = []
+    prev_normal = None
+    N = len(points)
+    for i in range(N):
+        p_curr = points[i]
+        if closed:
+            p_prev = points[(i - 1 + N) % N]
+            p_next = points[(i + 1) % N]
+        else:
+            p_prev = points[max(0, i - 1)]
+            p_next = points[min(N - 1, i + 1)]
+        tx = p_next[0] - p_prev[0]
+        ty = p_next[1] - p_prev[1]
+        tz = p_next[2] - p_prev[2]
+        t_len = math.sqrt(tx*tx + ty*ty + tz*tz)
+        if t_len < 1e-9:
+            tx, ty, tz = 0.0, 1.0, 0.0
+        else:
+            tx, ty, tz = tx / t_len, ty / t_len, tz / t_len
+        if prev_normal is None:
+            vx, vy, vz = (1.0, 0.0, 0.0) if abs(tx) < 0.8 else (0.0, 1.0, 0.0)
+            dot = vx*tx + vy*ty + vz*tz
+            nx, ny, nz = vx - dot*tx, vy - dot*ty, vz - dot*tz
+            n_len = math.sqrt(nx*nx + ny*ny + nz*nz)
+            nx, ny, nz = nx / n_len, ny / n_len, nz / n_len
+        else:
+            dot = prev_normal[0]*tx + prev_normal[1]*ty + prev_normal[2]*tz
+            nx, ny, nz = prev_normal[0] - dot*tx, prev_normal[1] - dot*ty, prev_normal[2] - dot*tz
+            n_len = math.sqrt(nx*nx + ny*ny + nz*nz)
+            if n_len < 1e-6:
+                nx, ny, nz = 0.0, 1.0, 0.0
+            else:
+                nx, ny, nz = nx / n_len, ny / n_len, nz / n_len
+        prev_normal = (nx, ny, nz)
+        bx = ty*nz - tz*ny
+        by = tz*nx - tx*nz
+        bz = tx*ny - ty*nx
+        ring = []
+        for j in range(radial_segments):
+            theta = 2.0 * math.pi * j / radial_segments
+            cos_t, sin_t = math.cos(theta), math.sin(theta)
+            vx = p_curr[0] + radius * (cos_t * nx + sin_t * bx)
+            vy = p_curr[1] + radius * (cos_t * ny + sin_t * by)
+            vz = p_curr[2] + radius * (cos_t * nz + sin_t * bz)
+            ring.append((vx, vy, vz))
+        ring_points.append(ring)
+
+    facets = []
+    def calc_normal(v1, v2, v3):
+        ax, ay, az = v2[0] - v1[0], v2[1] - v1[1], v2[2] - v1[2]
+        bx, by, bz = v3[0] - v1[0], v3[1] - v1[1], v3[2] - v1[2]
+        nx = ay*bz - az*by
+        ny = az*bx - ax*bz
+        nz = ax*by - ay*bx
+        l = math.sqrt(nx*nx + ny*ny + nz*nz)
+        return (nx/l, ny/l, nz/l) if l > 1e-9 else (0.0, 1.0, 0.0)
+
+    num_rings = len(ring_points)
+    end_i = num_rings if closed else num_rings - 1
+    for i in range(end_i):
+        r1 = ring_points[i]
+        r2 = ring_points[(i + 1) % num_rings]
+        for j in range(radial_segments):
+            j_next = (j + 1) % radial_segments
+            v1, v2 = r1[j], r2[j]
+            v3, v4 = r2[j_next], r1[j_next]
+            facets.append((calc_normal(v1, v2, v3), [v1, v2, v3]))
+            facets.append((calc_normal(v1, v3, v4), [v1, v3, v4]))
+
+    if not closed:
+        p0, r0 = points[0], ring_points[0]
+        for j in range(radial_segments):
+            j_next = (j + 1) % radial_segments
+            facets.append((calc_normal(p0, r0[j_next], r0[j]), [p0, r0[j_next], r0[j]]))
+        pend, rend = points[-1], ring_points[-1]
+        for j in range(radial_segments):
+            j_next = (j + 1) % radial_segments
+            facets.append((calc_normal(pend, rend[j], rend[j_next]), [pend, rend[j], rend[j_next]]))
+    return facets
+
+
 def generate_stl_for_candidate(candidate: Dict[str, Any]) -> str:
     """Generate manifold ASCII STL mesh directly from sized candidate dimensions and archetype."""
     archetype = candidate.get("archetype", "drone_arm")
@@ -1383,6 +1710,56 @@ def generate_stl_for_candidate(candidate: Dict[str, Any]) -> str:
                 r = (dims.get("radius") or dims.get("r") or 0.2) * sc
                 h = (dims.get("height") or dims.get("h") or 0.2) * sc
                 facets.extend(_cylinder_facets(px, py, pz, r, h, axis="y", segments=16))
+            elif prim == "torus_knot":
+                r_major = (dims.get("radius") or 0.24) * sc
+                r_tube = (dims.get("tube") or 0.042) * sc
+                p_k = int(dims.get("p") or 2)
+                q_k = int(dims.get("q") or 3)
+                r_knot = r_major * 0.36
+                knot_steps = 72
+                knot_points = []
+                for k in range(knot_steps):
+                    u = 2.0 * math.pi * k / knot_steps
+                    r_u = r_major + r_knot * math.cos(q_k * u)
+                    kx = px + r_u * math.cos(p_k * u)
+                    ky = py + r_knot * math.sin(q_k * u)
+                    kz = pz + r_u * math.sin(p_k * u)
+                    knot_points.append((kx, ky, kz))
+                facets.extend(_tube_mesh_facets(knot_points, r_tube, radial_segments=12, closed=True))
+            elif prim in ["spline_ribbon", "tube_curve"]:
+                r_tube = (dims.get("tube_radius") or 0.042) * sc
+                raw_pts = p.get("curve_points", [])
+                if not raw_pts:
+                    raw_pts = [[-0.2, 0.0, 0.0], [0.0, 0.2, 0.1], [0.2, 0.0, 0.0]]
+                sub_pts = []
+                for idx in range(len(raw_pts) - 1):
+                    p_a, p_b = raw_pts[idx], raw_pts[idx + 1]
+                    for sub in range(4):
+                        t = sub / 4.0
+                        sx = px + (p_a[0] + (p_b[0] - p_a[0]) * t) * sc
+                        sy = py + (p_a[1] + (p_b[1] - p_a[1]) * t) * sc
+                        sz = pz + (p_a[2] + (p_b[2] - p_a[2]) * t) * sc
+                        sub_pts.append((sx, sy, sz))
+                last_pt = raw_pts[-1]
+                sub_pts.append((px + last_pt[0] * sc, py + last_pt[1] * sc, pz + last_pt[2] * sc))
+                facets.extend(_tube_mesh_facets(sub_pts, r_tube, radial_segments=12, closed=False))
+            elif prim == "organic_pedestal":
+                r_bot = (dims.get("radius_bottom") or 0.42) * sc
+                r_top = (dims.get("radius_top") or 0.30) * sc
+                h = (dims.get("height") or 0.14) * sc
+                h2 = h / 2.0
+                segs = 24
+                for i in range(segs):
+                    a1, a2 = 2 * math.pi * i / segs, 2 * math.pi * (i + 1) / segs
+                    x_b1, z_b1 = px + r_bot * math.cos(a1), pz + r_bot * math.sin(a1)
+                    x_b2, z_b2 = px + r_bot * math.cos(a2), pz + r_bot * math.sin(a2)
+                    x_t1, z_t1 = px + r_top * math.cos(a1), pz + r_top * math.sin(a1)
+                    x_t2, z_t2 = px + r_top * math.cos(a2), pz + r_top * math.sin(a2)
+                    y_bot, y_top = py - h2, py + h2
+                    facets.append(((math.cos((a1+a2)/2), 0.2, math.sin((a1+a2)/2)), [(x_t1, y_top, z_t1), (x_b1, y_bot, z_b1), (x_b2, y_bot, z_b2)]))
+                    facets.append(((math.cos((a1+a2)/2), 0.2, math.sin((a1+a2)/2)), [(x_t1, y_top, z_t1), (x_b2, y_bot, z_b2), (x_t2, y_top, z_t2)]))
+                    facets.append(((0, 1, 0), [(px, y_top, pz), (x_t1, y_top, z_t1), (x_t2, y_top, z_t2)]))
+                    facets.append(((0, -1, 0), [(px, y_bot, pz), (x_b2, y_bot, z_b2), (x_b1, y_bot, z_b1)]))
     elif archetype == "equipment_bracket":
         # 90-degree Gusseted L-Bracket:
         # 1. Base horizontal plate

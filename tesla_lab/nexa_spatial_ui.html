@@ -414,6 +414,22 @@
       border-color: var(--accent-orange);
       background: rgba(255, 85, 0, 0.02);
     }
+    .photo-dropzone.dragover {
+      border-color: var(--accent-orange);
+      background: rgba(255, 85, 0, 0.08);
+      transform: scale(1.01);
+    }
+    .photo-spinner {
+      width: 24px;
+      height: 24px;
+      border: 3px solid rgba(249, 115, 22, 0.2);
+      border-top-color: var(--accent-orange);
+      border-radius: 50%;
+      animation: spin-radar 0.8s linear infinite;
+    }
+    @keyframes spin-radar {
+      to { transform: rotate(360deg); }
+    }
     .radar-line {
       position: absolute;
       top: 0;
@@ -586,6 +602,62 @@
     .btn-generate:hover svg {
       opacity: 1;
       transform: translateX(3px);
+    }
+
+    /* Filament Material Selector Pills */
+    .material-preset-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin: 10px 0 16px 0;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 8px 12px;
+      border-radius: 10px;
+    }
+    .mat-pill-group {
+      display: flex;
+      gap: 6px;
+    }
+    .mat-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 10px;
+      border-radius: 7px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #D1D5DB;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .mat-pill:hover {
+      background: rgba(255, 255, 255, 0.1);
+      color: #FFF;
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+    .mat-pill.active {
+      background: rgba(255, 255, 255, 0.16);
+      color: #FFF;
+      border-color: var(--accent-orange);
+      box-shadow: 0 0 10px rgba(255, 102, 0, 0.2);
+    }
+    .mat-swatch {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+    .mat-price {
+      font-size: 9px;
+      color: #9CA3AF;
+      background: rgba(0, 0, 0, 0.3);
+      padding: 1px 4px;
+      border-radius: 3px;
     }
 
     /* ── STAGE 2: LIVING WORKSHOP MANUAL ─────────────── */
@@ -1502,16 +1574,42 @@
 
       <!-- Mode 1: Conversational Idea -->
       <div class="mode-panel active" id="panel-idea">
-        <textarea class="intake-input-box" id="idea-text" onkeydown="if(event.key === 'Enter' && !event.shiftKey) { event.preventDefault(); startSynthesis(); }" placeholder="Describe any physical mechanism, kinematics, or assembly (e.g. '5-planet reduction gearbox with 16T sun gear', '3-jaw concentric chuck', '12-blade high-pressure impeller', or '6-bar kinematic linkage')">Compound 5-Planet Reduction Gearbox with 16T sun gear</textarea>
+        <textarea class="intake-input-box" id="idea-text" onkeydown="if(event.key === 'Enter' && !event.shiftKey) { event.preventDefault(); startSynthesis(); }" placeholder="Describe any physical mechanism, kinematics, biomorphic sculpture, or assembly (e.g. 'Biomorphic curvilinear ribbon sculpture with lattice knot', 'Compound planetary gearbox', '12-blade high-pressure impeller', or '6-bar kinematic linkage')"></textarea>
       </div>
 
       <!-- Mode 2: Broken Part Photo Scan -->
       <div class="mode-panel" id="panel-photo">
-        <div class="photo-dropzone" id="photo-drop" onclick="injectPrompt('Broken Bracket')">
-          <div class="radar-line"></div>
-          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
-          <span style="font-size:13px; font-weight:600;">Drop broken part photo or caliper measurement scan</span>
-          <span style="font-size:11px; color:var(--text-tertiary); font-family:'JetBrains Mono', monospace;">Auto-calibrating 20mm reference grid & edge detection</span>
+        <input type="file" id="photo-file-input" accept="image/*" style="display:none;" onchange="handlePhotoFile(this.files[0])">
+        <div class="photo-dropzone" id="photo-drop" onclick="document.getElementById('photo-file-input').click()" ondragover="handlePhotoDragOver(event)" ondragleave="handlePhotoDragLeave(event)" ondrop="handlePhotoDrop(event)">
+          <div class="radar-line" id="photo-radar"></div>
+          <div id="photo-drop-content" style="display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px; text-align:center; padding:16px;">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+            <span style="font-size:13px; font-weight:600;">Drop broken part photo or click to upload</span>
+            <span style="font-size:11px; color:var(--text-tertiary); font-family:'JetBrains Mono', monospace;">Nemotron-3.5-Super-VL physical reverse-engineering</span>
+          </div>
+          <div id="photo-status" style="display:none; flex-direction:column; align-items:center; gap:10px; padding:14px; text-align:center;"></div>
+        </div>
+      </div>
+
+      <!-- Material & Tooling Preset Pills -->
+      <div class="material-preset-bar" id="intake-mat-bar">
+        <span style="font-family:'JetBrains Mono', monospace; font-size:10px; font-weight:700; color:var(--text-secondary); text-transform:uppercase; letter-spacing:0.04em;">FILAMENT</span>
+        <div class="mat-pill-group">
+          <button type="button" class="mat-pill active" id="mpill-pla_tough" onclick="selectMaterialPreset('pla_tough')">
+            <span class="mat-swatch" style="background:#3B82F6;"></span>
+            <span>PLA+ Tough</span>
+            <span class="mat-price">$22/kg</span>
+          </button>
+          <button type="button" class="mat-pill" id="mpill-petg_carbon" onclick="selectMaterialPreset('petg_carbon')">
+            <span class="mat-swatch" style="background:#10B981;"></span>
+            <span>PETG-CF</span>
+            <span class="mat-price">$38/kg</span>
+          </button>
+          <button type="button" class="mat-pill" id="mpill-nylon_pa12" onclick="selectMaterialPreset('nylon_pa12')">
+            <span class="mat-swatch" style="background:#F59E0B;"></span>
+            <span>Nylon PA12</span>
+            <span class="mat-price">$55/kg</span>
+          </button>
         </div>
       </div>
 
@@ -1582,6 +1680,18 @@
 
       <div class="kin-sep"></div>
 
+      <!-- Live Material Switcher -->
+      <div style="display:flex; align-items:center; gap:6px;">
+        <span style="font-family:'JetBrains Mono'; font-size:10px; font-weight:700; color:var(--text-secondary); letter-spacing:0.04em;">MAT</span>
+        <div class="kin-subgroup" id="dock-mat-group">
+          <button class="kin-pill-btn active" id="dmat-pla_tough" onclick="switchActiveMaterial('pla_tough')">PLA+</button>
+          <button class="kin-pill-btn" id="dmat-petg_carbon" onclick="switchActiveMaterial('petg_carbon')">PETG-CF</button>
+          <button class="kin-pill-btn" id="dmat-nylon_pa12" onclick="switchActiveMaterial('nylon_pa12')">PA12</button>
+        </div>
+      </div>
+
+      <div class="kin-sep"></div>
+
       <!-- Direct STL Download -->
       <button class="kin-pill-btn primary" onclick="downloadPhysicalSTL()" title="Download watertight 3D printer STL" style="white-space:nowrap; flex-shrink:0;">
         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
@@ -1626,6 +1736,7 @@
           <div class="meter-tick"></div>
         </div>
         <span class="tel-subtext" id="tel-hardware-note">Fasteners: M3×20mm Socket Head × 2</span>
+        <div id="tel-tooling-note" style="font-family:'JetBrains Mono', monospace; font-size:10px; color:#10B981; margin-top:2px;">Tooling: 0.4mm Brass • 210°C • Open Bed</div>
         <button class="btn-download-stl" onclick="downloadPhysicalSTL()">
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
           Download STL / G-Code
@@ -1656,12 +1767,16 @@
     <div class="drawer-tab-bar">
       <button class="drawer-tab-btn active" id="tab-btn-inspection" onclick="switchDrawerTab('inspection')">
         <span class="tab-icon">🧮</span>
-        <span>Technical Inspection</span>
+        <span>Inspection</span>
       </button>
       <button class="drawer-tab-btn" id="tab-btn-testing" onclick="switchDrawerTab('testing')">
         <span class="tab-icon">🧪</span>
         <span>Testing Log</span>
         <span class="tab-rev-pill" id="tab-rev-pill">REV 1.0</span>
+      </button>
+      <button class="drawer-tab-btn" id="tab-btn-sources" onclick="switchDrawerTab('sources')">
+        <span class="tab-icon">🌐</span>
+        <span>Sources & BOM</span>
       </button>
     </div>
 
@@ -1751,74 +1866,69 @@
             <span id="drawer-bom-cost" style="font-size:10px; color:var(--accent-orange); font-weight:600;">$6.16 USD</span>
           </div>
         </div>
-        <div style="margin-top:8px; font-family:'JetBrains Mono'; font-size:11px; color:#9CA3AF; background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.05); border-radius:8px; padding:8px 12px; line-height:1.4;">
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
-            <strong style="color:#E5E7EB;">Commercial Hardware BOM:</strong>
-            <span style="font-size:9px; color:var(--accent-green); font-weight:700;">VERIFIED COTS</span>
-          </div>
-          <div id="drawer-bom-items" style="display:flex; flex-direction:column; gap:4px; margin-top:4px;">
+      </div>
+    </div>
+
+    <!-- TAB 2: Testing Log & Minimal Revision Loop -->
+    <div class="drawer-tab-panel" id="panel-testing" style="display:none;">
+      <!-- Active Build Status Indicator -->
+      <div style="display:flex; justify-content:space-between; align-items:center; background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08); border-radius:10px; padding:10px 14px;">
+        <div style="display:flex; align-items:center; gap:8px;">
+          <span class="fig-badge" id="disp-fig-rev">REV 1.0</span>
+        </div>
+        <span class="fig-subtitle" id="disp-rev-subtitle" style="font-size:11px; color:#9CA3AF; margin:0; text-align:right; max-width:210px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">Initial sizing</span>
+      </div>
+
+      <!-- Focused Feedback Form -->
+      <div style="display:flex; flex-direction:column; gap:10px;">
+        <label for="test-feedback-text" style="font-family:'JetBrains Mono'; font-size:11px; font-weight:700; color:#F3F4F6; text-transform:uppercase; letter-spacing:0.04em;">Physical Feedback</label>
+        <textarea class="test-textarea" id="test-feedback-text" 
+          onkeydown="if(event.key === 'Enter' && !event.shiftKey) { event.preventDefault(); submitTestFeedback(); }" 
+          placeholder="Enter physical test feedback (e.g. 'Gear teeth skipped under 12 Nm torque', 'Bearing bore 0.15mm too loose', or 'Add 2mm reinforcement rib')..." 
+          style="width:100%; min-height:105px; background:rgba(0,0,0,0.35); border:1px solid rgba(255,255,255,0.12); border-radius:10px; padding:12px 14px; color:#FFF; font-family:'Inter', sans-serif; font-size:13px; resize:vertical; line-height:1.5; outline:none; transition:border 0.2s ease;"></textarea>
+
+        <button class="btn-submit-test" id="btn-submit-test" onclick="submitTestFeedback()" 
+          style="width:100%; height:44px; display:flex; align-items:center; justify-content:center; gap:8px; background:var(--accent-orange); color:#FFF; border:none; border-radius:10px; font-family:'Inter', sans-serif; font-size:13px; font-weight:600; cursor:pointer; transition:all 0.2s ease; box-shadow:0 4px 14px rgba(255,85,0,0.25);">
+          <span id="btn-submit-test-text">Apply Feedback & Build New Rev →</span>
+        </button>
+      </div>
+
+      <!-- Compact Past Builds Rollback -->
+      <div style="margin-top:8px; border-top:1px solid rgba(255,255,255,0.08); padding-top:12px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+          <span class="section-eyebrow" style="margin:0; font-size:10px;">Build History</span>
+          <span style="font-family:'JetBrains Mono'; font-size:10px; color:#6B7280;">Click to restore past 3D model</span>
+        </div>
+        <div class="rev-log-list" id="rev-log-list" style="display:flex; flex-direction:column; gap:6px;">
+          <!-- Populated by updateRevLog() -->
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 3: Sources & Hardware BOM -->
+    <div class="drawer-tab-panel" id="panel-sources" style="display:none;">
+      <!-- Commercial Hardware BOM -->
+      <div class="drawer-section">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+          <span class="section-eyebrow" style="margin:0;">1. Commercial Hardware BOM</span>
+          <span style="font-family:'JetBrains Mono'; font-size:9px; color:var(--accent-green); font-weight:700; background:rgba(16,185,129,0.12); border:1px solid rgba(16,185,129,0.3); padding:2px 6px; border-radius:4px;">VERIFIED COTS</span>
+        </div>
+        <div style="font-family:'JetBrains Mono'; font-size:11px; color:#9CA3AF; background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.06); border-radius:10px; padding:12px 14px; line-height:1.4;">
+          <div id="drawer-tooling-box" style="margin-bottom:10px;"></div>
+          <div id="drawer-bom-items" style="display:flex; flex-direction:column; gap:6px;">
             <!-- Dynamically populated BOM items -->
           </div>
         </div>
       </div>
 
-      <!-- 5. Web Sourced Hardware & Prior Art (Tavily Intelligence) -->
-      <div class="drawer-section">
-        <div style="display:flex; justify-content:space-between; align-items:center;">
-          <span class="section-eyebrow">5. Web Sourced Hardware & Prior Art</span>
-          <span style="font-family:'JetBrains Mono'; font-size:9px; font-weight:700; color:#38BDF8; background:rgba(56,189,248,0.12); border:1px solid rgba(56,189,248,0.3); padding:2px 6px; border-radius:4px;">TAVILY GROUNDED</span>
-        </div>
-        <div id="drawer-tavily-sources" style="display:flex; flex-direction:column; gap:8px; margin-top:8px;">
-          <!-- Dynamically populated from Tavily search results -->
-        </div>
-      </div>
-    </div>
-
-    <!-- TAB 2: Testing Log & Revisions -->
-    <div class="drawer-tab-panel" id="panel-testing" style="display:none;">
-      <!-- Active Revision Header Card -->
-      <div class="drawer-section">
-        <div style="background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.1); border-radius:12px; padding:14px 16px;">
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-            <div style="display:flex; align-items:center; gap:8px;">
-              <span class="fig-badge" id="disp-fig-rev">FIG. 45 / REV 1.0</span>
-              <span class="rev-status-chip" id="disp-rev-status" style="font-family:'JetBrains Mono'; font-size:10px; font-weight:700; color:#34D399; background:rgba(16,185,129,0.14); border:1px solid rgba(16,185,129,0.3); padding:3px 8px; border-radius:6px;">VERIFIED</span>
-            </div>
-            <span style="font-family:'JetBrains Mono'; font-size:10px; color:#9CA3AF;">Active Iteration</span>
-          </div>
-          <p class="fig-subtitle" id="disp-rev-subtitle" style="font-size:12px; line-height:1.45; color:#D1D5DB; margin:0;">
-            Balanced Production candidate: 4 perimeters solid cross-section, zero-support orientation.
-          </p>
-        </div>
-
-        <!-- Failure Logging & AI Diagnosis Form -->
-        <div class="test-feedback-wrap" style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08); border-radius:12px; padding:14px; margin-top:12px;">
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-            <span style="font-family:'JetBrains Mono'; font-size:11px; font-weight:700; color:#F3F4F6; text-transform:uppercase;">🧪 Log Observed Physical Failure</span>
-          </div>
-
-          <textarea class="test-textarea" id="test-feedback-text" placeholder="e.g. 'Snapped at the root under 1.5kg drop test' or 'Pin bore 0.2mm too tight'" style="width:100%; min-height:64px; background:rgba(0,0,0,0.35); border:1px solid rgba(255,255,255,0.12); border-radius:8px; padding:10px; color:#FFF; font-family:'JetBrains Mono'; font-size:11px; resize:vertical; line-height:1.4;"></textarea>
-          
-          <div class="test-chips" style="display:flex; flex-wrap:wrap; gap:6px; margin:10px 0;">
-            <span class="test-chip" onclick="quickFillFeedback('Snapped at root under shock load')">💥 Snapped at root</span>
-            <span class="test-chip" onclick="quickFillFeedback('Screw holes too tight for M3')">🔩 Holes tight</span>
-            <span class="test-chip" onclick="quickFillFeedback('Too flexible under dynamic load')">〰️ Excessive flex</span>
-          </div>
-
-          <button class="btn-submit-test" onclick="submitTestFeedback()" style="width:100%; justify-content:center; padding:10px; background:var(--accent-orange); color:#FFF; border:none; border-radius:8px; font-family:'JetBrains Mono'; font-size:11px; font-weight:700; cursor:pointer; transition:all 0.15s ease;">
-            <span>Apply AI Diagnosis & Bump Rev →</span>
-          </button>
-        </div>
-      </div>
-
-      <!-- Dedicated Revision History Section with Clickable Restore -->
+      <!-- Web Sourced Hardware & Prior Art (Tavily Intelligence) -->
       <div class="drawer-section">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-          <span class="section-eyebrow" style="margin:0;">Revision History & Rollback</span>
-          <span style="font-family:'JetBrains Mono'; font-size:10px; color:#9CA3AF;">Click to restore past 3D model</span>
+          <span class="section-eyebrow" style="margin:0;">2. Web Sourced Hardware & Prior Art</span>
+          <span style="font-family:'JetBrains Mono'; font-size:9px; font-weight:700; color:#38BDF8; background:rgba(56,189,248,0.12); border:1px solid rgba(56,189,248,0.3); padding:2px 6px; border-radius:4px;">TAVILY GROUNDED</span>
         </div>
-        <div class="rev-log-list" id="rev-log-list" style="display:flex; flex-direction:column; gap:8px;">
-          <!-- Populated by updateRevLog() -->
+        <div id="drawer-tavily-sources" style="display:flex; flex-direction:column; gap:8px;">
+          <!-- Dynamically populated from Tavily search results -->
         </div>
       </div>
     </div>
@@ -1879,6 +1989,36 @@
           title: 'MatWeb: PolyMax Tough PLA+ Tensile and Anisotropic Shear Properties',
           url: 'https://www.matweb.com',
           snippet: 'Tensile yield strength 40 MPa (XY print axis), inter-layer tensile 26 MPa (Z axis). Youngs Modulus: 2.80 GPa at 23°C.'
+        },
+        {
+          domain: 'sdp-si.com',
+          title: 'SDP/SI: Involute Spur & Planetary Gear Engineering Standards',
+          url: 'https://www.sdp-si.com/products/gears/',
+          snippet: 'Module 1.0 - 2.5 metric precision gear geometry standards, AGMA 10 quality backlash allowances, and contact fatigue limits.'
+        },
+        {
+          domain: 'skf.com',
+          title: 'SKF: Deep Groove Radial Bearing Fatigue Life & Dynamic Load Ratings',
+          url: 'https://www.skf.com/group/products/rolling-bearings',
+          snippet: 'ISO 281 basic dynamic load rating formulation C_r and equivalent radial load calculation for precision orbital drives.'
+        },
+        {
+          domain: 'igus.com',
+          title: 'igus: iglidur Polymer Sleeve Bushings Tribological Data',
+          url: 'https://www.igus.com/iglidur/plain-bearing',
+          snippet: 'Self-lubricating dry-running engineering polymer sleeve bushings with low friction coefficient (0.08 - 0.15) for high-wear pivot pins.'
+        },
+        {
+          domain: 'fastenal.com',
+          title: 'Fastenal: Grade 12.9 Alloy Steel Metric Socket Head Cap Screws',
+          url: 'https://www.fastenal.com',
+          snippet: 'ISO 4762 / DIN 912 M3 socket head fasteners with minimum proof strength 970 MPa and ultimate tensile strength 1220 MPa.'
+        },
+        {
+          domain: 'parker.com',
+          title: 'Parker Hannifin: Mechanical O-Ring and Dynamic Shaft Seal Handbook',
+          url: 'https://www.parker.com',
+          snippet: 'NBR 70 durometer radial shaft seal groove sizing, compression deflection curves, and fluid retention clearances.'
         }
       ],
       activeCandidateId: 'balanced',
@@ -1888,13 +2028,74 @@
         { rev: 'REV 1.0', note: 'Initial parametric physics sizing.' }
       ],
       verb: 'assembled', // 'assembled' | 'exploded'
-      drawerOpen: false
+      drawerOpen: false,
+      selectedMaterial: 'pla_tough',
+      activePrompt: '',
+      analyzingPhoto: false,
+      lastSynthesizedPhotoPrompt: ''
     };
+
+    function selectMaterialPreset(matKey) {
+      synthClick(1200);
+      State.selectedMaterial = matKey;
+      document.querySelectorAll('.mat-pill').forEach(b => b.classList.remove('active'));
+      document.getElementById('mpill-' + matKey)?.classList.add('active');
+      document.querySelectorAll('#dock-mat-group .kin-pill-btn').forEach(b => b.classList.remove('active'));
+      document.getElementById('dmat-' + matKey)?.classList.add('active');
+    }
+
+    async function switchActiveMaterial(matKey) {
+      synthClick(1400);
+      selectMaterialPreset(matKey);
+
+      const promptText = State.activePrompt || (document.getElementById('idea-text')?.value || '').trim() || 'Reinforced Parametric Assembly';
+      try {
+        const res = await fetch('/api/generate-blueprint', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            prompt: promptText,
+            load_kg: 1.5,
+            span_mm: 90.0,
+            material: matKey
+          })
+        });
+        if (res.ok) {
+          const data = await res.json();
+          State.candidates = data.candidates;
+          State.openmathDerivation = data.openmath_derivation;
+          renderCandidates();
+          selectCandidate(State.activeCandidateId || 'balanced');
+        }
+      } catch (err) {
+        console.warn('Material switch error:', err);
+      }
+    }
 
     // ── Step 1: Instant Hardware Synthesis & Optimistic Transition ──
     async function startSynthesis() {
       synthClick(1600);
-      const promptText = (document.getElementById('idea-text')?.value || '').trim() || 'Compound 5-Planet Reduction Gearbox with 16T sun gear';
+      let promptText = '';
+
+      if (State.intakeMode === 'photo') {
+        if (State.analyzingPhoto) {
+          alert('Nemotron-3.5-Super-VL is currently reverse-engineering your uploaded part. Please wait a few seconds.');
+          return;
+        }
+        promptText = State.lastSynthesizedPhotoPrompt || (document.getElementById('idea-text')?.value || '').trim();
+        if (!promptText) {
+          alert('Please drop or upload a part photo to scan.');
+          return;
+        }
+      } else {
+        promptText = (document.getElementById('idea-text')?.value || '').trim();
+        if (!promptText) {
+          alert('Please describe any physical part, mechanism, biomorphic shape, or assembly you want to build.');
+          return;
+        }
+      }
+
+      State.activePrompt = promptText;
       const btn = document.getElementById('btn-synthesize');
       const btnText = document.getElementById('btn-synthesize-text');
       
@@ -1913,7 +2114,7 @@
             prompt: promptText,
             load_kg: 1.5,
             span_mm: 90.0,
-            material: 'pla_tough'
+            material: State.selectedMaterial || 'pla_tough'
           })
         });
 
@@ -1983,6 +2184,7 @@
           State.archetypeData = data;
           if (data.tavily_sources && data.tavily_sources.length > 0) {
             State.tavilySources = data.tavily_sources;
+            renderTavilySourcesInDrawer(State.tavilySources);
           }
           if (data.cots_bom && Array.isArray(data.cots_bom) && data.cots_bom.length > 0) {
             // Enrich current candidates' BOM with real COTS components
@@ -2116,7 +2318,7 @@
 
       // Update Figure & Revision Display
       const figEl = document.getElementById('disp-fig-rev');
-      if (figEl) figEl.textContent = `FIG. 45 / ${State.currentRev}`;
+      if (figEl) figEl.textContent = State.currentRev;
       const subEl = document.getElementById('disp-rev-subtitle');
       if (subEl) {
         if (isKin) {
@@ -2125,6 +2327,29 @@
           subEl.textContent = `${c.title || c.name || 'Candidate'}: ${c.thickness_mm}mm thickness, ${c.safety_factor}x safety factor.`;
         }
       }
+
+      // Update Tooling Specifications
+      const toolEl = document.getElementById('tel-tooling-note');
+      if (toolEl && c.tooling) {
+        toolEl.innerHTML = `Tooling: <strong>${c.tooling.nozzle || '0.4mm Brass'}</strong> • ${c.tooling.hotend_temp_c || 210}°C • ${c.tooling.chamber || 'Open Bed'}`;
+      }
+      const toolBox = document.getElementById('drawer-tooling-box');
+      if (toolBox && c.tooling) {
+        toolBox.innerHTML = `
+          <div style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08); border-radius:8px; padding:8px 12px; margin-bottom:12px; font-family:'JetBrains Mono'; font-size:11px;">
+            <div style="color:var(--text-secondary); font-size:10px; font-weight:700; text-transform:uppercase; margin-bottom:4px;">Manufacturing Tooling & Slicing</div>
+            <div style="color:#FFF;">Nozzle: <strong>${c.tooling.nozzle}</strong></div>
+            <div style="color:#9CA3AF; margin-top:2px;">Hotend: <strong>${c.tooling.hotend_temp_c}°C</strong> • Bed: <strong>${c.tooling.bed_temp_c}°C</strong> • Chamber: <strong>${c.tooling.chamber}</strong></div>
+            <div style="color:${c.tooling.abrasive ? '#F59E0B' : '#10B981'}; font-size:10px; margin-top:3px;">Notice: ${c.tooling.wear_rating}</div>
+          </div>
+        `;
+      }
+      // Sync Material Active Buttons
+      const activeMat = c.material_key || State.selectedMaterial || 'pla_tough';
+      document.querySelectorAll('#dock-mat-group .kin-pill-btn').forEach(b => b.classList.remove('active'));
+      document.getElementById('dmat-' + activeMat)?.classList.add('active');
+      document.querySelectorAll('.mat-pill').forEach(b => b.classList.remove('active'));
+      document.getElementById('mpill-' + activeMat)?.classList.add('active');
 
       // Render Web Sourced Hardware via Tavily
       renderTavilySourcesInDrawer(State.tavilySources || []);
@@ -2194,15 +2419,20 @@
       const logContainer = document.getElementById('rev-log-list');
       const tabPill = document.getElementById('tab-rev-pill');
       if (tabPill) tabPill.textContent = State.currentRev;
+      const figEl = document.getElementById('disp-fig-rev');
+      if (figEl) figEl.textContent = State.currentRev;
       if (!logContainer) return;
       
       logContainer.innerHTML = State.revisions.map(r => `
-        <div class="rev-item-card ${r.rev === State.currentRev ? 'active' : ''}" onclick="restoreRevision('${r.rev}')" style="cursor:pointer; padding:10px 14px; background:${r.rev === State.currentRev ? 'rgba(37,99,235,0.14)' : 'rgba(255,255,255,0.03)'}; border:1px solid ${r.rev === State.currentRev ? 'rgba(59,130,246,0.45)' : 'rgba(255,255,255,0.08)'}; border-radius:10px; display:flex; flex-direction:column; gap:5px; transition:all 0.2s ease;">
-          <div style="display:flex; justify-content:space-between; align-items:center;">
-            <span style="font-family:'JetBrains Mono'; font-size:12px; font-weight:700; color:${r.rev === State.currentRev ? '#60A5FA' : '#FFFFFF'};">${r.rev}</span>
-            <span style="font-family:'JetBrains Mono'; font-size:10px; font-weight:600; color:${r.rev === State.currentRev ? '#93C5FD' : '#9CA3AF'}; background:${r.rev === State.currentRev ? 'rgba(59,130,246,0.22)' : 'rgba(255,255,255,0.06)'}; padding:2px 8px; border-radius:6px;">${r.rev === State.currentRev ? '● Active' : '↺ Restore'}</span>
+        <div class="rev-item-card ${r.rev === State.currentRev ? 'active' : ''}" onclick="restoreRevision('${r.rev}')" style="cursor:pointer; padding:8px 12px; background:${r.rev === State.currentRev ? 'rgba(255,85,0,0.1)' : 'rgba(255,255,255,0.02)'}; border:1px solid ${r.rev === State.currentRev ? 'rgba(255,85,0,0.35)' : 'rgba(255,255,255,0.06)'}; border-radius:8px; display:flex; justify-content:space-between; align-items:center; transition:all 0.15s ease;">
+          <div style="display:flex; flex-direction:column; gap:2px; overflow:hidden;">
+            <div style="display:flex; align-items:center; gap:6px;">
+              <span style="font-family:'JetBrains Mono'; font-size:11px; font-weight:700; color:${r.rev === State.currentRev ? 'var(--accent-orange)' : '#E5E7EB'};">${r.rev}</span>
+              ${r.rev === State.currentRev ? '<span style="font-family:\'JetBrains Mono\'; font-size:9px; font-weight:600; color:#34D399;">● Active</span>' : ''}
+            </div>
+            <div style="font-size:10px; color:#9CA3AF; line-height:1.3; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:260px;">${r.note}</div>
           </div>
-          <div style="font-size:11px; color:#D1D5DB; line-height:1.45;">${r.note}</div>
+          ${r.rev !== State.currentRev ? '<span style="font-family:\'JetBrains Mono\'; font-size:9px; color:#9CA3AF; background:rgba(255,255,255,0.05); padding:2px 6px; border-radius:4px;">↺ Restore</span>' : ''}
         </div>
       `).join('');
     }
@@ -2220,8 +2450,17 @@
 
     async function submitTestFeedback() {
       synthClick(1500);
-      const feedback = document.getElementById('test-feedback-text').value.trim();
+      const feedbackInput = document.getElementById('test-feedback-text');
+      const feedback = (feedbackInput?.value || '').trim();
       if (!feedback) return;
+
+      const btn = document.getElementById('btn-submit-test');
+      const btnText = document.getElementById('btn-submit-test-text') || btn;
+      if (btn) {
+        btn.style.opacity = '0.75';
+        btn.style.pointerEvents = 'none';
+        btnText.textContent = 'Generating New Build...';
+      }
 
       try {
         const res = await fetch('/api/test-feedback', {
@@ -2238,42 +2477,47 @@
           const data = await res.json();
           State.currentRev = data.new_rev;
           State.activeCandidate = data.updated_candidate;
-          // Add to log
           State.revisions.unshift({
             rev: data.new_rev,
-            note: `${data.diagnosis} (${data.changes.join('; ')})`,
+            note: `${data.diagnosis || 'Physical optimization'} (${(data.changes || []).join('; ') || 'revised geometry'})`,
             candidate: JSON.parse(JSON.stringify(State.activeCandidate))
           });
         } else {
           throw new Error('Local bump');
         }
       } catch (err) {
-        // Fallback local bump
         const curNum = parseFloat(State.currentRev.replace('REV ', '')) || 1.0;
         State.currentRev = `REV ${(curNum + 0.1).toFixed(1)}`;
-        if (State.activeCandidate.archetype === 'kinematic_engine') {
+        if (State.activeCandidate && State.activeCandidate.archetype === 'kinematic_engine') {
           State.activeCandidate.stroke_mm = +(State.activeCandidate.stroke_mm * 1.08).toFixed(1);
           State.activeCandidate.weight_g = Math.round(State.activeCandidate.weight_g * 1.15);
           State.revisions.unshift({
             rev: State.currentRev,
-            note: `Reinforced crankcase clearance and increased pin radius for: "${feedback}"`,
+            note: `Reinforced crankcase clearance and pin radius for: "${feedback}"`,
             candidate: JSON.parse(JSON.stringify(State.activeCandidate))
           });
-        } else {
+        } else if (State.activeCandidate) {
           State.activeCandidate.thickness_mm = +(State.activeCandidate.thickness_mm * 1.25).toFixed(1);
           State.activeCandidate.safety_factor = +(State.activeCandidate.safety_factor * 1.35).toFixed(2);
           State.revisions.unshift({
             rev: State.currentRev,
-            note: `Reinforced perimeter cross-section (+25% thickness) to resist failure: "${feedback}"`,
+            note: `Reinforced perimeter cross-section (+25% thickness) for: "${feedback}"`,
             candidate: JSON.parse(JSON.stringify(State.activeCandidate))
           });
+        }
+      } finally {
+        if (btn) {
+          btn.style.opacity = '1';
+          btn.style.pointerEvents = 'auto';
+          btnText.textContent = 'Apply Feedback & Build New Rev →';
         }
       }
 
       applyActiveCandidateUI();
       updateRevLog();
-      document.getElementById('test-feedback-box').classList.remove('open');
-      document.getElementById('test-feedback-text').value = '';
+      const fbBox = document.getElementById('test-feedback-box');
+      if (fbBox) fbBox.classList.remove('open');
+      if (feedbackInput) feedbackInput.value = '';
     }
 
     // ── Step 4: Physical STL File Download ────────────
@@ -2315,27 +2559,60 @@
       const z0 = 0.0, z1 = T;
 
       const tri = (n, v1, v2, v3) =>
-        `  facet normal ${n[0]} ${n[1]} ${n[2]}\n    outer loop\n      vertex ${v1[0]} ${v1[1]} ${v1[2]}\n      vertex ${v2[0]} ${v2[1]} ${v2[2]}\n      vertex ${v3[0]} ${v3[1]} ${v3[2]}\n    endloop\n  endfacet\n`;
+        `  facet normal ${n[0].toExponential(4)} ${n[1].toExponential(4)} ${n[2].toExponential(4)}\n    outer loop\n      vertex ${v1[0].toExponential(4)} ${v1[1].toExponential(4)} ${v1[2].toExponential(4)}\n      vertex ${v2[0].toExponential(4)} ${v2[1].toExponential(4)} ${v2[2].toExponential(4)}\n      vertex ${v3[0].toExponential(4)} ${v3[1].toExponential(4)} ${v3[2].toExponential(4)}\n    endloop\n  endfacet\n`;
 
       let stl = `solid nexa_${c.id}_${State.currentRev.replace('.', '_')}\n`;
-      // Bottom
-      stl += tri([0, 0, -1], [x0, y0, z0], [x1, y1, z0], [x1, y0, z0]);
-      stl += tri([0, 0, -1], [x0, y0, z0], [x0, y1, z0], [x1, y1, z0]);
-      // Top
-      stl += tri([0, 0, 1],  [x0, y0, z1], [x1, y0, z1], [x1, y1, z1]);
-      stl += tri([0, 0, 1],  [x0, y0, z1], [x1, y1, z1], [x0, y1, z1]);
-      // Front
-      stl += tri([0, -1, 0], [x0, y0, z0], [x1, y0, z0], [x1, y0, z1]);
-      stl += tri([0, -1, 0], [x0, y0, z0], [x1, y0, z1], [x0, y0, z1]);
-      // Back
-      stl += tri([0, 1, 0],  [x0, y1, z0], [x1, y1, z1], [x1, y1, z0]);
-      stl += tri([0, 1, 0],  [x0, y1, z0], [x0, y1, z1], [x1, y1, z1]);
-      // Left
-      stl += tri([-1, 0, 0], [x0, y0, z0], [x0, y0, z1], [x0, y1, z1]);
-      stl += tri([-1, 0, 0], [x0, y0, z0], [x0, y1, z1], [x0, y1, z0]);
-      // Right
-      stl += tri([1, 0, 0],  [x1, y0, z0], [x1, y1, z1], [x1, y0, z1]);
-      stl += tri([1, 0, 0],  [x1, y0, z0], [x1, y1, z0], [x1, y1, z1]);
+      let meshFound = false;
+      const sc = 100.0;
+      if (hingeRoot) {
+        hingeRoot.traverse((obj) => {
+          if (obj.isMesh && obj.geometry && !(obj instanceof THREE.LineSegments)) {
+            meshFound = true;
+            const geom = obj.geometry.clone();
+            geom.applyMatrix4(obj.matrixWorld);
+            const posAttr = geom.getAttribute('position');
+            const index = geom.getIndex();
+            if (posAttr) {
+              if (index) {
+                for (let i = 0; i < index.count; i += 3) {
+                  const a = index.getX(i), b = index.getX(i + 1), d = index.getX(i + 2);
+                  const v1 = [posAttr.getX(a) * sc, posAttr.getY(a) * sc, posAttr.getZ(a) * sc];
+                  const v2 = [posAttr.getX(b) * sc, posAttr.getY(b) * sc, posAttr.getZ(b) * sc];
+                  const v3 = [posAttr.getX(d) * sc, posAttr.getY(d) * sc, posAttr.getZ(d) * sc];
+                  const ax = v2[0] - v1[0], ay = v2[1] - v1[1], az = v2[2] - v1[2];
+                  const bx = v3[0] - v1[0], by = v3[1] - v1[1], bz = v3[2] - v1[2];
+                  let nx = ay * bz - az * by, ny = az * bx - ax * bz, nz = ax * by - ay * bx;
+                  const nl = Math.sqrt(nx * nx + ny * ny + nz * nz);
+                  if (nl > 1e-6) { nx /= nl; ny /= nl; nz /= nl; } else { nx = 0; ny = 1; nz = 0; }
+                  stl += tri([nx, ny, nz], v1, v2, v3);
+                }
+              } else {
+                for (let i = 0; i < posAttr.count; i += 3) {
+                  const v1 = [posAttr.getX(i) * sc, posAttr.getY(i) * sc, posAttr.getZ(i) * sc];
+                  const v2 = [posAttr.getX(i + 1) * sc, posAttr.getY(i + 1) * sc, posAttr.getZ(i + 1) * sc];
+                  const v3 = [posAttr.getX(i + 2) * sc, posAttr.getY(i + 2) * sc, posAttr.getZ(i + 2) * sc];
+                  const ax = v2[0] - v1[0], ay = v2[1] - v1[1], az = v2[2] - v1[2];
+                  const bx = v3[0] - v1[0], by = v3[1] - v1[1], bz = v3[2] - v1[2];
+                  let nx = ay * bz - az * by, ny = az * bx - ax * bz, nz = ax * by - ay * bx;
+                  const nl = Math.sqrt(nx * nx + ny * ny + nz * nz);
+                  if (nl > 1e-6) { nx /= nl; ny /= nl; nz /= nl; } else { nx = 0; ny = 1; nz = 0; }
+                  stl += tri([nx, ny, nz], v1, v2, v3);
+                }
+              }
+            }
+          }
+        });
+      }
+      if (!meshFound) {
+        const L = c.span_mm || 80.0, W = c.width_mm || 20.0, T = c.thickness_mm || 4.0;
+        const x0 = 0.0, x1 = L, y0 = -W / 2.0, y1 = W / 2.0, z0 = 0.0, z1 = T;
+        stl += tri([0, 0, -1], [x0, y0, z0], [x1, y1, z0], [x1, y0, z0]);
+        stl += tri([0, 0, 1],  [x0, y0, z1], [x1, y0, z1], [x1, y1, z1]);
+        stl += tri([0, -1, 0], [x0, y0, z0], [x1, y0, z0], [x1, y0, z1]);
+        stl += tri([0, 1, 0],  [x0, y1, z0], [x1, y1, z1], [x1, y1, z0]);
+        stl += tri([-1, 0, 0], [x0, y0, z0], [x0, y0, z1], [x0, y1, z1]);
+        stl += tri([1, 0, 0],  [x1, y0, z0], [x1, y1, z1], [x1, y0, z1]);
+      }
       stl += `endsolid nexa_${c.id}\n`;
 
       const blob = new Blob([stl], { type: 'model/stl' });
@@ -2428,6 +2705,163 @@
 
       document.querySelectorAll('.mode-panel').forEach(p => p.classList.remove('active'));
       document.getElementById(`panel-${mode}`)?.classList.add('active');
+
+      const btnText = document.getElementById('btn-synthesize-text');
+      if (btnText) {
+        if (mode === 'photo' && !State.lastSynthesizedPhotoPrompt) {
+          btnText.innerHTML = `Upload Photo to Generate`;
+        } else {
+          btnText.innerHTML = `Generate Design`;
+        }
+      }
+    }
+
+    function handlePhotoDragOver(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      const drop = document.getElementById('photo-drop');
+      if (drop) drop.classList.add('dragover');
+    }
+
+    function handlePhotoDragLeave(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      const drop = document.getElementById('photo-drop');
+      if (drop) drop.classList.remove('dragover');
+    }
+
+    function handlePhotoDrop(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      const drop = document.getElementById('photo-drop');
+      if (drop) drop.classList.remove('dragover');
+      if (e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+        handlePhotoFile(e.dataTransfer.files[0]);
+      }
+    }
+
+    async function handlePhotoFile(file) {
+      if (!file) return;
+      synthClick(1400);
+
+      State.analyzingPhoto = true;
+      const btn = document.getElementById('btn-synthesize');
+      const btnText = document.getElementById('btn-synthesize-text');
+      if (btn) {
+        btn.style.opacity = '0.7';
+        btn.style.pointerEvents = 'none';
+      }
+      if (btnText) btnText.innerHTML = `Analyzing with Nemotron...`;
+
+      const dropContent = document.getElementById('photo-drop-content');
+      const statusEl = document.getElementById('photo-status');
+
+      if (dropContent) dropContent.style.display = 'none';
+      if (statusEl) {
+        statusEl.style.display = 'flex';
+        statusEl.innerHTML = `
+          <div class="photo-spinner"></div>
+          <div style="font-family:'JetBrains Mono', monospace; font-size:12px; font-weight:700; color:var(--accent-orange);">
+            Analyzing part geometry with Nemotron-3.5-Super-VL...
+          </div>
+          <div style="font-size:11px; color:var(--text-secondary);">
+            Extracting fracture mode, load vectors & parametric geometry
+          </div>
+        `;
+      }
+
+      const reader = new FileReader();
+      reader.onload = async function(evt) {
+        const dataUrl = evt.target.result;
+        try {
+          const res = await fetch('/api/analyze-part-photo', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ image: dataUrl })
+          });
+
+          if (!res.ok) {
+            throw new Error('Analysis failed with status ' + res.status);
+          }
+
+          const data = await res.json();
+          State.analyzingPhoto = false;
+          State.lastSynthesizedPhotoPrompt = data.synthesized_prompt;
+          State.activePrompt = data.synthesized_prompt;
+
+          if (btn) {
+            btn.style.opacity = '1';
+            btn.style.pointerEvents = 'auto';
+          }
+          if (btnText) btnText.innerHTML = `Generate Design`;
+
+          if (statusEl) {
+            statusEl.innerHTML = `
+              <div style="display:flex; align-items:center; gap:14px; width:100%; max-width:440px; background:rgba(255,255,255,0.88); padding:10px 14px; border-radius:12px; border:1px solid rgba(0,0,0,0.08); box-shadow:0 4px 12px rgba(0,0,0,0.06);">
+                <img src="${dataUrl}" style="width:58px; height:58px; object-fit:cover; border-radius:8px; border:1px solid rgba(0,0,0,0.12); flex-shrink:0;">
+                <div style="display:flex; flex-direction:column; gap:3px; text-align:left; overflow:hidden;">
+                  <div style="display:flex; align-items:center; gap:6px;">
+                    <span style="font-family:'JetBrains Mono', monospace; font-size:10px; font-weight:700; background:var(--accent-orange); color:#FFF; padding:2px 6px; border-radius:4px; text-transform:uppercase;">${(data.mechanism_type || 'PART').replace('_', ' ')}</span>
+                    <span style="font-family:'JetBrains Mono', monospace; font-size:10px; color:var(--text-secondary);">${data.estimated_span_mm || 90}mm • ${data.estimated_load_kg || 1.5}kg</span>
+                  </div>
+                  <div style="font-size:11px; font-weight:600; color:var(--text-primary); line-height:1.3; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;" title="${data.failure_mode || ''}">
+                    ${data.failure_mode || 'Physical fracture detected'}
+                  </div>
+                  <div style="font-family:'JetBrains Mono', monospace; font-size:10px; color:var(--accent-green); font-weight:600;">
+                    ✓ Reinforcement Synthesized (${data.recommended_material || 'petg_carbon'})
+                  </div>
+                </div>
+              </div>
+            `;
+          }
+
+          const ideaBox = document.getElementById('idea-text');
+          if (ideaBox && data.synthesized_prompt) {
+            ideaBox.value = data.synthesized_prompt;
+          }
+
+          if (data.recommended_material) {
+            selectMaterialPreset(data.recommended_material);
+          }
+
+          setTimeout(() => {
+            startSynthesis();
+          }, 800);
+
+        } catch (err) {
+          console.error('Vision analysis error:', err);
+          State.analyzingPhoto = false;
+          if (btn) {
+            btn.style.opacity = '1';
+            btn.style.pointerEvents = 'auto';
+          }
+          if (btnText) btnText.innerHTML = `Generate Design`;
+          if (statusEl) {
+            statusEl.innerHTML = `
+              <div style="font-family:'JetBrains Mono', monospace; font-size:11px; color:#EF4444; font-weight:600;">
+                Vision analysis offline. Please type your prompt in the idea tab.
+              </div>
+            `;
+          }
+          setTimeout(() => {
+            if (dropContent) dropContent.style.display = 'flex';
+            if (statusEl) statusEl.style.display = 'none';
+          }, 2000);
+        }
+      };
+
+      reader.onerror = function() {
+        State.analyzingPhoto = false;
+        if (btn) {
+          btn.style.opacity = '1';
+          btn.style.pointerEvents = 'auto';
+        }
+        if (btnText) btnText.innerHTML = `Generate Design`;
+        if (dropContent) dropContent.style.display = 'flex';
+        if (statusEl) statusEl.style.display = 'none';
+      };
+
+      reader.readAsDataURL(file);
     }
 
     function injectPrompt(tag) {
@@ -2503,7 +2937,13 @@
 
       const titleEl = document.getElementById('drawer-main-title');
       if (titleEl) {
-        titleEl.textContent = tabName === 'testing' ? 'Testing Log & Revisions' : 'Technical Inspection';
+        if (tabName === 'testing') {
+          titleEl.textContent = 'Testing Log';
+        } else if (tabName === 'sources') {
+          titleEl.textContent = 'Sources & Hardware';
+        } else {
+          titleEl.textContent = 'Technical Inspection';
+        }
       }
       if (tabName === 'inspection') {
         renderMathFormulas();
@@ -2532,6 +2972,14 @@
         return new THREE.MeshStandardMaterial({ color: 0xF59E0B, metalness: 0.8, roughness: 0.28 });
       } else if (matType === 'carbon_fiber' || matType === 'carbon') {
         return new THREE.MeshStandardMaterial({ color: 0x1E293B, metalness: 0.2, roughness: 0.45 });
+      } else if (matType === 'sculptural_ceramic' || matType === 'ceramic') {
+        return new THREE.MeshStandardMaterial({ color: 0xF8FAFC, roughness: 0.22, metalness: 0.05 });
+      } else if (matType === 'tough_polymer' || matType === 'polymer') {
+        if (State.selectedMaterial === 'petg_carbon') {
+          return new THREE.MeshStandardMaterial({ color: 0x1E293B, metalness: 0.25, roughness: 0.45 });
+        } else if (State.selectedMaterial === 'nylon_pa12') {
+          return new THREE.MeshStandardMaterial({ color: 0xE2E8F0, metalness: 0.1, roughness: 0.35 });
+        }
       }
       return new THREE.MeshStandardMaterial({ color: col, metalness: 0.15, roughness: 0.4 });
     }
@@ -3191,6 +3639,38 @@
             gussetGeo.computeVertexNormals();
             mesh = new THREE.Mesh(gussetGeo, pMat);
             addWireframeEdges(mesh, 0x1D4ED8, 0.3);
+          } else if (p.primitive === 'torus_knot') {
+            const r = dims.radius || 0.24;
+            const tube = dims.tube || 0.042;
+            const pKnot = dims.p || 2;
+            const qKnot = dims.q || 3;
+            const tubSegs = dims.tubular_segments || 128;
+            const radSegs = dims.radial_segments || 16;
+            const knotGeo = new THREE.TorusKnotGeometry(r, tube, tubSegs, radSegs, pKnot, qKnot);
+            mesh = new THREE.Mesh(knotGeo, pMat);
+            addWireframeEdges(mesh, 0x94A3B8, 0.2);
+          } else if (p.primitive === 'spline_ribbon' || p.primitive === 'tube_curve') {
+            const ptsData = p.curve_points || [
+              [-0.32, -0.15, 0.18], [-0.18, 0.08, 0.32], [0.06, 0.32, 0.22],
+              [0.28, 0.42, 0.04], [0.42, 0.22, -0.18], [0.18, 0.04, -0.32],
+              [-0.12, -0.10, -0.18], [-0.22, -0.14, 0.06]
+            ];
+            const vectors = ptsData.map(pt => new THREE.Vector3(pt[0], pt[1], pt[2]));
+            const curve = new THREE.CatmullRomCurve3(vectors);
+            curve.curveType = 'centripetal';
+            const tubeR = dims.tube_radius || 0.042;
+            const tubSegs = dims.tubular_segments || 64;
+            const radSegs = dims.radial_segments || 14;
+            const ribbonGeo = new THREE.TubeGeometry(curve, tubSegs, tubeR, radSegs, false);
+            mesh = new THREE.Mesh(ribbonGeo, pMat);
+            addWireframeEdges(mesh, 0xCBD5E1, 0.25);
+          } else if (p.primitive === 'organic_pedestal') {
+            const rBot = dims.radius_bottom || 0.42;
+            const rTop = dims.radius_top || 0.30;
+            const h = dims.height || 0.14;
+            const pedGeo = new THREE.CylinderGeometry(rTop, rBot, h, 36);
+            mesh = new THREE.Mesh(pedGeo, pMat);
+            addWireframeEdges(mesh, 0x64748B, 0.2);
           } else {
             // Default box
             const w = dims.width || 0.4;

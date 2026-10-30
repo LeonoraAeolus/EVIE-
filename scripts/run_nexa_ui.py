@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import http.server
 import json
+import os
 import socketserver
 import sys
 import webbrowser
@@ -22,7 +23,7 @@ sys.path.insert(0, str(ROOT))
 from tesla_lab import nexa_engine  # noqa: E402
 
 HTML_FILE = ROOT / "tesla_lab" / "nexa_spatial_ui.html"
-PORT = 8080
+PORT = int(os.environ.get("PORT", 8080))
 
 
 class ThreadedHTTPServer(socketserver.ThreadingMixIn, http.server.HTTPServer):
@@ -81,6 +82,11 @@ class NexaHandler(http.server.SimpleHTTPRequestHandler):
         except Exception:
             body = {}
 
+        if self.path != "/api/analyze-part-photo":
+            print(f">>> POST {self.path}: prompt={str(body.get('prompt'))[:80]!r}, mat={body.get('material')!r}", flush=True)
+        else:
+            print(f">>> POST {self.path} (image length: {len(body.get('image', ''))})", flush=True)
+
         if self.path == "/api/extract-intent":
             prompt = body.get("prompt", "")
             res = nexa_engine.extract_intent(prompt)
@@ -113,6 +119,12 @@ class NexaHandler(http.server.SimpleHTTPRequestHandler):
             self.wfile.write(payload)
             return
 
+        elif self.path == "/api/analyze-part-photo":
+            image_data = body.get("image", "")
+            res = nexa_engine.analyze_part_photo(image_data)
+            self._send_json(res)
+            return
+
         elif self.path == "/api/kinematic-state":
             from tesla_lab.kinematic_engine import EngineSpec, compute_cylinder_kinematics
             theta = float(body.get("theta_deg", 0.0))
@@ -135,18 +147,24 @@ def main() -> None:
 
     ThreadedHTTPServer.allow_reuse_address = True
     port = PORT
-    for p in range(PORT, PORT + 20):
+    is_cloud = bool(os.environ.get("RAILWAY_ENVIRONMENT") or os.environ.get("PORT") or os.environ.get("RENDER"))
+    ports_to_try = [port] if "PORT" in os.environ else range(PORT, PORT + 20)
+    for p in ports_to_try:
         try:
             with ThreadedHTTPServer(("", p), NexaHandler) as httpd:
                 url = f"http://localhost:{p}"
                 print("=" * 68, flush=True)
                 print("EVIE // HARDWARE CO-PILOT - SPATIAL UI & REST API", flush=True)
                 print("=" * 68, flush=True)
-                print(f"Server active: {url}", flush=True)
+                print(f"Server active: {url} (Listening on port {p})", flush=True)
                 print(f"Target file:   {HTML_FILE}", flush=True)
-                print("API endpoints: /api/extract-intent, /api/generate-blueprint, /api/test-feedback, /api/export-stl", flush=True)
+                print("API endpoints: /api/extract-intent, /api/generate-blueprint, /api/test-feedback, /api/export-stl, /api/analyze-part-photo", flush=True)
                 print("=" * 68, flush=True)
-                webbrowser.open(url)
+                if not is_cloud:
+                    try:
+                        webbrowser.open(url)
+                    except Exception:
+                        pass
                 httpd.serve_forever()
         except OSError:
             continue
