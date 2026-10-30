@@ -11,20 +11,6 @@
 
 ---
 
-## 📸 Spatial Studio in Action
-
-| 🎮 3D WebGL Canvas & Multi-Tier Sizing | ⚙️ Real-Time Kinematics & Dynamic RPM |
-|:---:|:---:|
-| ![EVIE Spatial Studio](docs/spatial-ui-hero.jpg) | ![Slider-Crank Kinematics](docs/spatial-ui-kinematics.jpg) |
-| *Intake prompt, 3-tier sizing (Lightweight, Balanced, Heavy-Duty), and Three.js viewport.* | *Real-time slider-crank displacement $s(\theta)$ and dynamic RPM simulation (100–3000 RPM).* |
-
-| 🧮 KaTeX Physics & Verified COTS BOM | 🔄 Closed-Loop Failure Feedback (REV 1.0 → 1.1) |
-|:---:|:---:|
-| ![Technical Inspection](docs/spatial-ui-inspection.jpg) | ![Revision Bumping](docs/spatial-ui-revisions.jpg) |
-| *First-principles mechanics, shear/yield stress, and McMaster-Carr / MISUMI COTS BOM ($6.10).* | *Log test bench fractures (e.g. snapped at root) to automatically reinforce CAD to REV 1.1.* |
-
----
-
 ## 🚀 What is EVIE?
 
 When engineers ask general-purpose LLMs to design physical hardware, models hallucinate math, invent impossible dimensions, and ignore basic physical laws.
