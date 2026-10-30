@@ -42,19 +42,6 @@ When engineers ask general-purpose LLMs to design physical hardware, models hall
 
 ---
 
-## ⚡ How It Fits the Hackathon Rules
-
-| Requirement | Implementation in EVIE |
-|---|---|
-| **Runtime Call to Nebius Token Factory** | `tesla_lab/llm.py` & `tesla_lab/nexa_engine.py` (OpenAI SDK, `base_url=https://api.tokenfactory.nebius.com/v1/`) |
-| **NVIDIA Open Source Model** | `nvidia/nemotron-3-super-120b-a12b` (intent synthesis & failure diagnosis) and `nvidia/Nemotron-3_5-Lightning` |
-| **Second NVIDIA Open Model** | `nvidia/OpenMath-Nemotron-7B` self-hosted on Nebius AI Cloud GPU VM via vLLM (`deploy/openmath/`) for symbolic mathematical derivations |
-| **Tavily Sponsor Bonus ($3,000 Prize)** | `tesla_lab/nexa_engine.py` (`query_tavily_cots`): live McMaster-Carr & MISUMI COTS hardware sourcing with pricing and engineering standards |
-| **Complete Product, Not a PoC** | Production WebGL spatial UI, real-time kinematic simulation, tactile Web Audio feedback, COTS BOM with dollar costs, watertight STL export |
-| **Public Open Source License** | Apache 2.0 license file in repository root |
-
----
-
 ## 🏗️ System Architecture
 
 ```
