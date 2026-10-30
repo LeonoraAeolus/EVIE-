@@ -1,6 +1,6 @@
 # ⚡ EVIE: Autonomous Hardware AI Co-Pilot
 
-> *Inspired by Spider-Man's tactical AI assistant — synthesizes verified 3D-printable mechanical CAD from natural language, powered by NVIDIA Nemotron on Nebius Token Factory, Nebius AI Cloud & Tavily.*
+> *Inspired by Spider-Man's tactical AI assistant (E.V.) - synthesizes verified 3D-printable mechanical CAD from natural language, powered by NVIDIA Nemotron on Nebius Token Factory, Nebius AI Cloud & Tavily.*
 
 [![License: Apache 2.0](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
 [![Platform: Nebius Token Factory](https://img.shields.io/badge/Nebius-Token%20Factory-00D26A)](https://tokenfactory.nebius.com)
@@ -21,7 +21,7 @@ When engineers ask general-purpose LLMs to design physical hardware, models hall
 2. **Grounds with Live Web Intelligence via Tavily**: Queries real-world engineering standards (e.g. *Machine Design*, *TEA planetary guides*) and commercial off-the-shelf (COTS) component catalogs (McMaster-Carr, MISUMI).
 3. **Executes First-Principles Physics in Sandboxed Python**: Computes exact kinematics and load distributions (slider-crank displacement $s(\theta)$, peak piston acceleration $a_{max}$, shear and bending stresses) where math strictly overrules LLM hallucinations.
 4. **Verifies via Dual NVIDIA Architecture**: A secondary **NVIDIA OpenMath-Nemotron** model on **Nebius AI Cloud** GPU infrastructure derives the governing mechanics step-by-step to cross-check Python calculations.
-5. **Interactive 3D Spatial Studio**: Features a real-time WebGL canvas with interactive slider-crank kinematic animation, RPM control, Rest/Under Load/Exploded view inspections, and anisotropic 3D printing orientation analysis.
+5. **Interactive 3D Spatial Studio**: Features a real-time WebGL canvas with interactive slider-crank kinematic animation, dynamic RPM control, Assembled/Exploded view inspections, and anisotropic 3D printing orientation analysis.
 6. **Live COTS Bill of Materials**: Automatically generates itemized fastener, bearing, and dowel pin specifications with verified unit pricing and total hardware cost.
 7. **Closed-Loop Physical Testing Iteration**: Log observed test bench failures (e.g. *"Snapped at root under shock load"*) to trigger automated failure mode diagnosis and bump CAD revisions (**REV 1.0 → REV 1.1**) with reinforced geometries.
 8. **Production-Ready STL Export**: Generates watertight manifold, multi-part ASCII STL geometry directly sized for standard 3D printer beds.
@@ -51,7 +51,7 @@ User Mechanism Prompt ("V8 Cross-Plane Engine" / Broken Part Photo)
    │  └── Derives governing equations step-by-step; cross-checks Python calculations
    ▼
 [5] Interactive Spatial Studio (http://localhost:8080)
-   │  ├── Three.js 3D WebGL Canvas (Rest, Under Load, Exploded views)
+   │  ├── Three.js 3D WebGL Canvas (Assembled and Exploded views)
    │  ├── Real-time kinematic slider-crank animation with dynamic RPM tuning (100–3000 RPM)
    │  ├── KaTeX mathematical proof drawer & Anisotropy print orientation matrix
    │  └── Live COTS Hardware BOM & Supplier references

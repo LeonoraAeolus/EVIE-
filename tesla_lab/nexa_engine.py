@@ -330,12 +330,112 @@ MATERIALS = {
 }
 
 
+def classify_prompt_archetype(prompt: str, hint: str = "") -> str:
+    """Classify user prompt into a precise 3D mechanical/structural archetype using strict word boundaries."""
+    t = f"{prompt} {hint}".lower()
+
+    # 1. Robotic quadruped, robot dog, walking chassis, or multi-legged robot
+    if re.search(r'\b(quadruped|robot\s+chassis|chassis|robot\s+dog|legged\s+robot|hexapod|biped|walking\s+robot|torso)\b', t):
+        return "quadruped_chassis"
+
+    # 2. Planetary or epicyclic gearbox (strict word boundaries to prevent 'ring' in 'manufacturing' or 'ratio' in 'generation')
+    if re.search(r'\b(gearbox|gearboxes|planetary|epicyclic|cycloid|cycloidal|sun\s+gear|planet\s+gear|ring\s+gear|annulus)\b', t):
+        return "planetary_gearbox"
+    if re.search(r'\b(gear|gears)\b', t) and re.search(r'\b(reduction|speed|pinion|train|spur)\b', t):
+        return "planetary_gearbox"
+
+    # 3. Organic biomorphic sculptures, minimal surfaces, and curvilinear fluid ribbons
+    if re.search(r'\b(organic|sculpture|biomorphic|spline\s+ribbon|torus\s+knot|minimal\s+surface|gyroid|curvilinear|topological)\b', t):
+        return "organic_sculpture"
+
+    # 4. Kinematic V8 slider-crank engine
+    if re.search(r'\b(engine|v8|cross-plane|crankshaft|slider-crank|piston\s+assembly)\b', t):
+        return "kinematic_engine"
+
+    # 5. Robotic grippers, clamps, concentric chucks
+    if re.search(r'\b(gripper|grippers|clamp|clamping|jaw|jaws|chuck|end\s+effector|robotic\s+hand|robotic\s+finger)\b', t):
+        return "robotic_gripper"
+
+    # 6. Turbomachinery, impellers, fans, centrifugal pumps
+    if re.search(r'\b(turbine|turbines|impeller|impellers|centrifugal\s+pump|compressor\s+wheel|blower\s+fan)\b', t):
+        return "turbine_impeller"
+
+    # 7. Drone arms, motor spars, quadcopter frames
+    if re.search(r'\b(drone|quadcopter|uav|multirotor)\b', t) and re.search(r'\b(arm|spar|boom|frame|mount)\b', t):
+        return "drone_arm"
+
+    # 8. Structural equipment brackets, angle mounts, gussets
+    if re.search(r'\b(bracket|brackets|gusset|shelf\s+mount|mounting\s+plate|wall\s+mount|extrusion\s+mount)\b', t):
+        return "equipment_bracket"
+
+    # 9. Compliant flexure hinges
+    if re.search(r'\b(flexure|hinge|compliant\s+mechanism|bistable|cross-axis\s+pivot)\b', t):
+        return "flexure_hinge"
+
+    return hint if hint and hint not in ["flexure_hinge", "modular_mechanism"] else "modular_mechanism"
+
+
 def build_procedural_assembly(archetype: str, prompt: str = "", profile_id: str = "balanced", target_sf: float = 2.2, material: str = "pla_tough", base_span: float = 80.0) -> Dict[str, Any]:
     scale = 1.0 if profile_id == "balanced" else (0.85 if profile_id == "lightweight" else 1.25)
-    p_lower = (prompt + " " + archetype).lower()
+    matched_arch = classify_prompt_archetype(prompt, hint=archetype)
+    p_lower = (prompt + " " + matched_arch).lower()
 
-    if any(k in p_lower for k in ["gear", "planetary", "cycloid", "transmission", "reducer"]):
-        arch = "planetary_gearbox"
+    if matched_arch == "quadruped_chassis":
+        arch = "quadruped_chassis"
+        title = "Articulated Quadruped Robot Chassis"
+        desc = "Lightweight high-rigidity quadruped chassis with central core torso, 4 articulated 2-DoF leg linkages, and servo horn mounting cavities."
+        gov_eq = r"\tau_{joint} = m_{leg} \cdot g \cdot L_{com} + I_{leg} \cdot \ddot{\theta}, \quad \sigma_{max} = \frac{M_{root}}{Z} \le \frac{\sigma_y}{SF}"
+        rows = [
+            {"key": "Chassis Span", "val": f"{base_span * scale:.0f} mm Diagonal"},
+            {"key": "Kinematic Co-Ordination", "val": "8-DoF Coordinated Trotting"},
+            {"key": "Payload Capacity", "val": f"{3.8 * scale:.1f} kg Distributed"},
+            {"key": "Safety Factor", "val": f"{target_sf:.2f}x Dynamic Drop Load"}
+        ]
+        parts = [
+            {
+                "id": "core_torso",
+                "name": "Central Core Torso Housing",
+                "primitive": "cylinder",
+                "dimensions": {"radius": round(0.36 * scale, 3), "height": round(0.14 * scale, 3)},
+                "position": [0.0, 0.0, 0.0],
+                "rotation": [0.0, 0.0, 0.0],
+                "material": "petg_carbon",
+                "color": "#7E22CE",
+                "kinematics": {"type": "static"}
+            },
+            {
+                "id": "battery_bay",
+                "name": "Center Mass Battery / Electronics Bay",
+                "primitive": "box",
+                "dimensions": {"width": round(0.28 * scale, 3), "height": round(0.08 * scale, 3), "depth": round(0.38 * scale, 3)},
+                "position": [0.0, round(0.08 * scale, 3), 0.0],
+                "rotation": [0.0, 0.0, 0.0],
+                "material": "machined_aluminum",
+                "color": "#3B82F6",
+                "kinematics": {"type": "static"}
+            },
+            # 4 Micro-Servos at Hips
+            {"id": "servo_fl", "name": "Front-Left Hip Servo Actuator", "primitive": "box", "dimensions": {"width": round(0.10 * scale, 3), "height": round(0.12 * scale, 3), "depth": round(0.08 * scale, 3)}, "position": [round(0.24 * scale, 3), 0.0, round(0.24 * scale, 3)], "rotation": [0.0, 0.0, 0.0], "material": "machined_aluminum", "color": "#F59E0B", "kinematics": {"type": "static"}},
+            {"id": "servo_fr", "name": "Front-Right Hip Servo Actuator", "primitive": "box", "dimensions": {"width": round(0.10 * scale, 3), "height": round(0.12 * scale, 3), "depth": round(0.08 * scale, 3)}, "position": [round(-0.24 * scale, 3), 0.0, round(0.24 * scale, 3)], "rotation": [0.0, 0.0, 0.0], "material": "machined_aluminum", "color": "#F59E0B", "kinematics": {"type": "static"}},
+            {"id": "servo_rl", "name": "Rear-Left Hip Servo Actuator", "primitive": "box", "dimensions": {"width": round(0.10 * scale, 3), "height": round(0.12 * scale, 3), "depth": round(0.08 * scale, 3)}, "position": [round(0.24 * scale, 3), 0.0, round(-0.24 * scale, 3)], "rotation": [0.0, 0.0, 0.0], "material": "machined_aluminum", "color": "#F59E0B", "kinematics": {"type": "static"}},
+            {"id": "servo_rr", "name": "Rear-Right Hip Servo Actuator", "primitive": "box", "dimensions": {"width": round(0.10 * scale, 3), "height": round(0.12 * scale, 3), "depth": round(0.08 * scale, 3)}, "position": [round(-0.24 * scale, 3), 0.0, round(-0.24 * scale, 3)], "rotation": [0.0, 0.0, 0.0], "material": "machined_aluminum", "color": "#F59E0B", "kinematics": {"type": "static"}},
+            # 4 Upper Femurs
+            {"id": "femur_fl", "name": "Front-Left Upper Femur Spar", "primitive": "box", "dimensions": {"width": round(0.07 * scale, 3), "height": round(0.34 * scale, 3), "depth": round(0.07 * scale, 3)}, "position": [round(0.34 * scale, 3), round(-0.14 * scale, 3), round(0.34 * scale, 3)], "rotation": [0.30, 0.0, -0.30], "material": "petg_carbon", "color": "#9333EA", "kinematics": {"type": "revolute", "axis": "x", "speed_ratio": 1.2}},
+            {"id": "femur_fr", "name": "Front-Right Upper Femur Spar", "primitive": "box", "dimensions": {"width": round(0.07 * scale, 3), "height": round(0.34 * scale, 3), "depth": round(0.07 * scale, 3)}, "position": [round(-0.34 * scale, 3), round(-0.14 * scale, 3), round(0.34 * scale, 3)], "rotation": [0.30, 0.0, 0.30], "material": "petg_carbon", "color": "#9333EA", "kinematics": {"type": "revolute", "axis": "x", "speed_ratio": -1.2}},
+            {"id": "femur_rl", "name": "Rear-Left Upper Femur Spar", "primitive": "box", "dimensions": {"width": round(0.07 * scale, 3), "height": round(0.34 * scale, 3), "depth": round(0.07 * scale, 3)}, "position": [round(0.34 * scale, 3), round(-0.14 * scale, 3), round(-0.34 * scale, 3)], "rotation": [-0.30, 0.0, -0.30], "material": "petg_carbon", "color": "#9333EA", "kinematics": {"type": "revolute", "axis": "x", "speed_ratio": -1.2}},
+            {"id": "femur_rr", "name": "Rear-Right Upper Femur Spar", "primitive": "box", "dimensions": {"width": round(0.07 * scale, 3), "height": round(0.34 * scale, 3), "depth": round(0.07 * scale, 3)}, "position": [round(-0.34 * scale, 3), round(-0.14 * scale, 3), round(-0.34 * scale, 3)], "rotation": [-0.30, 0.0, 0.30], "material": "petg_carbon", "color": "#9333EA", "kinematics": {"type": "revolute", "axis": "x", "speed_ratio": 1.2}},
+            # 4 Lower Tibias
+            {"id": "tibia_fl", "name": "Front-Left Lower Tibia Strut", "primitive": "cylinder", "dimensions": {"radius": round(0.03 * scale, 3), "height": round(0.38 * scale, 3)}, "position": [round(0.44 * scale, 3), round(-0.42 * scale, 3), round(0.44 * scale, 3)], "rotation": [0.15, 0.0, -0.15], "material": "hardened_steel", "color": "#CBD5E1", "kinematics": {"type": "prismatic", "axis": "y", "stroke": 0.04}},
+            {"id": "tibia_fr", "name": "Front-Right Lower Tibia Strut", "primitive": "cylinder", "dimensions": {"radius": round(0.03 * scale, 3), "height": round(0.38 * scale, 3)}, "position": [round(-0.44 * scale, 3), round(-0.42 * scale, 3), round(0.44 * scale, 3)], "rotation": [0.15, 0.0, 0.15], "material": "hardened_steel", "color": "#CBD5E1", "kinematics": {"type": "prismatic", "axis": "y", "stroke": 0.04}},
+            {"id": "tibia_rl", "name": "Rear-Left Lower Tibia Strut", "primitive": "cylinder", "dimensions": {"radius": round(0.03 * scale, 3), "height": round(0.38 * scale, 3)}, "position": [round(0.44 * scale, 3), round(-0.42 * scale, 3), round(-0.44 * scale, 3)], "rotation": [-0.15, 0.0, -0.15], "material": "hardened_steel", "color": "#CBD5E1", "kinematics": {"type": "prismatic", "axis": "y", "stroke": 0.04}},
+            {"id": "tibia_rr", "name": "Rear-Right Lower Tibia Strut", "primitive": "cylinder", "dimensions": {"radius": round(0.03 * scale, 3), "height": round(0.38 * scale, 3)}, "position": [round(-0.44 * scale, 3), round(-0.42 * scale, 3), round(-0.44 * scale, 3)], "rotation": [-0.15, 0.0, 0.15], "material": "hardened_steel", "color": "#CBD5E1", "kinematics": {"type": "prismatic", "axis": "y", "stroke": 0.04}},
+            # 4 Foot Pads
+            {"id": "foot_fl", "name": "Front-Left Elastomer Traction Pad", "primitive": "cylinder", "dimensions": {"radius": round(0.05 * scale, 3), "height": round(0.03 * scale, 3)}, "position": [round(0.47 * scale, 3), round(-0.60 * scale, 3), round(0.47 * scale, 3)], "rotation": [0.0, 0.0, 0.0], "material": "silicone", "color": "#10B981", "kinematics": {"type": "static"}},
+            {"id": "foot_fr", "name": "Front-Right Elastomer Traction Pad", "primitive": "cylinder", "dimensions": {"radius": round(0.05 * scale, 3), "height": round(0.03 * scale, 3)}, "position": [round(-0.47 * scale, 3), round(-0.60 * scale, 3), round(0.47 * scale, 3)], "rotation": [0.0, 0.0, 0.0], "material": "silicone", "color": "#10B981", "kinematics": {"type": "static"}},
+            {"id": "foot_rl", "name": "Rear-Left Elastomer Traction Pad", "primitive": "cylinder", "dimensions": {"radius": round(0.05 * scale, 3), "height": round(0.03 * scale, 3)}, "position": [round(0.47 * scale, 3), round(-0.60 * scale, 3), round(-0.47 * scale, 3)], "rotation": [0.0, 0.0, 0.0], "material": "silicone", "color": "#10B981", "kinematics": {"type": "static"}},
+            {"id": "foot_rr", "name": "Rear-Right Elastomer Traction Pad", "primitive": "cylinder", "dimensions": {"radius": round(0.05 * scale, 3), "height": round(0.03 * scale, 3)}, "position": [round(-0.47 * scale, 3), round(-0.60 * scale, 3), round(-0.47 * scale, 3)], "rotation": [0.0, 0.0, 0.0], "material": "silicone", "color": "#10B981", "kinematics": {"type": "static"}}
+        ]
+    elif matched_arch == "planetary_gearbox":
         
         # 1. Parse planet gear count dynamically from prompt
         num_planets = None
@@ -1161,29 +1261,8 @@ def size_candidates(specs: Dict[str, Any]) -> Dict[str, Any]:
         specs = merged
 
     archetype = specs.get("archetype")
-    if not archetype or archetype == "flexure_hinge":
-        p_lower = str(specs.get("prompt", "")).lower()
-        if any(k in p_lower for k in ["gear", "sun", "planet", "ring", "ratio", "reduction"]):
-            archetype = "planetary_gearbox"
-        elif any(k in p_lower for k in ["grip", "clamp", "jaw", "robot", "hand", "finger"]):
-            archetype = "robotic_gripper"
-        elif any(k in p_lower for k in ["turbine", "impeller", "pump", "blade", "fan"]):
-            archetype = "turbine_impeller"
-        elif any(k in p_lower for k in ["engine", "v8", "crank", "piston", "slider"]):
-            archetype = "kinematic_engine"
-        elif any(k in p_lower for k in ["arm", "drone", "quad", "spar"]):
-            archetype = "drone_arm"
-        elif any(k in p_lower for k in ["bracket", "mount", "extrusion", "gusset", "shelf"]):
-            archetype = "equipment_bracket"
-        elif any(k in p_lower for k in [
-            "organic", "sculpture", "biomorphic", "ribbon", "lattice", "torus",
-            "minimal surface", "art", "fluid", "curvilinear", "gyroid"
-        ]):
-            archetype = "organic_sculpture"
-        elif any(k in p_lower for k in ["hinge", "flexure", "compliant", "bistable", "cantilever"]):
-            archetype = "flexure_hinge"
-        elif not archetype:
-            archetype = "modular_mechanism"
+    if not archetype or archetype in ["flexure_hinge", "modular_mechanism"]:
+        archetype = classify_prompt_archetype(specs.get("prompt", ""), hint=archetype or "")
     load_kg = float(specs.get("load_kg", 1.0))
     span_mm = float(specs.get("span_mm", 80.0))
     mat_key = specs.get("material", "pla_tough")
@@ -1261,7 +1340,20 @@ def size_candidates(specs: Dict[str, Any]) -> Dict[str, Any]:
                 {"part": "M3 Heat-Set Threaded Insert", "qty": 2, "unit": "Brass", "cost": "$0.15"},
             ]
 
-        if archetype == "organic_sculpture":
+        if archetype == "quadruped_chassis":
+            T_mm = 3.6 if prof["id"] == "lightweight" else (4.8 if prof["id"] == "balanced" else 6.5)
+            W_mm = round(span_mm * 0.45, 1)
+            vol_cm3 = (span_mm * span_mm * T_mm * 0.08) / 1000.0 * (prof["infill"] / 100.0 + 0.3)
+            weight_g = round(vol_cm3 * mat["density_g_cm3"] * 2.2, 1)
+            print_time_min = max(35, round(weight_g * 1.8 + prof["walls"] * 4.0))
+            cost_usd = round((weight_g / 1000.0) * mat["cost_per_kg_usd"], 2)
+            bom = [
+                {"part": f"3D Printed Quadruped Torso & Femur Set ({mat['name']})", "qty": 1, "unit": f"{weight_g}g", "cost": f"${cost_usd}"},
+                {"part": "Micro Metal-Gear Actuator Servos (9g / 2.2 kg·cm)", "qty": 8, "unit": "Digital PWM", "cost": "$16.00"},
+                {"part": "Ground Traction Silicone Foot Pads", "qty": 4, "unit": "Silicone Elastomer", "cost": "$0.80"},
+                {"part": "M2.5 Stainless Steel Hardware & Dowel Fasteners", "qty": 16, "unit": "Stainless Steel", "cost": "$1.20"}
+            ]
+        elif archetype == "organic_sculpture":
             T_mm = 2.8 if prof["id"] == "lightweight" else (4.2 if prof["id"] == "balanced" else 6.0)
             W_mm = round(T_mm * 3.5, 1)
             vol_cm3 = (span_mm * W_mm * T_mm) / 1000.0 * (prof["infill"] / 100.0 + 0.35)
